@@ -1,0 +1,16 @@
+# #!/bin/sh
+# # . "$(dirname "$0")/_/husky.sh"
+
+# # Only run linter or tests here, not commitlint
+# echo "✅ Husky pre-commit hook triggered"
+
+
+
+#!/bin/sh
+
+#!/usr/bin/env sh
+
+echo "✅ Husky pre-commit hook triggered"
+# Add your command here, like lint-staged
+
+bash .husky/check-branch-name.sh
