@@ -73,12 +73,8 @@ const UploadPage = () => {
         method: "POST",
         body: formData,
       });
-      console.log(res)
 
       const data = await res.json();
-
-
-      console.log(data);
 
       if (res.ok && data.url) {
         setVideoUrl(data.url);
@@ -107,7 +103,7 @@ const UploadPage = () => {
     const k = 1024;
     const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2) + " " + sizes[i]);
   };
 
   return (
@@ -140,7 +136,7 @@ const UploadPage = () => {
               fontWeight: 600,
               color: "#555",
             }}>
-            Streamable Username
+            Streamable Username{" "}
             <input
               type="text"
               value={username}
@@ -169,7 +165,7 @@ const UploadPage = () => {
               fontWeight: 600,
               color: "#555",
             }}>
-            Streamable Password
+            Streamable Password{" "}
             <input
               type="password"
               value={password}
@@ -198,30 +194,29 @@ const UploadPage = () => {
               fontWeight: 600,
               color: "#555",
             }}>
-            Video File
-          
-          <input
-            type="file"
-            accept="video/*"
-            ref={fileInputRef}
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                setStatus(
-                  `Selected: ${file.name} (${formatFileSize(file.size)})`
-                );
-              }
-            }}
-            style={{
-              width: "100%",
-              padding: 12,
-              borderRadius: 8,
-              border: "2px dashed #e1e5e9",
-              fontSize: 16,
-              backgroundColor: "#f8f9fa",
-            }}
+            Video File{" "}
+            <input
+              type="file"
+              accept="video/*"
+              ref={fileInputRef}
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  setStatus(
+                    `Selected: ${file.name} (${formatFileSize(file.size)})`
+                  );
+                }
+              }}
+              style={{
+                width: "100%",
+                padding: 12,
+                borderRadius: 8,
+                border: "2px dashed #e1e5e9",
+                fontSize: 16,
+                backgroundColor: "#f8f9fa",
+              }}
             />
-            </label>
+          </label>
           <div
             style={{
               fontSize: 12,
@@ -248,12 +243,18 @@ const UploadPage = () => {
             cursor: loading ? "not-allowed" : "pointer",
             transition: "background-color 0.2s",
           }}
-          onMouseOver={(e) => {
-            if (!loading) e.target.style.backgroundColor = "#0056b3";
-          }}
-          onMouseOut={(e) => {
-            if (!loading) e.target.style.backgroundColor = "#0070f3";
-          }}>
+          onMouseOver={(e) =>
+            !loading && (e.target.style.backgroundColor = "#0056b3")
+          }
+          onMouseOut={(e) =>
+            !loading && (e.target.style.backgroundColor = "#0070f3")
+          }
+          onFocus={(e) =>
+            !loading && (e.target.style.backgroundColor = "#0056b3")
+          }
+          onBlur={(e) =>
+            !loading && (e.target.style.backgroundColor = "#0070f3")
+          }>
           {loading ? "Processing..." : "Upload Video"}
         </button>
       </form>
@@ -321,7 +322,9 @@ const UploadPage = () => {
               transition: "background-color 0.2s",
             }}
             onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
-            onMouseOut={(e) => (e.target.style.backgroundColor = "#0070f3")}>
+            onMouseOut={(e) => (e.target.style.backgroundColor = "#0070f3")}
+            onFocus={(e) => (e.target.style.backgroundColor = "#0056b3")}
+            onBlur={(e) => (e.target.style.backgroundColor = "#0070f3")}>
             View on Streamable →
           </a>
           <div

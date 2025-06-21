@@ -1,6 +1,6 @@
 "use client";
 
-// import ToStreamable from "../api/vidoes/route.js";
+
 import React, { useState } from "react";
 
 const VideosPage = () => {
@@ -29,7 +29,9 @@ const VideosPage = () => {
         setError(data.error || "Failed to fetch video");
       }
     } catch (err) {
-      setError("An error occurred.");
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred"
+      );
     }
     setLoading(false);
   };
@@ -115,7 +117,16 @@ const VideosPage = () => {
       {error && <div style={{ marginTop: 16, color: "red" }}>{error}</div>}
       {videoData && videoData.files && videoData.files.mp4 && (
         <div style={{ marginTop: 24 }}>
-          <video controls width="100%" src={videoData.files.mp4.url}></video>
+          <video controls width="100%" src={videoData.files.mp4.url}>
+            {/* Add this track element for accessibility */}
+            <track
+              kind="captions"
+              src="" // You can provide a URL to captions file if available
+              srcLang="en"
+              label="English"
+              default
+            />
+          </video>
           <div style={{ marginTop: 8 }}>
             <a
               href={`https://streamable.com/${shortcode}`}
