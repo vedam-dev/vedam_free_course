@@ -24,7 +24,7 @@
           )
         )
       runs-on: ubuntu-latest
-      environment: production
+      environment: vedam-free-course
 
       steps:
         - name: Checkout code
