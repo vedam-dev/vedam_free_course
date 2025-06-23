@@ -1,14 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
-import { createClient } from "../../../../utils/supabase/server";
+import { createClient } from '../../../../utils/supabase/server';
 
 export async function POST(request: NextRequest) {
-  const supabase = createClient(); 
+  const supabase = createClient();
   const { name, phone } = await request.json();
-  const cookieHeader = request.headers.get("cookie") || "";
+  const cookieHeader = request.headers.get('cookie') || '';
   const cookies = Object.fromEntries(
-    cookieHeader.split("; ").map((c) => {
-      const [k, v] = c.split("=");
+    cookieHeader.split('; ').map((c) => {
+      const [k, v] = c.split('=');
       return [k, decodeURIComponent(v)];
     })
   );
@@ -22,7 +22,8 @@ export async function POST(request: NextRequest) {
     landing_page,
     referrer,
   } = cookies;
-  if (!visitor_token) {
+
+  if(!visitor_token) {
   //  for future reference
   }
   // Insert into Supabase via pgSQL
@@ -48,7 +49,7 @@ export async function POST(request: NextRequest) {
     landing_page ?? null,
     referrer ?? null,
   ];
-  const { data, error } = await supabase.rpc("run_sql", {
+  const { data, error } = await supabase.rpc('run_sql', {
     sql: insertSQL,
     params: values,
   });
@@ -66,7 +67,7 @@ export async function POST(request: NextRequest) {
   // end;
   // $$ language plpgsql;
   // Then call via supabase.rpc('insert_utm', { ... });
-  if (error) {
+  if(error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
   // Optionally: send server-side event to GA via Measurement Protocol
@@ -75,9 +76,9 @@ export async function POST(request: NextRequest) {
       client_id: visitor_token, // or a generated client_id
       events: [
         {
-          name: "sign_up", // or resource_access
+          name: 'sign_up', // or resource_access
           params: {
-            method: "free_access",
+            method: 'free_access',
             utm_source: utm_source,
             utm_medium: utm_medium,
             utm_campaign: utm_campaign,
@@ -89,13 +90,13 @@ export async function POST(request: NextRequest) {
     await fetch(
       `https://www.google-analytics.com/mp/collect?measurement_id=${process.env.GA4_MEASUREMENT_ID}&api_secret=${process.env.GA4_API_SECRET}`,
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(measurementPayload),
       }
     );
-  } catch (gaError) {
-    console.error("GA Measurement Protocol error:", gaError);
+  } catch(gaError) {
+    console.error('GA Measurement Protocol error:', gaError);
   }
   return NextResponse.json({ success: true, id: data });
 }

@@ -1,11 +1,11 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 export default function UTMCaptureClient({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);

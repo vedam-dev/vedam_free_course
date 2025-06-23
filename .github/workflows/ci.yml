@@ -52,6 +52,8 @@
           run: |
             echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" >> .env
             echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" >> .env
+            echo "GA4_MEASUREMENT_ID=${{ secrets.GA4_MEASUREMENT_ID }}" >> .env
+            echo "GA4_API_SECRET=${{ secrets.GA4_API_SECRET }}" >> .env
 
         - name: Install dependencies
           run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
