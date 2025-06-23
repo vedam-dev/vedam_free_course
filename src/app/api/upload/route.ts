@@ -15,7 +15,7 @@ import saveUploadedFile from "./saveUploadedFile";
 export async function POST(request) {
   try {
     console.log("POST request received");
-
+console.log(request);
     // Parse form data using native FormData API
     const formData = await request.formData();
 
@@ -145,18 +145,18 @@ async function pollProcessingStatus({
         if (statusData && statusData.status === 2 && statusData.embed_code) {
           // Success - video is processed
           const streamableUrl = `https://streamable.com/${upload.shortcode}`;
-          const thumbnailUrl = statusData.thumbnail_url || "";
+          const thumbnailUrl = statusData.thumbnail_url ?? "";
           const embedCode = `<iframe src="https://streamable.com/e/${upload.shortcode}" frameborder="0" allowfullscreen></iframe>`;
           const embed_code = statusData.embed_code;
 
           // Prepare data for Supabase
           const videoData = {
             category: "default",
-            title: statusData.title || "Untitled Video",
+            title: statusData.title ?? "Untitled Video",
             streamableUrl: streamableUrl,
-            mobileCdnUrl: statusData.files?.mobile?.url || "",
-            videoCdnUrl: statusData.files?.mp4?.url || "",
-            embedeCode: embed_code || embedCode,
+            mobileCdnUrl: statusData.files?.mobile?.url ?? "",
+            videoCdnUrl: statusData.files?.mp4?.url ?? "",
+            embedeCode: embed_code ?? embedCode,
             thumbnailUrl: thumbnailUrl,
           };
 
@@ -188,7 +188,7 @@ async function pollProcessingStatus({
             reject(
               new Error(
                 `Video processed but failed to save to database: ${
-                  supabaseError?.message || "Unknown error"
+                  supabaseError?.message ?? "Unknown error"
                 }`
               )
             );
@@ -266,8 +266,8 @@ async function saveToSupabase(videoData) {
       });
       throw new Error(
         `Database insert failed: ${
-          minimalError.message ||
-          minimalError.details ||
+          minimalError.message ??
+          minimalError.details ??
           "Unknown database error"
         }`
       );
@@ -292,7 +292,7 @@ async function saveToSupabase(videoData) {
       });
       throw new Error(
         `Database insert failed: ${
-          error.message || error.details || "Unknown database error"
+          error.message ?? error.details ?? "Unknown database error"
         }`
       );
     }

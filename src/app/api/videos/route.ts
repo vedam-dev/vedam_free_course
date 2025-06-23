@@ -31,7 +31,7 @@ export async function POST(request) {
     if (!res.ok || body.status === 3) {
       return new Response(
         JSON.stringify({
-          error: body?.message || "Video not found or failed",
+          error: body?.message ?? "Video not found or failed",
         }),
         { status: 404 }
       );
@@ -39,6 +39,7 @@ export async function POST(request) {
 
     return new Response(JSON.stringify(body), { status: 200 });
   } catch (e) {
+    console.error("Error in POST /api/videos:", e);
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
     });
