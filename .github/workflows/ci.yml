@@ -50,8 +50,8 @@
 
         - name: Create .env file from GitHub Secrets
           run: |
-            echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" >> .env.local
-            echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" >> .env.local
+            echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env.local
+            echo "SUPABASE_ANON_KEY=${{ secrets.UPABASE_ANON_KEY }}" >> .env.local
             echo "GA4_MEASUREMENT_ID=${{ secrets.GA4_MEASUREMENT_ID }}" >> .env.local
             echo "GA4_API_SECRET=${{ secrets.GA4_API_SECRET }}" >> .env.local
 
