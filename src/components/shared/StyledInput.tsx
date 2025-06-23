@@ -1,24 +1,24 @@
-import { TextField, TextFieldProps } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { TextField, TextFieldProps } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
-  "& .MuiOutlinedInput-root": {
-    borderRadius: "12px",
-    backgroundColor: "#ffffff",
-    "& fieldset": {
-      borderColor: "#e0e0e0",
+  '& .MuiOutlinedInput-root': {
+    borderRadius: '12px',
+    backgroundColor: '#ffffff',
+    '& fieldset': {
+      borderColor: '#e0e0e0',
     },
-    "&:hover fieldset": {
-      borderColor: "#FFA41A",
+    '&:hover fieldset': {
+      borderColor: '#FFA41A',
     },
-    "&.Mui-focused fieldset": {
-      borderColor: "#FFA41A",
+    '&.Mui-focused fieldset': {
+      borderColor: '#FFA41A',
     },
   },
-  "& .MuiInputLabel-root": {
-    color: "#666666",
-    "&.Mui-focused": {
-      color: "#FFA41A",
+  '& .MuiInputLabel-root': {
+    color: '#666666',
+    '&.Mui-focused': {
+      color: '#FFA41A',
     },
   },
   marginBottom: theme.spacing(2),
