@@ -18,7 +18,6 @@ export async function POST(req: Request) {
       );
     }
 
-
     const { data: existingData } = await supabase
       .from('utm-data')
       .select('visitor_token')
