@@ -22,8 +22,7 @@ export default function Home() {
       />
 
       <main>
-        <h1>Hello Worls!</h1>
-       
+        <h1>Hello Kids you will get free course herea and in replace we will theft your data!</h1>
       </main>
     </>
   );

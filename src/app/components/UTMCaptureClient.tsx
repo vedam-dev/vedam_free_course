@@ -12,8 +12,8 @@ export default function UTMCaptureClient({ children }: { children: React.ReactNo
     const utm_source = searchParams.get('utm_source');
     const utm_medium = searchParams.get('utm_medium');
     const utm_campaign = searchParams.get('utm_campaign');
-    const utm_term = searchParams.get('utm_term');
-    const utm_content = searchParams.get('utm_content');
+    // const utm_term = searchParams.get('utm_term');
+    // const utm_content = searchParams.get('utm_content');
 
     if(utm_source) {
       const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();

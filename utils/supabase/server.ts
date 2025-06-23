@@ -12,5 +12,5 @@ if (!supabaseUrl || !supabaseServiceRoleKey) {
 export function createClient() {
   return createSupabaseClient(supabaseUrl, supabaseServiceRoleKey, {
     // Will add some setting if needed once i get the database access
-  });
+  }); 
 }
