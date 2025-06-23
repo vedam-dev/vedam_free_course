@@ -27,6 +27,16 @@ RUN echo "NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}" > .env.local && \
     echo "NEXT_PUBLIC_MSG91_WIDGET_ID=${MSG91_WIDGET_ID}" >> .env.local && \
     echo "GA4_API_SECRET=${GA4_API_SECRET}" >> .env.local
 
+# Create .env file from build args (for build-time variables)
+ARG SUPABASE_URL
+ARG SUPABASE_ANON_KEY
+ARG GA4_MEASUREMENT_ID
+ARG GA4_API_SECRET
+RUN echo "NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}" > .env.local && \
+    echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}" >> .env.local && \
+    echo "NEXT_PUBLIC_GA4_MEASUREMENT_ID=${GA4_MEASUREMENT_ID}" >> .env.local && \
+    echo "GA4_API_SECRET=${GA4_API_SECRET}" >> .env.local
+
 # Build the application
 RUN npm run build
 
