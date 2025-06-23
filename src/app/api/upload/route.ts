@@ -1,21 +1,18 @@
 /* eslint-disable keyword-spacing */
 /* eslint-disable quotes */
 import fs from "fs";
-
 import { NextResponse } from "next/server";
-
-// Import the server-side Supabase client
-// import { createClient } from "@/lib/supabase/server"; // Update this import path
-
+import { createSupabaseServerClient } from "../../../lib/streamableDB/supabaseServerClient";
 import { ToStreamable } from "../../../lib/streamableClient";
-
 import saveUploadedFile from "./saveUploadedFile";
+import { VideoData } from "../../../lib/streamableDB/streamableTypes";
 
 // Named export for POST method (required for App Router)
 export async function POST(request) {
   try {
     console.log("POST request received");
-console.log(request);
+    console.log(request);
+
     // Parse form data using native FormData API
     const formData = await request.formData();
 
@@ -150,13 +147,13 @@ async function pollProcessingStatus({
           const embed_code = statusData.embed_code;
 
           // Prepare data for Supabase
-          const videoData = {
+          const videoData: VideoData = {
             category: "default",
             title: statusData.title ?? "Untitled Video",
             streamableUrl: streamableUrl,
             mobileCdnUrl: statusData.files?.mobile?.url ?? "",
             videoCdnUrl: statusData.files?.mp4?.url ?? "",
-            embedeCode: embed_code ?? embedCode,
+            embedCode: embed_code ?? embedCode,
             thumbnailUrl: thumbnailUrl,
           };
 
@@ -221,74 +218,26 @@ async function pollProcessingStatus({
   });
 }
 
-async function saveToSupabase(videoData) {
+async function saveToSupabase(videoData: VideoData) {
   try {
-    // Create server-side Supabase client (await since createClient is async)
-    const supabase = await createClient();
+    const supabase = createSupabaseServerClient();
 
     console.log("Supabase client created, attempting insert...");
     console.log("Data to insert:", JSON.stringify(videoData, null, 2));
 
-    // First, let's get the table schema to understand the structure
-    const { data: schemaData, error: schemaError } = await supabase
-      .from("streamable")
-      .select("*")
-      .limit(1);
-
-    console.log("Table schema check:", { schemaData, schemaError });
-
-    // Try to insert with minimal data first to test
-    const minimalData = {
-      category: videoData.category,
-      title: videoData.title,
-      streamableUrl: videoData.streamableUrl,
-    };
-
-    console.log("Attempting insert with minimal data:", minimalData);
-
-    const { data: minimalResult, error: minimalError } = await supabase
-      .from("streamable")
-      .insert([minimalData])
-      .select();
-
-    if (minimalError) {
-      console.error(
-        "Minimal insert error:",
-        JSON.stringify(minimalError, null, 2)
-      );
-      // Try to get more details about the error
-      console.error("Error details:", {
-        message: minimalError.message,
-        details: minimalError.details,
-        hint: minimalError.hint,
-        code: minimalError.code,
-        description: minimalError.description,
-      });
-      throw new Error(
-        `Database insert failed: ${
-          minimalError.message ??
-          minimalError.details ??
-          "Unknown database error"
-        }`
-      );
-    }
-
-    console.log("Minimal insert successful:", minimalResult);
-
-    // If minimal insert worked, try with full data
     const { data, error } = await supabase
       .from("streamable")
       .insert([videoData])
-      .select();
+      .select()
+      .single();
 
     if (error) {
-      console.error("Full insert error:", JSON.stringify(error, null, 2));
-      console.error("Full error details:", {
+      console.error("Insert error:", JSON.stringify(error, null, 2));
+      console.error("Error details:", {
         message: error.message,
         details: error.details,
         hint: error.hint,
         code: error.code,
-        description: error.description,
       });
       throw new Error(
         `Database insert failed: ${
@@ -297,12 +246,10 @@ async function saveToSupabase(videoData) {
       );
     }
 
-    console.log("Full insert successful:", data);
+    console.log("Insert successful:", data);
     return data;
   } catch (err) {
     console.error("saveToSupabase error:", err);
-    console.error("Error type:", typeof err);
-    console.error("Error constructor:", err.constructor.name);
     throw err;
   }
 }
