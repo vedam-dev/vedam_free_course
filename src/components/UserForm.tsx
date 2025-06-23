@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
 import {
+  Alert,
   Box,
-  TextField,
   Button,
-  Typography,
+  CircularProgress,
   Container,
   Paper,
-  Alert,
-  CircularProgress
-} from '@mui/material'
+  TextField,
+  Typography
+} from '@mui/material';
+import React, { useState } from 'react';
 
 interface FormData {
   name: string
@@ -29,66 +29,66 @@ export default function UserForm() {
     name: '',
     email: '',
     mobile: ''
-  })
-  const [errors, setErrors] = useState<FormErrors>({})
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [apiError, setApiError] = useState<string | null>(null)
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const validateForm = (): boolean => {
-    const newErrors: FormErrors = {}
+    const newErrors: FormErrors = {};
 
     // Name validation
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required'
+    if(!formData.name.trim()) {
+      newErrors.name = 'Name is required';
     }
 
     // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required'
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email'
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if(!emailRegex.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email';
     }
 
     // Mobile validation
-    const mobileRegex = /^[0-9]{10}$/
-    if (!formData.mobile.trim()) {
-      newErrors.mobile = 'Mobile number is required'
-    } else if (!mobileRegex.test(formData.mobile.replace(/\s/g, ''))) {
-      newErrors.mobile = 'Please enter a valid 10-digit mobile number'
+    const mobileRegex = /^[0-9]{10}$/;
+    if(!formData.mobile.trim()) {
+      newErrors.mobile = 'Mobile number is required';
+    } else if(!mobileRegex.test(formData.mobile.replace(/\s/g, ''))) {
+      newErrors.mobile = 'Please enter a valid 10-digit mobile number';
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
-    }))
+    }));
 
     // Clear error when user starts typing
-    if (errors[name as keyof FormErrors]) {
+    if(errors[name as keyof FormErrors]) {
       setErrors(prev => ({
         ...prev,
         [name]: undefined
-      }))
+      }));
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!validateForm()) {
-      return
+    e.preventDefault();
+
+    if(!validateForm()) {
+      return;
     }
 
-    setLoading(true)
-    setApiError(null)
-    setSuccess(false)
+    setLoading(true);
+    setApiError(null);
+    setSuccess(false);
 
     try {
       const response = await fetch('/api/users', {
@@ -97,22 +97,22 @@ export default function UserForm() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-      })
+      });
 
-      const result = await response.json()
+      const result = await response.json();
 
-      if (!response.ok) {
-        throw new Error(result.error ?? 'Failed to save user data')
+      if(!response.ok) {
+        throw new Error(result.error ?? 'Failed to save user data');
       }
 
-      setSuccess(true)
-      setFormData({ name: '', email: '', mobile: '' })
-    } catch (error) {
-      setApiError(error instanceof Error ? error.message : 'An error occurred')
+      setSuccess(true);
+      setFormData({ name: '', email: '', mobile: '' });
+    } catch(error) {
+      setApiError(error instanceof Error ? error.message : 'An error occurred');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <Container maxWidth="sm" sx={{ mt: 4 }}>
@@ -195,5 +195,5 @@ export default function UserForm() {
         </Box>
       </Paper>
     </Container>
-  )
+  );
 }

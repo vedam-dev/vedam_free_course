@@ -1,18 +1,18 @@
-'use client'
+'use client';
 
-import React, { useState, useEffect } from 'react'
 import {
+  CircularProgress,
   Container,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  Typography,
-  CircularProgress
-} from '@mui/material'
+  Typography
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
 
 interface User {
   id: number
@@ -23,31 +23,31 @@ interface User {
 }
 
 export default function AdminPage() {
-  const [users, setUsers] = useState<User[]>([])
-  const [loading, setLoading] = useState(true)
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchUsers()
-  }, [])
+    fetchUsers();
+  }, []);
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('/api/users')
-      const result = await response.json()
-      setUsers(result.data)
-    } catch (error) {
-      console.error('Error fetching users:', error)
+      const response = await fetch('/api/users');
+      const result = await response.json();
+      setUsers(result.data);
+    } catch(error) {
+      console.error('Error fetching users:', error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  if (loading) {
+  if(loading) {
     return (
       <Container>
         <CircularProgress />
       </Container>
-    )
+    );
   }
 
   return (
@@ -55,7 +55,7 @@ export default function AdminPage() {
       <Typography variant="h4" gutterBottom>
         Admin - User Data
       </Typography>
-      
+
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -81,5 +81,5 @@ export default function AdminPage() {
         </Table>
       </TableContainer>
     </Container>
-  )
+  );
 }
