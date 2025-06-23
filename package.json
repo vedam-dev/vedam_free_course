@@ -12,16 +12,12 @@
     "commitlint": "ts-node --esm commitlint.config.ts"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.2",
     "@supabase/supabase-js": "^2.50.0",
     "axios": "^1.10.0",
-=======
-    "@supabase/supabase-js": "^2.50.0",
->>>>>>> 98a6132b6b13b766cfce141bd7f790b9b7d39ca4
     "next": "15.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
