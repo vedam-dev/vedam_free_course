@@ -2,7 +2,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
-
 import OtpModal from '@/components/otp/OtpModal';
 
 export default function HomePage() {
@@ -91,6 +90,7 @@ export default function HomePage() {
           onClose={() => setShowOtpModal(false)}
           onVerificationSuccess={handleVerificationSuccess}
         />
+
       </Box>
     </>
   );
