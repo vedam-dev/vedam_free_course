@@ -1,11 +1,15 @@
 /* eslint-disable keyword-spacing */
 /* eslint-disable quotes */
 import fs from "fs";
+
 import { NextResponse } from "next/server";
-import { createSupabaseServerClient } from "../../../lib/streamableDB/supabaseServerClient";
+
 import { ToStreamable } from "../../../lib/streamableClient";
-import saveUploadedFile from "./saveUploadedFile";
 import { VideoData } from "../../../lib/streamableDB/streamableTypes";
+import { createSupabaseServerClient } from "../../../lib/streamableDB/supabaseServerClient";
+
+import saveUploadedFile from "./saveUploadedFile";
+
 
 // Named export for POST method (required for App Router)
 export async function POST(request) {
@@ -151,7 +155,7 @@ async function pollProcessingStatus({
             category: "default",
             title: statusData.title ?? "Untitled Video",
             streamableUrl: streamableUrl,
-            mobileCdnUrl: statusData.files?.mobile?.url ?? "",
+            mobileCdnUrl: statusData.files?.mp4?.url ?? "",
             videoCdnUrl: statusData.files?.mp4?.url ?? "",
             embedCode: embed_code ?? embedCode,
             thumbnailUrl: thumbnailUrl,

@@ -4,6 +4,10 @@
  * @package to-streamable
  */
 
+import { createSupabaseServerClient } from "@/lib/streamableDB/supabaseServerClient";
+import { exportTraceState } from "next/dist/trace";
+import { NextResponse } from "next/server";
+
 export const runtime = "nodejs";
 
 export async function POST(request) {
@@ -38,10 +42,39 @@ export async function POST(request) {
     }
 
     return new Response(JSON.stringify(body), { status: 200 });
-  } catch (e) {
-    console.error("Error in POST /api/videos:", e);
-    return new Response(JSON.stringify({ error: "Internal server error" }), {
+  } catch(e) {
+    console.error('Error in POST /api/videos:', e);
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
     });
+  }
+}
+
+
+
+
+export async function GET() {
+  try {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("streamable")
+      .select("*")
+      .order("created_at", { ascending: true });
+
+    if (error) {
+      console.error("Supabase Error:", error);
+      return NextResponse.json(
+        { error: "failed to fetch data" },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ data }, { status: 200 });
+  } catch (error) {
+    console.error("api response:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
