@@ -91,6 +91,7 @@ export default function HomePage() {
           onClose={() => setShowOtpModal(false)}
           onVerificationSuccess={handleVerificationSuccess}
         />
+
       </Box>
     </>
   );

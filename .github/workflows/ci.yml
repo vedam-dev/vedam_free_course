@@ -55,6 +55,12 @@
             echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env.local
             echo "GA4_MEASUREMENT_ID=${{ secrets.GA4_MEASUREMENT_ID }}" >> .env.local
             echo "GA4_API_SECRET=${{ secrets.GA4_API_SECRET }}" >> .env.local 
+            echo "STREAMABLE_USERNAME=${{ secrets.STREAMABLE_USERNAME }}" >> .env.local 
+            echo "STREAMABLE_PASSWORD=${{ secrets.STREAMABLE_PASSWORD }}" >> .env.local 
+            echo "MSG91_AUTH_KEY=${{ secrets.MSG91_AUTH_KEY }}" >> .env.local 
+            echo "MSG91_WIDGET_ID=${{ secrets.MSG91_WIDGET_ID }}" >> .env.local 
+            echo "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" >> .env.local 
+            echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.local 
 
         - name: Confirm .env.local contents (safe for public values only)
           run: cat .env.local
