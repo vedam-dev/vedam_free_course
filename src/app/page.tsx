@@ -12,8 +12,8 @@ export default function HomePage() {
   useEffect(() => {
     if(showOtpModal && typeof window !== 'undefined') {
       const configuration = {
-        widgetId: process.env.MSG91_WIDGET_ID,
-        tokenAuth: process.env.MSG91_AUTH_KEY,
+        widgetId: process.env.NEXT_PUBLIC_MSG91_WIDGET_ID,
+        tokenAuth: process.env.NEXT_PUBLIC_MSG91_AUTH_KEY,
         exposeMethods: true,
         success: (data: unknown) => {
           console.log('Verification success:', data);
