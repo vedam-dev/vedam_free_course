@@ -15,8 +15,8 @@ export const createSupabaseServerClient = () => {
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY!,
   };
 
-  if (!env.NEXT_PUBLIC_SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) {
-    throw new Error("Missing Supabase environment variables");
+  if(!env.NEXT_PUBLIC_SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error('Missing Supabase environment variables');
   }
 
   return createClient<VideoData>(
@@ -31,36 +31,3 @@ export const createSupabaseServerClient = () => {
   );
 };
 
-// Example usage for writing data
-// export async function writeData<T>(table: string, data: T): Promise<T | null> {
-//   try {
-//     const supabase = createSupabaseServerClient();
-
-//     const { data: insertedData, error } = await supabase
-//       .from(table)
-//       .insert(data)
-//       .select()
-//       .single();
-
-//     if (error) {
-//       console.error(`Error writing to ${table}:`, error);
-//       throw new Error(`Failed to write to ${table}: ${error.message}`);
-//     }
-
-//     return insertedData;
-//   } catch (error) {
-//     console.error("Write operation failed:", error);
-//     return null;
-//   }
-// }
-
-// Example usage in a server component or API route
-// export async function exampleUsage(userData: { name: string; email: string }) {
-//   try {
-//     const result = await writeData("users", userData);
-//     return result;
-//   } catch (error) {
-//     console.error("Failed to save user data:", error);
-//     return null;
-//   }
-// }

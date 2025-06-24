@@ -1,36 +1,36 @@
-"use client";
-import "./style.css";
-import React, { useState } from "react";
+'use client';
+import './style.css';
+import React, { useState } from 'react';
 
 const VideosPage = () => {
-  const [shortcode, setShortcode] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [shortcode, setShortcode] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [videoData, setVideoData] = useState(null);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [supabaseData, setSupabaseData] = useState({});
 
   const handleFetch = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setVideoData(null);
     setLoading(true);
     try {
-      const res = await fetch("/api/videos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/videos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ shortcode, username, password }),
       });
       const data = await res.json();
-      if (res.ok) {
+      if(res.ok) {
         setVideoData(data);
       } else {
-        setError(data.error || "Failed to fetch video");
+        setError(data.error || 'Failed to fetch video');
       }
-    } catch (err) {
+    } catch(err) {
       setError(
-        err instanceof Error ? err.message : "An unexpected error occurred"
+        err instanceof Error ? err.message : 'An unexpected error occurred'
       );
     }
     setLoading(false);
@@ -38,8 +38,8 @@ const VideosPage = () => {
 
   const handleSupabase = async (e) => {
     e.preventDefault();
-    const response = await fetch("/api/videos", {
-      method: "GET",
+    const response = await fetch('/api/videos', {
+      method: 'GET',
     });
     const data = await response.json();
     console.log(data.data);
@@ -51,13 +51,13 @@ const VideosPage = () => {
       <div
         style={{
           maxWidth: 500,
-          margin: "40px auto",
+          margin: '40px auto',
           padding: 24,
           borderRadius: 12,
-          boxShadow: "0 2px 12px #0001",
-          background: "#fff",
+          boxShadow: '0 2px 12px #0001',
+          background: '#fff',
         }}>
-        <h2 style={{ textAlign: "center" }}>Fetch Streamable Video</h2>
+        <h2 style={{ textAlign: 'center' }}>Fetch Streamable Video</h2>
         <form onSubmit={handleFetch}>
           <div style={{ marginBottom: 16 }}>
             <label>
@@ -68,10 +68,10 @@ const VideosPage = () => {
                 value={shortcode}
                 onChange={(e) => setShortcode(e.target.value)}
                 style={{
-                  width: "100%",
+                  width: '100%',
                   padding: 8,
                   borderRadius: 4,
-                  border: "1px solid #ccc",
+                  border: '1px solid #ccc',
                 }}
               />
             </label>
@@ -87,10 +87,10 @@ const VideosPage = () => {
                   setUsername(process.env.STREAMABLE_USERNAME || e.target.value)
                 }
                 style={{
-                  width: "100%",
+                  width: '100%',
                   padding: 8,
                   borderRadius: 4,
-                  border: "1px solid #ccc",
+                  border: '1px solid #ccc',
                 }}
               />
             </label>
@@ -106,10 +106,10 @@ const VideosPage = () => {
                   setPassword(process.env.STREAMABLE_PASSWORD || e.target.value)
                 }
                 style={{
-                  width: "100%",
+                  width: '100%',
                   padding: 8,
                   borderRadius: 4,
-                  border: "1px solid #ccc",
+                  border: '1px solid #ccc',
                 }}
               />
             </label>
@@ -118,18 +118,18 @@ const VideosPage = () => {
             type="submit"
             disabled={loading}
             style={{
-              width: "100%",
+              width: '100%',
               padding: 10,
               borderRadius: 4,
-              background: "#0070f3",
-              color: "#fff",
-              border: "none",
-              fontWeight: "bold",
+              background: '#0070f3',
+              color: '#fff',
+              border: 'none',
+              fontWeight: 'bold',
             }}>
-            {loading ? "Fetching..." : "Fetch Video"}
+            {loading ? 'Fetching...' : 'Fetch Video'}
           </button>
         </form>
-        {error && <div style={{ marginTop: 16, color: "red" }}>{error}</div>}
+        {error && <div style={{ marginTop: 16, color: 'red' }}>{error}</div>}
         {videoData && videoData.files && videoData.files.mp4 && (
           <div style={{ marginTop: 24 }}>
             <video controls width="100%" src={videoData.files.mp4.url}>
