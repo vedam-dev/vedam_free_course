@@ -14,38 +14,38 @@ export const runtime = 'nodejs';
 export async function POST(request: Request) {
   try {
     const { shortcode, username, password } = await request.json();
-    if (!shortcode || !username || !password) {
+    if(!shortcode || !username || !password) {
       return new Response(
-        JSON.stringify({ error: "Missing required fields" }),
+        JSON.stringify({ error: 'Missing required fields' }),
         { status: 400 }
       );
     }
 
     const apiUrl = `https://api.streamable.com/videos/${shortcode}`;
-    const auth = Buffer.from(`${username}:${password}`).toString("base64");
+    const auth = Buffer.from(`${username}:${password}`).toString('base64');
 
     const res = await fetch(apiUrl, {
       headers: {
         Authorization: `Basic ${auth}`,
-        Accept: "application/json",
+        Accept: 'application/json',
       },
     });
 
     const body = await res.json();
 
-    if (!res.ok || body.status === 3) {
+    if(!res.ok || body.status === 3) {
       return new Response(
         JSON.stringify({
-          error: body?.message ?? "Video not found or failed",
+          error: body?.message ?? 'Video not found or failed',
         }),
         { status: 404 }
       );
     }
 
     return new Response(JSON.stringify(body), { status: 200 });
-  } catch (e) {
-    console.error("Error in POST /api/videos:", e);
-    return new Response(JSON.stringify({ error: "Internal server error" }), {
+  } catch(e) {
+    console.error('Error in POST /api/videos:', e);
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
     });
   }
