@@ -2,7 +2,10 @@ import fs from 'fs';
 
 import { NextResponse } from 'next/server';
 
-import { ToStreamable } from '../../../lib/streamableClient';
+import {
+  StreamableResponse,
+  ToStreamable,
+} from '../../../lib/streamableClient';
 import { VideoData } from '../../../lib/streamableDB/streamableTypes';
 import { createSupabaseServerClient } from '../../../lib/streamableDB/supabaseServerClient';
 
@@ -21,20 +24,14 @@ const DEFAULT_POLL_CONFIG: PollConfig = {
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
-    const username = formData.get('username');
-    const password = formData.get('password');
-    const file = formData.get('file');
-
-    console.log('POST request received', {
-      username,
-      fileName: file?.name,
-      fileSize: file?.size,
-    });
+    const username = formData.get('username') as string | null;
+    const password = formData.get('password') as string | null;
+    const file = formData.get('file') as File | null;
 
     const validationError = validateFormData(username, password, file);
     if(validationError) return validationError;
 
-    const tempFilePath = await saveUploadedFile(file);
+    const tempFilePath = await saveUploadedFile(file!);
     console.log('Temp file saved:', tempFilePath);
 
     try {
@@ -42,8 +39,8 @@ export async function POST(request: Request) {
       const upload = new ToStreamable({
         file: stream,
         auth: {
-          username: username?.toString(),
-          password: password?.toString(),
+          username: username!,
+          password: password!,
         },
         params: [],
       });
@@ -73,15 +70,15 @@ export async function POST(request: Request) {
 }
 
 function validateFormData(
-  username: FormDataEntryValue | null,
-  password: FormDataEntryValue | null,
-  file: FormDataEntryValue | null
+  username: string | null,
+  password: string | null,
+  file: File | null
 ) {
   if(!username || !password || !file) {
     return NextResponse.json(
       {
         error:
-          'Missing required fields: username, password, and file are required',
+          'Missing or invalid required fields: username, password, and file are required',
       },
       { status: 400 }
     );
@@ -152,11 +149,11 @@ async function pollProcessingStatus(
 }
 
 async function handleStatusResult(
-  statusData: object,
+  statusData: StreamableResponse,
   upload: ToStreamable,
   tempFilePath: string
 ) {
-  if(statusData?.status === 2 && statusData?.embed_code) {
+  if(statusData.status === 2 && statusData.embed_code) {
     return await processSuccessfulUpload(statusData, upload, tempFilePath);
   } else if(statusData.status === 3) {
     cleanupTempFile(tempFilePath);
@@ -166,23 +163,22 @@ async function handleStatusResult(
 }
 
 async function processSuccessfulUpload(
-  statusData: object,
+  statusData: StreamableResponse,
   upload: ToStreamable,
   tempFilePath: string
 ) {
   const streamableUrl = `https://streamable.com/${upload.shortcode}`;
-  const embedCode = `<iframe src="https://streamable.com/e/${upload.shortcode}" frameborder="0" allowfullscreen></iframe>`;
+  const embedCode = `${statusData.embed_code}`;
 
-  // Assuming the Supabase table uses 'id' instead of 'shortcode' based on the error
   const videoData: VideoData = {
-    shortcode: upload.shortcode ?? '', // Changed from 'shortcode' to 'id'
+    shortcode: upload.shortcode ?? '',
     category: 'default',
     title: statusData.title ?? 'Untitled Video',
-    streamableUrl: statusData.url,
+    streamableUrl: streamableUrl,
     videoCdnUrl:
-      statusData.files?.mp4?.url ?? statusData.files['mp4-mobile'].url ?? '',
-    embedCode: statusData.embed_code ?? embedCode,
-    thumbnailUrl: statusData.thumbnailUrl,
+      statusData.files?.mp4?.url ?? '',
+    embedCode: embedCode,
+    thumbnailUrl: statusData.thumbnail_url ?? '',
   };
 
   try {
@@ -195,7 +191,7 @@ async function processSuccessfulUpload(
 
     cleanupTempFile(tempFilePath);
     return {
-      id: upload.shortcode, // Changed from 'shortcode' to 'id'
+      id: upload.shortcode,
       status: 'processed',
       url: streamableUrl,
       message: 'Video uploaded and data saved to database',
@@ -244,7 +240,7 @@ async function saveToSupabase(videoData: VideoData) {
     }
 
     console.log('Insert successful:', data);
-    return data;
+    return data as VideoData;
   } catch(err) {
     console.error('saveToSupabase error:', {
       message: (err as Error).message,

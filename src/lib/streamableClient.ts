@@ -14,7 +14,7 @@ interface StreamableOptions {
   timeout?: number;
 }
 
-interface StreamableResponse {
+export interface StreamableResponse {
   shortcode?: string;
   status?: number;
   message?: string;
@@ -24,7 +24,7 @@ interface StreamableResponse {
     mobile?: { url: string };
     mp4?: { url: string };
   };
-  [key: string]: Array<string>;
+  [key: string]: unknown; // Allow dynamic keys with unknown values
 }
 
 export class ToStreamable {
@@ -182,8 +182,8 @@ export class ToStreamable {
       return undefined; // Browser will set headers automatically
     }
     // For Node.js
-    if (typeof (formData as object).getHeaders === "function") {
-      return (formData as object).getHeaders();
+    if ("getHeaders" in formData && typeof formData.getHeaders === "function") {
+      return formData.getHeaders();
     }
     return { "Content-Type": "multipart/form-data" };
   }
