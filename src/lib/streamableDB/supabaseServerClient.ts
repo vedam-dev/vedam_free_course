@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 
-import { Database } from '@/types/supabase'; // Assuming you have a generated types file
+import { VideoData } from './streamableTypes'; // Assuming you have a generated types file
 
 // Environment variables type safety
 interface Env {
@@ -15,11 +15,11 @@ export const createSupabaseServerClient = () => {
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY!,
   };
 
-  if(!env.NEXT_PUBLIC_SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) {
-    throw new Error('Missing Supabase environment variables');
+  if (!env.NEXT_PUBLIC_SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error("Missing Supabase environment variables");
   }
 
-  return createClient<Database>(
+  return createClient<VideoData>(
     env.NEXT_PUBLIC_SUPABASE_URL,
     env.SUPABASE_SERVICE_ROLE_KEY,
     {
