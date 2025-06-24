@@ -41,7 +41,10 @@ export async function POST(request: Request) {
       const stream = fs.createReadStream(tempFilePath);
       const upload = new ToStreamable({
         file: stream,
-        auth: { username: username.toString(), password: password.toString() },
+        auth: {
+          username: username?.toString(),
+          password: password?.toString(),
+        },
         params: [],
       });
 
@@ -149,11 +152,11 @@ async function pollProcessingStatus(
 }
 
 async function handleStatusResult(
-  statusData: any,
+  statusData: object,
   upload: ToStreamable,
   tempFilePath: string
 ) {
-  if(statusData.status === 2 && statusData.embed_code) {
+  if(statusData?.status === 2 && statusData?.embed_code) {
     return await processSuccessfulUpload(statusData, upload, tempFilePath);
   } else if(statusData.status === 3) {
     cleanupTempFile(tempFilePath);
@@ -163,7 +166,7 @@ async function handleStatusResult(
 }
 
 async function processSuccessfulUpload(
-  statusData: any,
+  statusData: object,
   upload: ToStreamable,
   tempFilePath: string
 ) {

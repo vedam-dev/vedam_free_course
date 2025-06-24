@@ -24,7 +24,7 @@ interface StreamableResponse {
     mobile?: { url: string };
     mp4?: { url: string };
   };
-  [key: string]: any;
+  [key: string]: Array<string>;
 }
 
 export class ToStreamable {
@@ -182,8 +182,8 @@ export class ToStreamable {
       return undefined; // Browser will set headers automatically
     }
     // For Node.js
-    if (typeof (formData as any).getHeaders === "function") {
-      return (formData as any).getHeaders();
+    if (typeof (formData as object).getHeaders === "function") {
+      return (formData as object).getHeaders();
     }
     return { "Content-Type": "multipart/form-data" };
   }

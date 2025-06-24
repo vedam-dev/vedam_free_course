@@ -4,7 +4,6 @@
  * @package to-streamable
  */
 
-import { exportTraceState } from 'next/dist/trace';
 import { NextResponse } from 'next/server';
 
 import { createSupabaseServerClient } from '@/lib/streamableDB/supabaseServerClient';
