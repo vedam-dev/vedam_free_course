@@ -11,13 +11,13 @@ declare global {
   var _mongoClientPromise: Promise<MongoClient>;
 }
 
-if (!process.env.MONGODB_URI) {
+if(!process.env.MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI in .env.local');
 }
 
-if (process.env.NODE_ENV === 'development') {
+if(process.env.NODE_ENV === 'development') {
 
-  if (!global._mongoClientPromise) {
+  if(!global._mongoClientPromise) {
     client = new MongoClient(uri, options);
     global._mongoClientPromise = client.connect();
   }
