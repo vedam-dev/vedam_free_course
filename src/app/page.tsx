@@ -76,15 +76,14 @@ export default function HomePageComponent() {
 
       <Box sx={{ textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>
-          OTP Verification Demo2
+            OTP Verification Demo2 by Vedam
         </Typography>
 
         <Button
           variant="contained"
           onClick={() => setShowOtpModal(true)}
-          sx={{ mt: 2 }}
-        >
-          Open OTP Modal
+          sx={{ mt: 2 }}>
+            Open OTP Modal
         </Button>
 
         <OtpModal
