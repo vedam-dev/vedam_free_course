@@ -1,13 +1,13 @@
 'use client';
 
-import { PlayCircleFilled } from '@mui/icons-material';
-import { Box, CardMedia, IconButton, Typography } from '@mui/material';
+// import { PlayCircleFilled } from '@mui/icons-material';
+import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
 const VideoInfo: React.FC = () => {
   return (<>
 
-    <Box sx={{ margin: 'auto', fontFamily: 'system-ui, sans-serif', bgcolor: '#fff', width:'1440', height:'800' }}>
+    <Box sx={{ margin: 'auto', fontFamily: 'system-ui, sans-serif', bgcolor: '#fff', width:'1440', height:'800',background: 'linear-gradient(180deg, #A0EBD4 -98.87%, #FFF 100%)', }}>
 
       {/* Top Header Section */}
       <Box
@@ -15,13 +15,9 @@ const VideoInfo: React.FC = () => {
           textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
-          mb: { xs: 2, md: 4 },
-          background: 'linear-gradient(180deg, #A0EBD4 -98.87%, #FFF 100%)',
+          // mb: { xs: 2, md: 4 },
           width: '100%',
           alignItems: 'center',
-          px: { xs: 2, md: 0 },
-          py: { xs: 2, md: 3 },
-          borderRadius: { xs: 2, md: 3 },
           boxShadow: { xs: 0, md: '0 2px 12px rgba(160,235,212,0.15)' },
         }}
       >
@@ -29,8 +25,9 @@ const VideoInfo: React.FC = () => {
           variant="caption"
           color="text.secondary"
           sx={{
+            marginTop:2,
+            paddingRight:6,
             letterSpacing: '0.5px',
-            mb: { xs: 1, md: 2 },
             fontSize: { xs: '0.85rem', md: '1rem' },
             fontWeight: 500,
           }}
@@ -142,45 +139,50 @@ const VideoInfo: React.FC = () => {
 
       {/* Text Display Section */}
       <Box sx={{ textAlign: 'center', my: 4 }}>
-        <Typography variant="h5" component="p" sx={{ maxWidth: '650px', margin: '0 auto', fontWeight: 500, fontSize: { xs: '1.2rem', md: '1.5rem' } }}>
-          Vedam School of Technology is an Advanced Tech College offering on-campus 4 year CS & AI program for <Box component="span" sx={{ color: '#dd2c00' }}>12 pass-outs</Box>.
+        <Typography variant="h5" component="p" sx={{ maxWidth: '650px', margin: '0 auto', fontWeight: 600, fontSize: { xs: '1.2rem', md: '1.5rem' } }}>
+          Vedam School of Technology is an Advanced Tech College offering on-campus 4 year CS & AI program for <Box component="span" sx={{ color: '#7000E3' }}>12 pass-outs</Box>.
         </Typography>
-        <Typography variant="body2" color="text.primary" sx={{ mt: 2 }}>
+        <Typography variant="body2" color="text.primary" sx={{ mt: 2, fontWeight:500, }}>
           B.Tech Degree awarded by Ajeenkya DY Patil University
         </Typography>
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" color="text.primary">
           UGC Approved
         </Typography>
       </Box>
     </Box>
 
-
+    {/* video section */}
     <Box sx={{
       background: 'linear-gradient(135deg, #4a148c 0%, #1a237e 100%)',
-      borderRadius: 4,
-      p: { xs: 2, md: 3 },
+      borderRadius: 3,
+      p: { xs: 1, md: 2 },
       color: 'white',
       boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
     }}>
-      <Typography variant="h4" sx={{ textAlign: 'center', fontWeight: 'bold', mb: 3, fontSize: { xs: '1.8rem', md: '2.2rem', position: 'relative' } }}>
-        Tech Minds Behind Vedam
-      </Typography>
 
       <Box sx={{ position: 'relative', borderRadius: 3, overflow: 'hidden', pt: '56.25%' /* 16:9 Aspect Ratio */ }}>
-        <CardMedia
-          component="video"
-          image="/home/videoInfo/videoThumbnail.png"
+        <video
+          poster="/home/videoInfo/videoThumbnail.png"
           title="Tech Minds Behind Vedam"
           controls
-          sx={{
+          autoPlay
+          loop
+          style={{
             position: 'absolute',
             top: 0,
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundColor: 'black'
+            objectFit: 'cover',
+            borderRadius: 12,
+            background: '#000',
+            display: 'block',
           }}
-        />
+        >
+          <source src="https://www.youtube.com/watch?v=8of5w7RgcTc" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
         <Box
           sx={{
             position: 'absolute',
@@ -195,9 +197,9 @@ const VideoInfo: React.FC = () => {
             pointerEvents: 'none',
           }}
         >
-          <IconButton sx={{ color: 'rgba(255, 255, 255, 0.85)', pointerEvents: 'auto' }} aria-label="play video">
+          {/* <IconButton sx={{ color: 'rgba(255, 255, 255, 0.85)', pointerEvents: 'auto' }} aria-label="play video">
             <PlayCircleFilled sx={{ fontSize: { xs: '5rem', md: '7rem' } }} />
-          </IconButton>
+          </IconButton> */}
         </Box>
 
 
