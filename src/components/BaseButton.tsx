@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Button, ButtonProps, styled } from "@mui/material";
+import { Button, ButtonProps, styled } from '@mui/material';
+import React from 'react';
 
-const SECONDARY_HEX = "#8A18FF";
+const SECONDARY_HEX = '#8A18FF';
 
 const StyledButton = styled(Button)<ButtonProps>(({ theme, variant }) => {
   const hex = SECONDARY_HEX;
@@ -14,24 +14,24 @@ const StyledButton = styled(Button)<ButtonProps>(({ theme, variant }) => {
     padding: '10px 50px',
     textTransform: 'none',
     borderWidth:'2px',
-    borderRadius: "0.875rem",
-    fontSize: "1rem",
-    [theme.breakpoints.down("sm")]: {
+    borderRadius: '0.875rem',
+    fontSize: '1rem',
+    [theme.breakpoints.down('sm')]: {
       padding: '10px 40px',
       fontWeight: 600,
-      fontSize: "0.875rem",
+      fontSize: '0.875rem',
     },
-    ...(variant === "contained" && {
+    ...(variant === 'contained' && {
       backgroundColor: hex,
       color: theme.palette.getContrastText(hex),
-      "&:hover": {
+      '&:hover': {
         backgroundColor: hoverHex,
       },
     }),
-    ...(variant === "outlined" && {
+    ...(variant === 'outlined' && {
       borderColor: hex,
       color: hex,
-      "&:hover": {
+      '&:hover': {
         backgroundColor: theme.palette.action.hover,
         borderColor: hoverHex,
       },
@@ -40,7 +40,7 @@ const StyledButton = styled(Button)<ButtonProps>(({ theme, variant }) => {
 });
 
 const BaseButton: React.FC<ButtonProps> = ({
-  variant = "contained",
+  variant = 'contained',
   sx,
   children,
   ...props

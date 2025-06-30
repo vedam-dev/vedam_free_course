@@ -1,39 +1,40 @@
-"use client";
-import { Box, Button, Typography } from "@mui/material";
-import Script from "next/script";
-import { useEffect, useState } from "react";
-import OtpModal from "@/components/otp/OtpModal";
-import BaseButton from "@/components/BaseButton";
+'use client';
+import { Box, Button, Typography } from '@mui/material';
+import Script from 'next/script';
+import { useEffect, useState } from 'react';
+
+import BaseButton from '@/components/BaseButton';
+import OtpModal from '@/components/otp/OtpModal';
 export default function HomePage() {
   const [showOtpModal, setShowOtpModal] = useState(false);
 
   // Initialize MSG91 OTP widget
   useEffect(() => {
-    if (showOtpModal && typeof window !== "undefined") {
+    if(showOtpModal && typeof window !== 'undefined') {
       const configuration = {
         widgetId: process.env.NEXT_PUBLIC_MSG91_WIDGET_ID,
         tokenAuth: process.env.NEXT_PUBLIC_MSG91_AUTH_KEY,
         exposeMethods: true,
         success: (data: unknown) => {
-          console.log("Verification success:", data);
+          console.log('Verification success:', data);
         },
         failure: (error: unknown) => {
-          console.error("Verification failed:", error);
+          console.error('Verification failed:', error);
         },
       };
 
-      const script = document.createElement("script");
+      const script = document.createElement('script');
       script.src =
-        "https://control.msg91.com/app/assets/otp-provider/otp-provider.js";
+        'https://control.msg91.com/app/assets/otp-provider/otp-provider.js';
       script.onload = () => {
-        if (window.initSendOTP) {
+        if(window.initSendOTP) {
           window.initSendOTP(configuration);
         }
       };
       document.body.appendChild(script);
 
       return () => {
-        if (document.body.contains(script)) {
+        if(document.body.contains(script)) {
           document.body.removeChild(script);
         }
       };
@@ -45,12 +46,12 @@ export default function HomePage() {
     email: string;
     phone: string;
   }) => {
-    console.log("User verified successfully:", userData);
+    console.log('User verified successfully:', userData);
     // Handle successful verification here
     // Save user data, redirect, etc.
   };
   const handleClick = () => {
-    console.log("Button clicked!");
+    console.log('Button clicked!');
   };
 
   return (
@@ -73,7 +74,7 @@ export default function HomePage() {
         }}
       />
 
-      <Box sx={{ p: 4, textAlign: "center" }}>
+      <Box sx={{ p: 4, textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>
           OTP Verification Demo2
         </Typography>
@@ -95,12 +96,12 @@ export default function HomePage() {
         <br />
         <br />
 
-        <Box sx={{ display: "flex", gap: 2 }}>
+        <Box sx={{ display: 'flex', gap: 2 }}>
           <BaseButton onClick={handleClick}>Primary</BaseButton>
           <BaseButton variant="outlined" onClick={handleClick}>
             Outlined
           </BaseButton>
-          
+
         </Box>
       </Box>
     </>
