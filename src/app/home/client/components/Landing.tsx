@@ -26,27 +26,41 @@ const Landing: React.FC = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            py: { xs: 1, md: 2 },
-            px: { xs: 2, md: 4 },
+            py: { xs: 2, md: 2 },
+            // px: { xs: 2, md: 4 },
           }}
         >
           {/* Logo Section */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, md: 2 } }}>
             <Box
               sx={{
-                width: { xs: '120px', md: '199px' },
-                height: { xs: '48px', md: '80px' },
-                background: `url("/assets/logo.png") -15px -24px / 114.35% 160% no-repeat`,
-                backgroundSize: 'cover',
+                width: { xs: '87px', md: '199px' },
+                height: { xs: '60px', md: '80px' },
+                background: `url("/assets/logo.png")`,
+                backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
               }}
             />
+            {/* Desktop Line */}
             <Box
               sx={{
+                display: { xs: 'none', md: 'block' },
+                marginRight: '25px',
                 width: '1px',
-                height: { xs: '28px', md: '45px' },
-                background: `url("/assets/Line.png")`,
+                height: '45px',
                 backgroundColor: '#2C0052',
+              }}
+            />
+            {/* Mobile Line */}
+            <Box
+              sx={{
+                display: { xs: 'block', md: 'none' },
+                width: '19px',
+                height: '1px',
+                backgroundColor: '#858585',
+                transform: 'rotate(90deg)',
+                flexShrink: 0,
               }}
             />
             <Typography
@@ -101,7 +115,7 @@ const Landing: React.FC = () => {
             <Box
               sx={{
                 flex: 1,
-                maxWidth: '50%',
+                maxWidth: '44%',
                 zIndex: 2,
               }}
             >
@@ -136,19 +150,17 @@ const Landing: React.FC = () => {
                     position: 'relative',
                     display: 'inline-block',
                     paddingBottom: '6px',
-                    // 👈 Adjust this value for more/less gap
                     '&::after': {
                       content: '""',
                       position: 'absolute',
                       bottom: 0,
                       left: 0,
                       right: 0,
-                      height: '20px', // Adjust according to your image
+                      height: '20px', 
                       backgroundImage: `url("/assets/Vector8.png")`,
                       backgroundSize: 'contain',
                       backgroundRepeat: 'no-repeat',
                       backgroundPosition: 'center',
-                      // borderRadius: '2px',
                     },
                   }}
                 >
@@ -217,7 +229,7 @@ const Landing: React.FC = () => {
             <Box
               sx={{
                 flex: 2,
-                maxWidth: '50%',
+                maxWidth: '56%',
                 position: 'relative',
                 display: 'flex',
                 justifyContent: 'center',
@@ -232,7 +244,7 @@ const Landing: React.FC = () => {
                   background: `url("/assets/rightBox.png")`,
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
-                   backgroundPositionX: '-10px', // 👈 Negative shift
+                   backgroundPositionX: '-30px', 
     backgroundPositionY: 'center',
                 }}
               />
@@ -283,19 +295,17 @@ const Landing: React.FC = () => {
                     position: 'relative',
                     display: 'inline-block',
                     paddingBottom: '6px',
-                    // 👈 Adjust this value for more/less gap
                     '&::after': {
                       content: '""',
                       position: 'absolute',
                       bottom: 0,
                       left: 0,
                       right: 0,
-                      height: '10px', // Adjust according to your image
+                      height: '10px', 
                       backgroundImage: `url("/assets/Vector8.png")`,
                       backgroundSize: 'contain',
                       backgroundRepeat: 'no-repeat',
                       backgroundPosition: 'center',
-                      // borderRadius: '2px',
                     },
                   }}
               >
@@ -367,11 +377,12 @@ const Landing: React.FC = () => {
                 width: '100%',
                 maxWidth: '341px',
                 height: '400px',
-                background: `url("/assets/rightBox.png")`,
+                background: `url("/assets/centralBox.png")`,
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-                borderRadius: '16px',
+                // borderRadius: '16px',
+                mt: 4,
               }}
             />
           </Box>
