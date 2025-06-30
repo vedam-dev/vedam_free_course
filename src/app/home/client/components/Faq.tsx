@@ -43,7 +43,7 @@ const Faq = () => {
           sx={{
             fontFamily: 'Outfit, sans‑serif',
             fontWeight: { xs: '550', md: '700 ' },
-            fontSize: { xs: '2rem', md: '3rem' },
+            fontSize: { xs: '28px', md: '48px' },
             color: '#2B2B2B',
           }}
         >
@@ -55,14 +55,14 @@ const Faq = () => {
           sx={{
             fontFamily: 'Outfit, sans‑serif',
             fontWeight: { xs: '550', md: '700 ' },
-            fontSize: { xs: '2rem', md: '3rem' },
+            fontSize: { xs: '28px', md: '48px' },
             color: '#2B2B2B',
           }}
         >
           We Have Answered them for you?
         </Typography>
       </Box>
-      <Box sx={{ width: { sm: '100%', md: '85%' }, mx: 'auto', my: 4, mt: 8 }}>
+      <Box sx={{ width: { sm: '100%', md: '85%' }, mx: 'auto', my: 4, mt: { xs:'4',md:'8' } }}>
         {Data.map(({ id, question, ans }) => (
           <Box
             key={id}
@@ -91,7 +91,11 @@ const Faq = () => {
                 <AccordionSummary
                   expandIcon={
                     <ExpandMoreIcon
-                      sx={{ width: { xs:'2rem',md:'3rem' }, height:{ xs:'1.5rem', md:'2.5rem' } , color: 'black' }}
+                      sx={{
+                        width: { xs: '2rem', md: '3rem' },
+                        height: { xs: '1.5rem', md: '2.5rem' },
+                        color: 'black',
+                      }}
                     />
                   }
                   sx={{
@@ -111,8 +115,8 @@ const Faq = () => {
                   <Typography
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
-                      fontSize: { xs: '1rem', md: '1.25rem' },
-                      fontWeight: '500',
+                      fontSize: { xs: '16px', md: '24px' },
+                      fontWeight: '400',
                       color: '#000',
                     }}
                   >
@@ -123,8 +127,7 @@ const Faq = () => {
                   sx={{
                     bgcolor: '#FFFFFF',
                     px: 3,
-                    py: 2,
-                    borderTop: '1px solid #f0f0f0',
+                    pb: 2,
                   }}
                 >
                   <Typography
