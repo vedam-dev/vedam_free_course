@@ -3,7 +3,6 @@ import { Box, Button, Typography } from '@mui/material';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 
-import BaseButton from '@/components/BaseButton';
 import OtpModal from '@/components/otp/OtpModal';
 import HomePage from './home/client/HomePage';
 
@@ -52,9 +51,7 @@ export default function HomePageComponent() {
     // Handle successful verification here
     // Save user data, redirect, etc.
   };
-  const handleClick = () => {
-    console.log('Button clicked!');
-  };
+ 
 
   return (
     <>
