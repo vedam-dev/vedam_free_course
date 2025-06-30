@@ -3,8 +3,8 @@ import { Box, Button, Typography } from '@mui/material';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 
+import BaseButton from '@/components/BaseButton';
 import OtpModal from '@/components/otp/OtpModal';
-
 import HomePage from './home/client/HomePage';
 
 export default function HomePageComponent() {
@@ -52,10 +52,12 @@ export default function HomePageComponent() {
     // Handle successful verification here
     // Save user data, redirect, etc.
   };
+  const handleClick = () => {
+    console.log('Button clicked!');
+  };
 
   return (
     <>
-
       <Script
         strategy="afterInteractive"
         src="https://www.googletagmanager.com/gtag/js?id=G-KC46RHD2WJ"
@@ -77,7 +79,7 @@ export default function HomePageComponent() {
 
       <Box sx={{ textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>
-        OTP Verification Demo
+          OTP Verification Demo2
         </Typography>
 
         <Button
@@ -85,7 +87,7 @@ export default function HomePageComponent() {
           onClick={() => setShowOtpModal(true)}
           sx={{ mt: 2 }}
         >
-        Open OTP Modal
+          Open OTP Modal
         </Button>
 
         <OtpModal
