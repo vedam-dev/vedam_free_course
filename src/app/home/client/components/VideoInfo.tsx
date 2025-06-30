@@ -1,10 +1,21 @@
 'use client';
 
-// import { PlayCircleFilled } from '@mui/icons-material';
-import { Box, Typography } from '@mui/material';
+import { PlayCircleFilled } from '@mui/icons-material';
+import { Box, IconButton, Typography } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
 const VideoInfo: React.FC = () => {
+
+  const [playing, setPlaying] = React.useState(false);
+
+
+
+  const handlePlayVideo = () => {
+    setPlaying(true);
+    console.log('Video is playing');
+
+  };
+
   return (<>
 
     <Box sx={{ margin: 'auto', fontFamily: 'system-ui, sans-serif', bgcolor: '#fff', width:'1440', height:'800',background: 'linear-gradient(180deg, #A0EBD4 -98.87%, #FFF 100%)', }}>
@@ -161,46 +172,67 @@ const VideoInfo: React.FC = () => {
     }}>
 
       <Box sx={{ position: 'relative', borderRadius: 3, overflow: 'hidden', pt: '56.25%' /* 16:9 Aspect Ratio */ }}>
-        <video
-          poster="/home/videoInfo/videoThumbnail.png"
-          title="Tech Minds Behind Vedam"
-          controls
-          autoPlay
-          loop
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            borderRadius: 12,
-            background: '#000',
-            display: 'block',
-          }}
-        >
-          <source src="https://www.youtube.com/watch?v=8of5w7RgcTc" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        {playing ? (
+          <iframe
+            src="https://www.youtube.com/embed/R9moRoww1s4?si=VpQFQESryXAuR0_L"
+            title="Tech Minds Behind Vedam"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              borderRadius: 12,
+              background: '#000',
+              border: 'none'
+            }}
+          />
+        ) : (
+          <>
+            <Box
+              component="img"
+              src="/home/videoInfo/videoThumbnail.png"
+              alt="Tech Minds Behind Vedam"
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                borderRadius: 12,
+                background: '#000',
+                display: 'block'
+              }}
+            />
 
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            background: 'linear-gradient(to top, rgba(0, 0, 0, 0.8) 10%, transparent 40%)',
-            pointerEvents: 'none',
-          }}
-        >
-          {/* <IconButton sx={{ color: 'rgba(255, 255, 255, 0.85)', pointerEvents: 'auto' }} aria-label="play video">
-            <PlayCircleFilled sx={{ fontSize: { xs: '5rem', md: '7rem' } }} />
-          </IconButton> */}
-        </Box>
+            <Box
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                background: 'linear-gradient(to top, rgba(0, 0, 0, 0.8) 10%, transparent 40%)',
+                pointerEvents: 'none'
+              }}
+            >
+              <IconButton
+                sx={{ color: 'rgba(255, 255, 255, 0.85)', pointerEvents: 'auto' }}
+                aria-label="play video"
+                onClick={handlePlayVideo}
+              >
+                <PlayCircleFilled sx={{ fontSize: { xs: '5rem', md: '7rem' } }} />
+              </IconButton>
+            </Box>
+          </>
+        )}
 
 
       </Box>
