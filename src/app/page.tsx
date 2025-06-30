@@ -3,6 +3,7 @@ import { Box, Button, Typography } from '@mui/material';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 
+import BaseButton from '@/components/BaseButton';
 import OtpModal from '@/components/otp/OtpModal';
 
 import Landing from './home/client/components/Landing';
@@ -52,10 +53,12 @@ export default function HomePage() {
     // Handle successful verification here
     // Save user data, redirect, etc.
   };
+  const handleClick = () => {
+    console.log('Button clicked!');
+  };
 
   return (
     <>
-
       <Script
         strategy="afterInteractive"
         src="https://www.googletagmanager.com/gtag/js?id=G-KC46RHD2WJ"
@@ -74,12 +77,11 @@ export default function HomePage() {
         }}
       />
 
-      <Landing/>
-
+        <Landing/>
 
       <Box sx={{ p: 4, textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>
-        OTP Verification Demosss
+        OTP Verification Demo
         </Typography>
 
         <Button
@@ -87,7 +89,7 @@ export default function HomePage() {
           onClick={() => setShowOtpModal(true)}
           sx={{ mt: 2 }}
         >
-        Open OTP Modal
+          Open OTP Modal
         </Button>
 
         <OtpModal
@@ -95,7 +97,17 @@ export default function HomePage() {
           onClose={() => setShowOtpModal(false)}
           onVerificationSuccess={handleVerificationSuccess}
         />
+        <br />
+        <br />
+        <br />
 
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <BaseButton onClick={handleClick}>Primary</BaseButton>
+          <BaseButton variant="outlined" onClick={handleClick}>
+            Outlined
+          </BaseButton>
+
+        </Box>
       </Box>
     </>
   );
