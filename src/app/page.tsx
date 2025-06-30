@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 
 import OtpModal from '@/components/otp/OtpModal';
 
+import Landing from './home/client/components/Landing';
+
 export default function HomePage() {
   const [showOtpModal, setShowOtpModal] = useState(false);
 
@@ -72,10 +74,12 @@ export default function HomePage() {
         }}
       />
 
+      <Landing/>
+
 
       <Box sx={{ p: 4, textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>
-        OTP Verification Demo
+        OTP Verification Demosss
         </Typography>
 
         <Button
