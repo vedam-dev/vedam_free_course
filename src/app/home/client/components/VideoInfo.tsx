@@ -7,72 +7,136 @@ import React from 'react';
 const VideoInfo: React.FC = () => {
   return (<>
 
-    <Box sx={{ p: { xs: 2, md: 3 }, maxWidth: '900px', margin: 'auto', fontFamily: 'system-ui, sans-serif', bgcolor: '#fff', width:'1440', height:'800' }}>
+    <Box sx={{ margin: 'auto', fontFamily: 'system-ui, sans-serif', bgcolor: '#fff', width:'1440', height:'800' }}>
 
       {/* Top Header Section */}
-      <Box sx={{ textAlign: 'center', mb: 3,background: 'linear-gradient(180deg, #A0EBD4 -98.87%, #FFF 100%)', width:'full' }}>
-        <Typography variant="caption" color="text.secondary" sx={{ letterSpacing: '0.5px' }}>
+      <Box
+        sx={{
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          mb: { xs: 2, md: 4 },
+          background: 'linear-gradient(180deg, #A0EBD4 -98.87%, #FFF 100%)',
+          width: '100%',
+          alignItems: 'center',
+          px: { xs: 2, md: 0 },
+          py: { xs: 2, md: 3 },
+          borderRadius: { xs: 2, md: 3 },
+          boxShadow: { xs: 0, md: '0 2px 12px rgba(160,235,212,0.15)' },
+        }}
+      >
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{
+            letterSpacing: '0.5px',
+            mb: { xs: 1, md: 2 },
+            fontSize: { xs: '0.85rem', md: '1rem' },
+            fontWeight: 500,
+          }}
+        >
           BROUGHT TO YOU BY
         </Typography>
         <Box
           sx={{
-            borderRadius: 2,
-            p: 2,
             display: 'flex',
-            flexDirection: 'column',
             alignItems: 'center',
-            gap: '42px',
-            alignSelf: 'stretch',
-            justifyContent: { xs: 'center', sm: 'space-around' },
+            justifyContent: 'center',
             flexWrap: 'wrap',
-            maxWidth: '500px',
-            margin: '8px auto 0',
+            gap: { xs: 2, md: 4 },
+            width: '100%',
+            maxWidth: 700,
+            mx: 'auto',
           }}
         >
           {/* Vedam Logo Image */}
-          <Box sx={{
-            width: '263px',
-            height: '104px',
-            flexShrink: 0,
-            aspectRatio: '263 / 104'
-          }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              mr: { xs: 0, md: 2 },
+              mb: { xs: 1, md: 0 },
+              width: { xs: 120, sm: 180, md: 220 },
+              minWidth: 90,
+              maxWidth: 263,
+            }}
+          >
             <Image
-              width={262}
+              width={263}
               height={104}
               src="/home/videoInfo/VedamLogo.png"
               alt="Vedam School of Technology Logo"
-
+              style={{
+                width: '100%',
+                height: 'auto',
+                objectFit: 'contain',
+              }}
+              sizes="(max-width: 600px) 120px, (max-width: 900px) 180px, 220px"
+              priority
             />
-
           </Box>
 
+          {/* Divider Line */}
+          <Box
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              mx: { sm: 1, md: 2 },
+            }}
+          >
+            <Image
+              src="/home/videoInfo/Line 23 (Stroke).svg"
+              width={2}
+              height={70}
+              alt="Divider Line"
+              style={{
+                width: '2px',
+                height: '70px',
+                minWidth: '2px',
+                minHeight: '40px',
+              }}
+            />
+          </Box>
 
           {/* CodeSprint Logo */}
           <Box
             sx={{
-              background: 'linear-gradient(90deg, #5A02A7 0%, #8A18FF 33.74%, #C14B81 54.73%, #DD6442 75%, #F97D03 100%)',
-            }}
-            style={{
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              // width: { xs: 120, sm: 180, md: 220 },
+              // minWidth: 90,
+              // maxWidth: 263,
+              borderRadius: 2,
+              px: 1,
+              background: 'none',
+              overflow: 'visible', // Ensure text is not clipped
+              minHeight: { xs: 48, sm: 60, md: 72 }, // Ensure enough height for large text
             }}
           >
             <Typography
               variant="h6"
               sx={{
-                fontWeight: 600,
-                color: '#4a148c',
+                fontWeight: 700,
                 fontFamily: 'Outfit, sans-serif',
-                fontSize: '60px',
+                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
                 fontStyle: 'normal',
-                lineHeight: 'normal',
+                lineHeight: 1.1,
+                background: 'linear-gradient(90deg, #5A02A7 0%, #8A18FF 33.74%, #C14B81 54.73%, #DD6442 75%, #F97D03 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                color: 'transparent',
+                WebkitTextFillColor: 'transparent',
+                textAlign: 'center',
+                width: '100%',
+                display: 'inline-block',
+                overflow: 'visible', // Ensure text is not clipped
+                whiteSpace: 'nowrap', // Prevent text wrapping
               }}
             >
-  CodeSprint
+              CodeSprint
             </Typography>
           </Box>
-
         </Box>
       </Box>
 
