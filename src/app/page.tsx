@@ -5,7 +5,9 @@ import { useEffect, useState } from 'react';
 
 import OtpModal from '@/components/otp/OtpModal';
 
-export default function HomePage() {
+import HomePage from './home/client/HomePage';
+
+export default function HomePageComponent() {
   const [showOtpModal, setShowOtpModal] = useState(false);
 
   // Initialize MSG91 OTP widget
@@ -73,7 +75,7 @@ export default function HomePage() {
       />
 
 
-      <Box sx={{ p: 4, textAlign: 'center' }}>
+      <Box sx={{ textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>
         OTP Verification Demo
         </Typography>
@@ -92,6 +94,7 @@ export default function HomePage() {
           onVerificationSuccess={handleVerificationSuccess}
         />
 
+        <HomePage/>
       </Box>
     </>
   );
