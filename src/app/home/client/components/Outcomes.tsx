@@ -55,7 +55,7 @@ const Outcomes = () => {
         sx={{
           color: '#1E1E1E',
           fontFamily: 'Outfit, sans-serif',
-          fontSize: { xs: '1rem', sm: '2.25rem', md: '2.75rem' },
+          fontSize: { xs: '0.75px', sm: '2.25px', md: '2.75px' },
           fontWeight: 500,
           lineHeight: 'normal',
           mb: { xs: '16px', md: '60px' },
