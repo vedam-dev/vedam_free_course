@@ -135,7 +135,7 @@ const Landing: React.FC = () => {
                 sx={{
                   color: '#1E1E1E',
                   fontFamily: 'Outfit',
-                  fontSize: '62px',
+                  fontSize: '60px',
                   fontWeight: 600,
                   lineHeight: '71px',
                   mb: 3,
