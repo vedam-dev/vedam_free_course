@@ -3,12 +3,14 @@ import { Box, Button, Typography } from '@mui/material';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 
-import BaseButton from '@/components/BaseButton';
 import OtpModal from '@/components/otp/OtpModal';
 
 import Landing from './home/client/components/Landing';
 
-export default function HomePage() {
+
+import HomePage from './home/client/HomePage';
+
+export default function HomePageComponent() {
   const [showOtpModal, setShowOtpModal] = useState(false);
 
   // Initialize MSG91 OTP widget
@@ -53,9 +55,6 @@ export default function HomePage() {
     // Handle successful verification here
     // Save user data, redirect, etc.
   };
-  const handleClick = () => {
-    console.log('Button clicked!');
-  };
 
   return (
     <>
@@ -79,7 +78,8 @@ export default function HomePage() {
 
         <Landing/>
 
-      <Box sx={{ p: 4, textAlign: 'center' }}>
+
+      <Box sx={{ textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>
         OTP Verification Demo
         </Typography>
@@ -87,9 +87,8 @@ export default function HomePage() {
         <Button
           variant="contained"
           onClick={() => setShowOtpModal(true)}
-          sx={{ mt: 2 }}
-        >
-          Open OTP Modal
+          sx={{ mt: 2 }}>
+            Open OTP Modal
         </Button>
 
         <OtpModal
@@ -97,17 +96,8 @@ export default function HomePage() {
           onClose={() => setShowOtpModal(false)}
           onVerificationSuccess={handleVerificationSuccess}
         />
-        <br />
-        <br />
-        <br />
 
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <BaseButton onClick={handleClick}>Primary</BaseButton>
-          <BaseButton variant="outlined" onClick={handleClick}>
-            Outlined
-          </BaseButton>
-
-        </Box>
+        <HomePage/>
       </Box>
     </>
   );
