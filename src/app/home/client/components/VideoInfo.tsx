@@ -1,6 +1,6 @@
 import { PlayCircleFilled } from '@mui/icons-material';
 import { Box, CardMedia, IconButton, Typography } from '@mui/material';
-// import Image from 'next/image';
+import Image from 'next/image';
 import React from 'react';
 const VideoInfo: React.FC = () => {
   return (
@@ -26,15 +26,11 @@ const VideoInfo: React.FC = () => {
           }}
         >
           {/* Vedam Logo Image */}
-          <Box
-            component="img"
-            src="./VedamLogo.png"
+          <Image
+            height={45}
+            width={45}
+            src="home/videoInfo/VedamLogo.png"
             alt="Vedam School of Technology Logo"
-            sx={{
-              height: { xs: 35, sm: 45 },
-              width: 'auto',
-              objectFit: 'contain',
-            }}
           />
 
 
