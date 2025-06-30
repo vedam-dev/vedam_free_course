@@ -53,7 +53,6 @@ export default function HomePage() {
 
   return (
     <>
-
       <Script
         strategy="afterInteractive"
         src="https://www.googletagmanager.com/gtag/js?id=G-KC46RHD2WJ"
@@ -72,18 +71,16 @@ export default function HomePage() {
         }}
       />
 
-
       <Box sx={{ p: 4, textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>
-        OTP Verification Demo
+          OTP Verification Demo by Vedam
         </Typography>
 
         <Button
           variant="contained"
           onClick={() => setShowOtpModal(true)}
-          sx={{ mt: 2 }}
-        >
-        Open OTP Modal
+          sx={{ mt: 2 }}>
+          Open OTP Modal
         </Button>
 
         <OtpModal
@@ -91,7 +88,6 @@ export default function HomePage() {
           onClose={() => setShowOtpModal(false)}
           onVerificationSuccess={handleVerificationSuccess}
         />
-
       </Box>
     </>
   );
