@@ -26,7 +26,6 @@ const VideoInfo: React.FC = () => {
           textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
-          // mb: { xs: 2, md: 4 },
           width: '100%',
           alignItems: 'center',
           boxShadow: { xs: 0, md: '0 2px 12px rgba(160,235,212,0.15)' },
@@ -112,14 +111,11 @@ const VideoInfo: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              // width: { xs: 120, sm: 180, md: 220 },
-              // minWidth: 90,
-              // maxWidth: 263,
               borderRadius: 2,
               px: 1,
               background: 'none',
-              overflow: 'visible', // Ensure text is not clipped
-              minHeight: { xs: 48, sm: 60, md: 72 }, // Ensure enough height for large text
+              overflow: 'visible',
+              minHeight: { xs: 48, sm: 60, md: 72 },
             }}
           >
             <Typography
@@ -138,8 +134,8 @@ const VideoInfo: React.FC = () => {
                 textAlign: 'center',
                 width: '100%',
                 display: 'inline-block',
-                overflow: 'visible', // Ensure text is not clipped
-                whiteSpace: 'nowrap', // Prevent text wrapping
+                overflow: 'visible',
+                whiteSpace: 'nowrap',
               }}
             >
               CodeSprint
@@ -171,7 +167,7 @@ const VideoInfo: React.FC = () => {
       boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
     }}>
 
-      <Box sx={{ position: 'relative', borderRadius: 3, overflow: 'hidden', pt: '56.25%' /* 16:9 Aspect Ratio */ }}>
+      <Box sx={{ position: 'relative', borderRadius: 3, overflow: 'hidden', pt: '56.25%' }}>
         {playing ? (
           <iframe
             src="https://www.youtube.com/embed/R9moRoww1s4?si=VpQFQESryXAuR0_L"
