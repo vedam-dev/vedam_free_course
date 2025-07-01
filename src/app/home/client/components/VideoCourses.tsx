@@ -69,6 +69,7 @@ export default function VideoCourses() {
       component="section"
       sx={{
         py: { xs: 4, md: 8 },
+        px: {xs:2, md: 16 }
       }}
     >
       <Typography
@@ -131,10 +132,11 @@ export default function VideoCourses() {
               sx={{
                 fontFamily: 'Outfit, sans‑serif',
                 fontWeight: 600,
-                fontSize: { xs: '12px', md: '32px' },
+                fontSize: { xs: '10px', md: '32px' },
                 lineHeight: { xs: '16px', md: '36px' },
                 color: '#1E1E1E',
                 mt: 0.5,
+                textAlign:'left'
               }}
             >
               4 Industry-Led Modules
@@ -187,7 +189,7 @@ export default function VideoCourses() {
               sx={{
                 fontFamily: 'Outfit, sans‑serif',
                 fontWeight: 600,
-                fontSize: { xs: '12px', md: '32px' },
+                fontSize: { xs: '10px', md: '32px' },
                 lineHeight: { xs: '16px', md: '36px' },
                 color: '#1E1E1E',
                 mt: 0.5,
