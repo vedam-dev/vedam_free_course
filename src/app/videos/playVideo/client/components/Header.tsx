@@ -23,7 +23,7 @@ const Header = () => {
         borderColor: 'grey.200',
         boxShadow: 'sm',
         height: '64px',
-        zIndex: (theme) => theme.zIndex.drawer + 1,
+        // zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
       <Toolbar
@@ -44,28 +44,19 @@ const Header = () => {
         </IconButton>
 
         <Link href="/" passHref>
-          <Box
-            component="a"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              mr: { xs: 2, md: 3 },
-              cursor: 'pointer',
-              userSelect: 'none',
+
+          <Image
+            src="/home/videoInfo/VedamLogo.png"
+            alt="YouTube Logo"
+            width={60}
+            height={40}
+            style={{
+              height: '32px',
+              width: 'auto',
             }}
-          >
-            <Image
-              src="/home/videoInfo/VedamLogo.png"
-              alt="YouTube Logo"
-              width={60}
-              height={40}
-              style={{
-                height: '32px',
-                width: 'auto',
-              }}
-              draggable="false"
-            />
-          </Box>
+            draggable="false"
+          />
+
         </Link>
 
         <Box sx={{ flexGrow: 1 }} />
