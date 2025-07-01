@@ -3,6 +3,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {
   Box,
   Container,
+  Divider,
   Stack,
   Typography
 } from '@mui/material';
@@ -96,18 +97,11 @@ const Landing: React.FC = () => {
           </Box>
 
         </Box>
+      </Container>
 
-        <Box
-          sx={{
-            display: { xs: 'block', md: 'none', lg: 'none' },
-            width: '100%',
-            height: '1px',
-            backgroundColor: '#929292',
-            mb: 1,
-            mt: '-40px'
-          }}
-        />
+      <Divider sx={{ display: { xs: 'block', md: 'none', lg: 'none' }, mt: '-40px', mb: '20px',backgroundColor:'#929292' }}></Divider>
 
+      <Container maxWidth='lg'>
         {/* Main Content */}
         <Box
           sx={{
