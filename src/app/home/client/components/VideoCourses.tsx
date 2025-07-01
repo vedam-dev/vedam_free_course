@@ -69,7 +69,7 @@ export default function VideoCourses() {
       component="section"
       sx={{
         py: { xs: 4, md: 8 },
-        px: { xs:2, md: 16 }
+        px: { xs: 2, md: 16 },
       }}
     >
       <Typography
@@ -136,7 +136,7 @@ export default function VideoCourses() {
                 lineHeight: { xs: '16px', md: '36px' },
                 color: '#1E1E1E',
                 mt: 0.5,
-                textAlign:'left'
+                textAlign: 'left',
               }}
             >
               4 Industry-Led Modules
