@@ -1,0 +1,11 @@
+{
+  "hints": {
+    "hint-iframe-title": "off",
+    "hint-x-frame-options": "off",
+    "hint-no-disallowed-headers": "off",
+    "no-inline-styles": "off"
+  },
+  "extends": [
+    "development"
+  ]
+}
