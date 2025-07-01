@@ -1,69 +1,79 @@
 'use client';
 import { Box, Container, Divider, Stack, Typography, useMediaQuery } from '@mui/material';
-import React from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 import CourseCard from '@/components/CourseCard';
+
+interface Video {
+  id: string;
+  title: string;
+  topic: string;
+  // Add other fields as needed
+}
+
 const courseData = [
   {
-    id: '1',
-    color:
-      'linear-gradient(90deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
-    color2:
-      'linear-gradient(180deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
+    color: 'linear-gradient(90deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
+    color2: 'linear-gradient(180deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
     image: '/home/instructors/instructor.png',
     companyname: 'GOOGLE',
-    coursename: 'C++ For Beginners',
     level: 'Beginner',
     time: '4',
     viewed: 'true',
-    usedby: ' Google, Microsoft, and Adobe',
+    usedby: 'Google, Microsoft, and Adobe',
   },
   {
-    id: '2',
-    color:
-      'linear-gradient(90deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
-    color2:
-      'linear-gradient(180deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
+    color: 'linear-gradient(90deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
+    color2: 'linear-gradient(180deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
     image: '/home/instructors/instructor.png',
-    companyname: 'GOOGLE',
-    coursename: 'C++ For Beginners',
-    level: 'Beginner',
-    time: '4',
-    viewed: 'true',
-    usedby: ' Google, Microsoft, and Adobe',
+    companyname: 'MICROSOFT',
+    level: 'Intermediate',
+    time: '6',
+    viewed: 'false',
+    usedby: 'Microsoft, Amazon, and Facebook',
   },
   {
-    id: '3',
-    color:
-      'linear-gradient(90deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
-    color2:
-      'linear-gradient(180deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
+    color: 'linear-gradient(90deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
+    color2: 'linear-gradient(180deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
     image: '/home/instructors/instructor.png',
-    companyname: 'GOOGLE',
-    coursename: 'C++ For Beginners',
-    level: 'Beginner',
-    time: '4',
+    companyname: 'ADOBE',
+    level: 'Advanced',
+    time: '8',
     viewed: 'true',
-    usedby: ' Google, Microsoft, and Adobe',
+    usedby: 'Adobe, Google, and Netflix',
   },
   {
-    id: '4',
-    color:
-      'linear-gradient(90deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)',
-    color2:
-      'linear-gradient(180deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)',
+    color: 'linear-gradient(90deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)',
+    color2: 'linear-gradient(180deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)',
     image: '/home/instructors/instructor.png',
-    companyname: 'GOOGLE',
-    coursename: 'C++ For Beginners',
+    companyname: 'AMAZON',
     level: 'Beginner',
-    time: '4',
-    viewed: 'true',
-    usedby: ' Google, Microsoft, and Adobe',
+    time: '3',
+    viewed: 'false',
+    usedby: 'Amazon, Google, and Microsoft',
   },
 ];
 
+const topicTemplateMap: Record<string, number> = {
+  'DSA': 0,
+  'Machine Learning': 1,
+  'Template 1': 2,
+  'Template 2': 3,
+  'Template 3': 0,
+};
+
 export default function VideoCourses() {
   const isMobile = useMediaQuery('(max-width:600px)');
+  const [groupedContent, setGroupedContent] = useState<Record<string, Video[]>>({});
+  const router = useRouter();
+
+  useEffect(() => {
+    fetch('/api/content')
+      .then(res => res.json())
+      .then(json => setGroupedContent(json.data || {}));
+  }, []);
+
   return (
     <Container maxWidth="lg">
       <Box
@@ -277,9 +287,29 @@ export default function VideoCourses() {
 
         <Box sx={{ py: 4 }}>
           <Stack spacing={4}>
-            {courseData.map((c) => (
-              <CourseCard key={c.id} course={c} />
-            ))}
+            {Object.entries(groupedContent).map(([topic, videos], idx) => {
+              const templateIdx = topicTemplateMap[topic] ?? (idx % courseData.length);
+              const ref = courseData[templateIdx];
+              const firstVideo = videos[0];
+              return (
+                <Box key={topic} sx={{ mb: 6, cursor: 'pointer' }} onClick={() => router.push(`/videos/${'shortcode' in firstVideo && firstVideo.shortcode ? firstVideo.shortcode : firstVideo.id}`)}>
+                  <CourseCard
+                    course={{
+                      id: firstVideo.id,
+                      color: ref.color,
+                      color2: ref.color2,
+                      image: ref.image,
+                      companyname: ref.companyname,
+                      coursename: topic,
+                      level: ref.level,
+                      time: ref.time,
+                      viewed: ref.viewed,
+                      usedby: ref.usedby,
+                    }}
+                  />
+                </Box>
+              );
+            })}
           </Stack>
         </Box>
       </Box>

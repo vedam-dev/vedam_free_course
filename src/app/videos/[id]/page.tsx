@@ -1,8 +1,10 @@
 'use client';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -112,10 +114,13 @@ const VideoWatchPage = () => {
       <div style={{ flex: 2, padding: 32 }}>
         {currentVideo ? (
           <>
-            <h1>{currentVideo.title}</h1>
-            {typeof currentVideo.embedCode === 'string' && currentVideo.embedCode ? (
-              <div dangerouslySetInnerHTML={{ __html: currentVideo.embedCode as string }} />
-            ) : typeof currentVideo.streamableUrl === 'string' && currentVideo.streamableUrl ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              <IconButton onClick={() => router.replace('/home')} sx={{ mr: 1 }}>
+                <ArrowBackIcon />
+              </IconButton>
+              <h1 style={{ margin: 0 }}>{currentVideo.title}</h1>
+            </Box>
+            {typeof currentVideo.streamableUrl === 'string' && currentVideo.streamableUrl ? (
               <iframe
                 src={currentVideo.streamableUrl}
                 style={{ width: '100%', height: 400, border: 'none', borderRadius: 8 }}
@@ -128,8 +133,8 @@ const VideoWatchPage = () => {
               <div>No video file available.</div>
             )}
             <p>{currentVideo.description}</p>
-            {completed ? (
-              <CheckCircleIcon sx={{ color: 'green', fontSize: 36, mt: 2 }} />
+            {completed ? (<Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+              <Typography>Completed</Typography> <CheckCircleIcon sx={{ color: 'green', fontSize: 28 }} /></Box>
             ) : (
               <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleMarkCompleted}>
                 Mark as Completed
