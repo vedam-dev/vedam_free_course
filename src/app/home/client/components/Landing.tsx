@@ -1,6 +1,7 @@
 'use client';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {
+  Avatar,
   Box,
   Container,
   Divider,
@@ -19,6 +20,19 @@ import type { RootState } from '@/lib/store';
 
 const temp = ['Beginner Friendly', 'Free of Cost', 'No prior experience required'];
 
+// Helper to get random color
+function stringToColor(str: string) {
+  let hash = 0;
+  for(let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  let color = '#';
+  for(let i = 0; i < 3; i++) {
+    const value = (hash >> (i * 8)) & 0xff;
+    color += ('00' + value.toString(16)).slice(-2);
+  }
+  return color;
+}
 
 const Landing: React.FC = () => {
   const [showOtpModal, setShowOtpModal] = useState(false);
@@ -141,11 +155,11 @@ const Landing: React.FC = () => {
 
 
           {/* Header Buttons */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2, alignItems: 'center' }}>
             {isLoggedIn ? (
-              <Typography variant="h6" sx={{ mt: 1 }}>
-                Welcome, {username ? username : 'User'}!
-              </Typography>
+              <Avatar sx={{ bgcolor: stringToColor(username || 'U'), width: 40, height: 40, fontWeight: 700, fontSize: 22 }}>
+                {(username || 'U').charAt(0).toUpperCase()}
+              </Avatar>
             ) : (
               <>
                 <BaseButton variant="outlined" onClick={() => setShowOtpModal(true)}>Login</BaseButton>
