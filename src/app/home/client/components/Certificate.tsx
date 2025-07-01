@@ -2,6 +2,7 @@
 
 import { Box, Typography } from '@mui/material';
 import React from 'react';
+
 import BaseButton from '@/components/BaseButton';
 
 const Certificate: React.FC = () => {
