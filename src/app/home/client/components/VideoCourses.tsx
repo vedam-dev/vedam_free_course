@@ -69,7 +69,7 @@ export default function VideoCourses() {
       component="section"
       sx={{
         py: { xs: 4, md: 8 },
-        px: {xs:2, md: 16 }
+        px: { xs:2, md: 16 }
       }}
     >
       <Typography
