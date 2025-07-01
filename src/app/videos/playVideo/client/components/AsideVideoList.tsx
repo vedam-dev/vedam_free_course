@@ -1,8 +1,17 @@
+import { Box } from '@mui/material';
 import React from 'react';
 
-const AsideVideoList = () => {
+import { VideoList } from '../videoTypes';
+
+import VideoThumbnail from './VideoThumbnail';
+
+const AsideVideoList = ({ videos }: { videos: VideoList }) => {
   return (
-    <div>AsideVideoList</div>
+    <Box>
+      {videos.map((video) => (
+        <VideoThumbnail key={video.id} video={video} />
+      ))}
+    </Box>
   );
 };
 
