@@ -39,7 +39,7 @@ const Landing: React.FC = () => {
           }}
         >
           {/* Logo Section */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, md: 0 } }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, lg: 0 } }}>
             <Box
               sx={{
                 width: { xs: '88px', md: '200px' },
@@ -47,7 +47,7 @@ const Landing: React.FC = () => {
                 backgroundImage: 'url("/assets/logo.png")',
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'left center', 
+                backgroundPosition: 'left center',
                 marginRight: '1px'
               }}
             />
@@ -58,7 +58,7 @@ const Landing: React.FC = () => {
                 width: '1px',
                 height: '44px',
                 backgroundColor: '#2C0052',
-                marginRight:'56px'
+                marginRight: '56px'
               }}
             />
             <Box
@@ -87,12 +87,26 @@ const Landing: React.FC = () => {
             </Typography>
           </Box>
 
+
+
           {/* Header Buttons */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
             <BaseButton variant="outlined">Login</BaseButton>
             <BaseButton variant="contained">Sign Up</BaseButton>
           </Box>
+
         </Box>
+
+        <Box
+          sx={{
+            display: { xs: 'block', md: 'none', lg: 'none' },
+            width: '100%',
+            height: '1px',
+            backgroundColor: '#929292',
+            mb: 1,
+            mt: '-40px'
+          }}
+        />
 
         {/* Main Content */}
         <Box
