@@ -3,7 +3,7 @@ import React from 'react';
 
 import AsideVideoList from './playVideo/client/components/AsideVideoList';
 import Details from './playVideo/client/components/Details';
-import Header from './playVideo/client/components/header';
+import Header from './playVideo/client/components/Header';
 import VideoPlayerCard from './playVideo/client/components/VideoPlayerCard';
 const page = () => {
   return (
