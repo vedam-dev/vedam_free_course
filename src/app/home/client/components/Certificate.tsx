@@ -84,7 +84,7 @@ const Certificate: React.FC = () => {
           of Completion at the end
         </Typography>
 
-        <BaseButton size="large" variant="outlined" sx={{ mb: {xs: 6, lg: 3}, backgroundColor:'white' }}>
+        <BaseButton size="large" variant="outlined" sx={{ mb: { xs: 6, lg: 3 }, backgroundColor:'white' }}>
           Start Learning for FREE
         </BaseButton>
 
