@@ -4,9 +4,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default function UTMCaptureClient({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
@@ -109,7 +109,7 @@ export default function UTMCaptureClient({
     if(typeof window !== 'undefined') {
       processUTMData();
     }
-  }, []);
+  }, [isProcessing]);
 
   return <>{children}</>;
 }
