@@ -39,7 +39,7 @@ const page = () => {
 
         <Box
           position="relative"
-          sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignSelf: 'start', top: 40, left: 0, padding: 2 }}
+          sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignSelf: 'start', top: 100, left: 0, padding: 2 }}
         >
           <VideoPlayerCard videoUrl="https://www.youtube.com/watch?v=dQw4w9WgXcQ" />
           <Details title={''} />
