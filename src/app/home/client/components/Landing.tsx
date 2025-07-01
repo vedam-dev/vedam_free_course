@@ -10,6 +10,11 @@ import React from 'react';
 
 import BaseButton from '@/components/BaseButton';
 import BaseDecoration from '@/components/BaseDecoration';
+
+
+const temp = ['Beginner Friendly', 'Free of Cost', 'No prior experience required'];
+
+
 const Landing: React.FC = () => {
   return (
 
@@ -37,7 +42,7 @@ const Landing: React.FC = () => {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, md: 2 } }}>
             <Box
               sx={{
-                width: { xs: '87px', md: '199px' },
+                width: { xs: '88px', md: '200px' },
                 height: { xs: '60px', md: '80px' },
                 backgroundImage: 'url("/assets/logo.png")',
                 backgroundSize: 'contain',
@@ -50,7 +55,7 @@ const Landing: React.FC = () => {
               sx={{
                 display: { xs: 'none', md: 'block' },
                 width: '1px',
-                height: '45px',
+                height: '44px',
                 backgroundColor: '#2C0052',
                 mx: 2,
               }}
@@ -58,7 +63,7 @@ const Landing: React.FC = () => {
             <Box
               sx={{
                 display: { xs: 'block', md: 'none' },
-                width: '19px',
+                width: '20px',
                 height: '1px',
                 backgroundColor: '#858585',
                 transform: 'rotate(90deg)',
@@ -118,7 +123,7 @@ const Landing: React.FC = () => {
                 fontFamily: 'Outfit',
                 fontSize: { xs: '36px', md: '60px' },
                 fontWeight: 600,
-                lineHeight: { xs: '44px', md: '71px' },
+                lineHeight: { xs: '44px', md: '72px' },
                 mb: 3,
               }}
             >
@@ -158,7 +163,7 @@ const Landing: React.FC = () => {
             </Box>
 
             <Stack spacing={1}>
-              {['Beginner Friendly', 'Free of Cost', 'No prior experience required'].map((feature) => (
+              {temp.map((feature) => (
                 <Box key={feature} sx={{
                   display: 'flex', alignItems: 'center', gap: 1,
                 }}>
@@ -175,7 +180,7 @@ const Landing: React.FC = () => {
           <Box
             sx={{
               flex: 1,
-              minHeight: { xs: '300px', sm: '400px', md: '500px', lg: '670px' },
+              minHeight: { xs: '300px', sm: '400px', md: '500px', lg: '672px' },
               width: '100%',
               backgroundImage: {
                 xs: 'url("/assets/centralBox.png")',
