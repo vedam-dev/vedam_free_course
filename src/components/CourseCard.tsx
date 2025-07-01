@@ -1,15 +1,16 @@
 // components/CourseCard.tsx
 import React from "react";
 import Image from "next/image";
-import { Box, Card, Typography } from "@mui/material";
+import { Box, Card, Typography,useMediaQuery } from "@mui/material";
 import BaseButton from "./BaseButton";
-import PersonIcon from '@mui/icons-material/Person';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import StarIcon from '@mui/icons-material/Star';
+import PersonIcon from "@mui/icons-material/Person";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import StarIcon from "@mui/icons-material/Star";
 type Course = {
   id: string;
   color: string;
+  color2: string;
   image: string;
   companyname: string;
   coursename: string;
@@ -24,38 +25,40 @@ interface CourseCardProps {
 }
 const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   console.log(course);
-
+const isMobile = useMediaQuery('(max-width:600px)');
   return (
     <Card
       sx={{
         display: "flex",
-        flexDirection:{xs:'column',md:'row'},
-        borderRadius: "40px",
+        flexDirection: { xs: "column", md: "row" },
+        borderRadius:{xs:"36px",md:"40px"} ,
         boxShadow: 3,
-        overflow: {xs:'visible',md:'hidden'},
-        minHeight: 300,
-        background: course.color,
+        overflow: "hidden",
+        minHeight: { xs: "auto", md: 300 },
+        background: { xs: course.color2, md: course.color },
       }}
     >
       <Box
         sx={{
           position: "relative",
-          flex: {xs:"0 60% 0" , md:"0 0 60%"},
+          flex: { xs: "none", md: "0 0 60%" },
           display: "flex",
           alignItems: "center",
+          minHeight: { xs: 250, md: 300 },
+          overflow: "hidden",
         }}
       >
         <Box>
           <Image
             src={course.image}
             alt={`${course.companyname} instructor`}
-            width={300}
-            height={380}
+            width={isMobile?200:300}
+            height={isMobile?240:380}
             style={{
               alignSelf: "flex-start",
               position: "absolute",
-              top: "32px",
-              left: 16,
+              top: isMobile ?"56px" :"32px",
+              left: isMobile ? -40 : 16,
               objectFit: "cover",
             }}
           />
@@ -64,8 +67,8 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
         <Box
           sx={{
             position: "absolute",
-            right: "40px",
-            top: "45%",
+            right: { xs: "10px", sm:"30px", md: "40px" },
+            top: isMobile?"55%":"45%",
             transform: "translateY(-50%)",
             display: "flex",
             flexDirection: "column",
@@ -77,8 +80,8 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           <Box sx={{ mb: -1 }}>
             <Image
               src="/home/star.png"
-              width={80}
-              height={80}
+              width={isMobile?60:80}
+              height={isMobile?60:80}
               alt="star"
               style={{
                 filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.3))",
@@ -97,8 +100,8 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           >
             <Box
               sx={{
-                width: 60,
-                height: "2px",
+                width: { xs: 25, md: 60 },
+                height: { xs: "1px", md: "2px" },
                 backgroundColor: "#333",
                 borderRadius: "1px",
               }}
@@ -106,20 +109,19 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
             <Typography
               variant="subtitle2"
               sx={{
-                textTransform: "uppercase",
-                fontSize: "16px",
+                fontSize: { xs: "10px", md: "16px" },
                 fontWeight: 600,
-                letterSpacing: "3px",
+                letterSpacing: { xs: "1px", md: "3px" },
                 color: "#333",
                 whiteSpace: "nowrap",
               }}
             >
-              Taught by
+              TAUGHT BY
             </Typography>
             <Box
               sx={{
-                width: 60,
-                height: "2px",
+                width: { xs: 25, md: 60 },
+                height: { xs: "1px", md: "2px" },
                 backgroundColor: "#333",
                 borderRadius: "1px",
               }}
@@ -129,9 +131,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           <Typography
             sx={{
               fontFamily: "Outfit, sans-serif",
-              fontSize: "72px",
+              fontSize: { xs: "36px", md: "72px" },
               fontWeight: 700,
-              lineHeight: "58px",
+              lineHeight: { xs: "32px", md: "58px" },
               color: "#fff",
               textShadow: [
                 "-2px  0    0 #000",
@@ -143,7 +145,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
                 " 2px 2px   0 #000",
                 "0px  8px  0px #000",
               ].join(","),
-              mb: 1,
+              mb: {sm:0.5,md:1},
             }}
           >
             GOOGLE
@@ -153,9 +155,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
             sx={{
               color: "#F25C05",
               fontFamily: "Outfit, Arial, sans-serif",
-              fontSize: "64px",
+              fontSize: { xs: "24px", md: "64px" },
               fontWeight: 600,
-              lineHeight: "50px",
+              lineHeight: { xs: "26px", md: "50px" },
               textShadow: "0 2px 4px rgba(0,0,0,0.2)",
             }}
           >
@@ -168,48 +170,45 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
       <Box
         sx={{
           flex: 1,
-          p: 4,
-          pl: 2,
-          pr:4,
+          p: { xs: 3, md: 4 },
+          pl: { xs: 3, md: 2 },
+          pr: { xs: 3, md: 4 },
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
         }}
       >
-     
         <Typography
           variant="h5"
           sx={{
             textAlign: "left",
             color: "#000",
             fontFamily: "Outfit, sans-serif",
-            fontSize: "30px",
+            fontSize: { xs: "22px", md: "30px" },
             fontStyle: "normal",
             fontWeight: 600,
-            lineHeight: "36px",
+            lineHeight: { xs: "28px", md: "36px" },
             display: "inline-block",
             verticalAlign: "text-top",
-            mb: 1 
+            mb: 1,
           }}
         >
           {course.coursename}
         </Typography>
 
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 1 }}>
-        
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: "12px", mb: 1 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-           
-            <PersonIcon sx={{ fontSize: 20, color: "#666" }} />
-            
+            <PersonIcon sx={{ fontSize: {xs:15,md:20}, color: "#666" }} />
+
             <Typography
               variant="body2"
               sx={{
                 color: "#000",
                 fontFamily: "Outfit, sans-serif",
-                fontSize: "16px",
+                fontSize:{xs:"12px",md:'16px'},
                 fontStyle: "normal",
                 fontWeight: 400,
-                lineHeight: "36px",
+                lineHeight: {xs:"18px", md:"36px"},
                 display: "inline-block",
                 verticalAlign: "text-top",
               }}
@@ -218,20 +217,18 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
             </Typography>
           </Box>
 
-      
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-        
-            <AccessTimeIcon sx={{ fontSize: 20, color: "#666" }} />
-            
+            <AccessTimeIcon sx={{ fontSize: {xs:15,md:20}, color: "#666" }} />
+
             <Typography
               variant="body2"
               sx={{
                 color: "#000",
                 fontFamily: "Outfit, sans-serif",
-                fontSize: "16px",
+                fontSize:{xs:"12px",md:'16px'},
                 fontStyle: "normal",
                 fontWeight: 400,
-                lineHeight: "36px",
+                lineHeight: {xs:"18px", md:"36px"},
                 display: "inline-block",
                 verticalAlign: "text-top",
               }}
@@ -240,22 +237,20 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
             </Typography>
           </Box>
         </Box>
-        
 
         {course.viewed === "true" && (
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 1 }}>
-       
-            <VisibilityIcon sx={{ fontSize: 20, color: "#666" }} />
-            
+            <VisibilityIcon sx={{ fontSize: {xs:15,md:20}, color: "#666" }} />
+
             <Typography
               variant="body2"
               sx={{
                 color: "#000",
                 fontFamily: "Outfit, sans-serif",
-                fontSize: "16px",
+                fontSize:{xs:"12px",md:'16px'},
                 fontStyle: "normal",
                 fontWeight: 400,
-                lineHeight: "36px",
+                lineHeight: {xs:"18px", md:"36px"},
                 display: "inline-block",
                 verticalAlign: "text-top",
               }}
@@ -265,34 +260,46 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           </Box>
         )}
 
+        <Box sx={{ display: "flex", gap: 0.5, mb: 3 }}>
+          <StarIcon sx={{ fontSize: {xs:15,md:20}, color: "#666" }} />
 
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 3 }}>
-
-          <StarIcon sx={{ fontSize: 20, color: "#666" }} />
-          
           <Typography
             variant="body2"
             sx={{
               color: "#171717",
               fontFamily: "Outfit, sans-serif",
-              fontSize: "12px",
+              fontSize:{xs:"10px",md:'12px'},
               fontStyle: "normal",
               fontWeight: 300,
-              lineHeight: "36px",
+              lineHeight: {xs:"18px", md:"36px"},
               display: "inline-block",
               verticalAlign: "text-top",
+              textAlign:"left"
             }}
           >
             Used by top companies like {course.usedby}
           </Typography>
         </Box>
 
-      
-        <Box sx={{ display: "flex", gap: 2 }}>
-          <BaseButton variant="outlined" fullWidth sx={{fontSize:'16px',lineHeight:'28px', textWrap:'nowrap'}}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1.5,
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        >
+          <BaseButton
+            variant="outlined"
+            fullWidth
+            sx={{ fontSize: "16px", lineHeight:{xs:'14px', md:"28px"}, textWrap: "nowrap",order: { xs: 2, sm: 1 } }}
+          >
             Show Details
           </BaseButton>
-          <BaseButton variant="contained" fullWidth sx={{fontSize:'16px',lineHeight:'28px',textWrap:'nowrap'}}>
+          <BaseButton
+            variant="contained"
+            fullWidth
+            sx={{ fontSize: "16px", lineHeight:{xs:'14px', md:"28px"}, textWrap: "nowrap",order: { xs: 1, sm: 2 } }}
+          >
             Start Free
           </BaseButton>
         </Box>
