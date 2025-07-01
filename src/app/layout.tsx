@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Outfit } from 'next/font/google';
 
 import './globals.css';
 import UTMCaptureClient from '../components/UTMCaptureClient';
+import Footer from '@/components/Footer';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -34,6 +35,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} ${outfit.className }`}>
         <UTMCaptureClient>
           {children}
+          <Footer />
         </UTMCaptureClient>
       </body>
     </html>
