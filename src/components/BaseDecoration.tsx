@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
 import { Box } from '@mui/material';
+import React, { ReactNode } from 'react';
 
 interface HighlightTextProps {
   children: ReactNode;
@@ -20,7 +20,7 @@ const BaseDecoration: React.FC<HighlightTextProps> = ({ children }) => {
           left: 0,
           right: 0,
           height: '20px',
-          backgroundImage: `url("/assets/Vector8.png")`,
+          backgroundImage: 'url("/assets/Vector8.png")',
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
