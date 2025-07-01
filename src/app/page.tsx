@@ -5,8 +5,6 @@ import { useEffect, useState } from 'react';
 
 import OtpModal from '@/components/otp/OtpModal';
 
-import Landing from './home/client/components/Landing';
-
 
 import HomePage from './home/client/HomePage';
 
@@ -75,8 +73,6 @@ export default function HomePageComponent() {
           `,
         }}
       />
-
-        <Landing/>
 
 
       <Box sx={{ textAlign: 'center' }}>
