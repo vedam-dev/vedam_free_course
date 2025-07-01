@@ -18,11 +18,11 @@ const VideoInfo: React.FC = () => {
 
   return (<>
 
-    <Container maxWidth="lg" >
 
 
-      <Box sx={{ margin: 'auto', fontFamily: 'system-ui, sans-serif', bgcolor: '#fff', width:'1440', height:'800',background: 'linear-gradient(180deg, #A0EBD4 -98.87%, #FFF 100%)', }}>
 
+    <Box sx={{ margin: 'auto', fontFamily: 'system-ui, sans-serif', bgcolor: '#fff', width:'1440', height:'800',background: 'linear-gradient(180deg, #A0EBD4 -98.87%, #FFF 100%)', }}>
+      <Container maxWidth='lg'>
         {/* Top Header Section */}
         <Box
           sx={{
@@ -159,9 +159,11 @@ const VideoInfo: React.FC = () => {
           UGC Approved
           </Typography>
         </Box>
-      </Box>
+      </Container>
+    </Box>
 
-      {/* video section */}
+    {/* video section */}
+    <Container maxWidth='lg'>
       <Box sx={{
         background: 'linear-gradient(135deg, #4a148c 0%, #1a237e 100%)',
         borderRadius: 3,
@@ -237,7 +239,6 @@ const VideoInfo: React.FC = () => {
         </Box>
       </Box>
     </Container>
-
 
   </>
   );

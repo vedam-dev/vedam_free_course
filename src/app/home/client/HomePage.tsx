@@ -1,4 +1,4 @@
-import { Container } from '@mui/material';
+
 import React from 'react';
 
 import Certificate from './components/Certificate';
@@ -11,14 +11,16 @@ import VideoInfo from './components/VideoInfo';
 
 const HomePage = () => {
   return (
-    <Container maxWidth="lg">
-      <Landing/>
+    <>
+      <Landing />
       <VideoInfo/>
       <VideoCourses/>
       <Certificate/>
       <Outcomes/>
       <Faq/>
-    </Container>
+    </>
+
+
   );
 };
 
