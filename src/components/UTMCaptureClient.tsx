@@ -109,7 +109,7 @@ export default function UTMCaptureClient({
     if(typeof window !== 'undefined') {
       processUTMData();
     }
-  },[isProcessing]);
+  },[]);
 
   return <>{children}</>;
 }
