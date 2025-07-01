@@ -180,9 +180,10 @@ export default function OtpModal({
               setSuccess('Verification successful! Data saved.');
 
               // Store user_id and mobile in Redux
-              if(dbResult && dbResult.user && dbResult.user._id) {
-                dispatch(setUserId(dbResult.user._id));
-                localStorage.setItem('userId', dbResult.user._id);
+              if(dbResult && dbResult.user && (dbResult.user.id || dbResult.user._id)) {
+                const userId = dbResult.user.id || dbResult.user._id;
+                dispatch(setUserId(userId));
+                localStorage.setItem('userId', userId);
               }
               dispatch(setMobile(phoneNumber));
               dispatch(setIsLoggedIn(true));

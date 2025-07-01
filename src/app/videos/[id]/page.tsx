@@ -1,12 +1,15 @@
 'use client';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 interface Video {
-  id: string;
   shortcode: string;
+  id: string;
   title: string;
   description?: string;
   thumbnail_url?: string;
@@ -22,6 +25,8 @@ const VideoWatchPage = () => {
   const [currentVideo, setCurrentVideo] = useState<Video | null>(null);
   const [loading, setLoading] = useState(true);
   const [groupedVideos, setGroupedVideos] = useState<Record<string, Video[]>>({});
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -38,8 +43,65 @@ const VideoWatchPage = () => {
     fetchVideos();
   }, [shortcode]);
 
+  useEffect(() => {
+    // Fetch progress for this user and video
+    const user_id = localStorage.getItem('userId');
+    if(user_id && currentVideo) {
+      fetch(`/api/progress?user_id=${user_id}`)
+        .then(res => res.json())
+        .then(data => {
+          if(Array.isArray(data.data)) {
+            const progress = data.data.find((p: unknown) => {
+              if(
+                typeof p === 'object' &&
+                p !== null &&
+                'content_id' in p &&
+                'is_complete' in p
+              ) {
+                const prog = p as { content_id: string; is_complete: boolean };
+                return (
+                  prog.content_id === currentVideo.id && prog.is_complete
+                );
+              }
+              return false;
+            });
+            setCompleted(!!progress);
+          }
+        });
+    }
+  }, [currentVideo]);
+
   const handleVideoClick = (sc: string) => {
     router.push(`/videos/${sc}`);
+  };
+
+  const handleMarkCompleted = async () => {
+    if(!currentVideo) return;
+    const user_id = localStorage.getItem('userId');
+    if(!user_id) {
+      alert('You must be logged in to mark as completed.');
+      return;
+    }
+    const body = {
+      user_id,
+      content_id: currentVideo.id,
+      is_complete: true,
+    };
+    try {
+      const res = await fetch('/api/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if(res.ok) {
+        setSnackbarOpen(true);
+        setCompleted(true);
+      } else {
+        alert('Failed to mark as completed.');
+      }
+    } catch{
+      alert('Error marking as completed.');
+    }
   };
 
   if(loading) return <div style={{ padding: 32 }}>Loading...</div>;
@@ -66,6 +128,19 @@ const VideoWatchPage = () => {
               <div>No video file available.</div>
             )}
             <p>{currentVideo.description}</p>
+            {completed ? (
+              <CheckCircleIcon sx={{ color: 'green', fontSize: 36, mt: 2 }} />
+            ) : (
+              <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleMarkCompleted}>
+                Mark as Completed
+              </Button>
+            )}
+            <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={3000}
+              onClose={() => setSnackbarOpen(false)}
+              message="Marked as completed!"
+            />
           </>
         ) : (
           <div>Video not found.</div>

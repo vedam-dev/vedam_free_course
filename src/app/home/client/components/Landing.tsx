@@ -171,7 +171,7 @@ const Landing: React.FC = () => {
         </Box>
       </Container>
 
-      <Divider sx={{ display: { xs: 'block', md: 'none', lg: 'none' }, mt: '-40px', mb: '20px',backgroundColor:'#929292' }}></Divider>
+      <Divider sx={{ display: { xs: 'block', md: 'none', lg: 'none' }, mt: '-40px', mb: '20px',backgroundColor:'#929292' }}/>
 
       <Container maxWidth='lg'>
         {/* Main Content */}
