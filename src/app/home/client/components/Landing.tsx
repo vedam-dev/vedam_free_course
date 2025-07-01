@@ -7,16 +7,66 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+
 
 import BaseButton from '@/components/BaseButton';
 import BaseDecoration from '@/components/BaseDecoration';
+import OtpModal from '@/components/otp/OtpModal';
+import type { RootState } from '@/lib/store';
 
 
 const temp = ['Beginner Friendly', 'Free of Cost', 'No prior experience required'];
 
 
 const Landing: React.FC = () => {
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+  const username = useSelector((state: RootState) => state.user.username);
+
+  // Initialize MSG91 OTP widget
+  useEffect(() => {
+    if(showOtpModal && typeof window !== 'undefined') {
+      const configuration = {
+        widgetId: process.env.NEXT_PUBLIC_MSG91_WIDGET_ID,
+        tokenAuth: process.env.NEXT_PUBLIC_MSG91_AUTH_KEY,
+        exposeMethods: true,
+        success: (data: unknown) => {
+          console.log('Verification success:', data);
+        },
+        failure: (error: unknown) => {
+          console.error('Verification failed:', error);
+        },
+      };
+
+      const script = document.createElement('script');
+      script.src =
+        'https://control.msg91.com/app/assets/otp-provider/otp-provider.js';
+      script.onload = () => {
+        if(window.initSendOTP) {
+          window.initSendOTP(configuration);
+        }
+      };
+      document.body.appendChild(script);
+
+      return () => {
+        if(document.body.contains(script)) {
+          document.body.removeChild(script);
+        }
+      };
+    }
+  }, [showOtpModal]);
+
+  const handleVerificationSuccess = (userData: {
+    name: string;
+    email: string;
+    phone: string;
+  }) => {
+    console.log('User verified successfully:', userData);
+    // Handle successful verification here
+    // Save user data, redirect, etc.
+  };
   return (
 
     <Box
@@ -92,8 +142,16 @@ const Landing: React.FC = () => {
 
           {/* Header Buttons */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
-            <BaseButton variant="outlined">Login</BaseButton>
-            <BaseButton variant="contained">Sign Up</BaseButton>
+            {isLoggedIn ? (
+              <Typography variant="h6" sx={{ mt: 1 }}>
+                Welcome, {username ? username : 'User'}!
+              </Typography>
+            ) : (
+              <>
+                <BaseButton variant="outlined" onClick={() => setShowOtpModal(true)}>Login</BaseButton>
+                <BaseButton variant="contained" onClick={() => setShowOtpModal(true)}>Sign Up</BaseButton>
+              </>
+            )}
           </Box>
 
         </Box>
@@ -202,6 +260,11 @@ const Landing: React.FC = () => {
           />
         </Box>
       </Container>
+      <OtpModal
+        open={showOtpModal}
+        onClose={() => setShowOtpModal(false)}
+        onVerificationSuccess={handleVerificationSuccess}
+      />
     </Box>
 
   );

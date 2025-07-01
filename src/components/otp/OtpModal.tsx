@@ -12,6 +12,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { setIsLoggedIn, setMobile, setUserId, setUsername } from '@/lib/store';
 
 import StyledInput from '../shared/StyledInput';
 
@@ -58,6 +61,7 @@ export default function OtpModal({
     email: false,
     phoneNumber: false,
   });
+  const dispatch = useDispatch();
 
   const handleBlur = (field: keyof typeof touched) => () => {
     setTouched({ ...touched, [field]: true });
@@ -167,13 +171,24 @@ export default function OtpModal({
 
             try {
               // Save user data to database
-              await saveUserToDatabase({
+              const dbResult = await saveUserToDatabase({
                 name: fullName,
                 email: email,
                 phone: phoneNumber,
               });
 
               setSuccess('Verification successful! Data saved.');
+
+              // Store user_id and mobile in Redux
+              if(dbResult && dbResult.user && dbResult.user._id) {
+                dispatch(setUserId(dbResult.user._id));
+                localStorage.setItem('userId', dbResult.user._id);
+              }
+              dispatch(setMobile(phoneNumber));
+              dispatch(setIsLoggedIn(true));
+              dispatch(setUsername(fullName));
+              localStorage.setItem('isLoggedIn', 'true');
+              localStorage.setItem('username', fullName);
 
               // Call the success callback with user data
               onVerificationSuccess({

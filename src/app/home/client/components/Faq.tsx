@@ -4,6 +4,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Container,
   Typography,
 } from '@mui/material';
 import React from 'react';
@@ -36,7 +37,7 @@ const Faq = () => {
     },
   ];
   return (
-    <Box>
+    <Container maxWidth="lg">
       <Box>
         <Typography
           component="h2"
@@ -147,7 +148,7 @@ const Faq = () => {
           </Box>
         ))}
       </Box>
-    </Box>
+    </Container>
   );
 };
 
