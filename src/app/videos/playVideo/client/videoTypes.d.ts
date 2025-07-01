@@ -24,15 +24,7 @@ export interface Video {
     title: string;
     videoUrl: string;
     thumbnailUrl: string;
-    description: string;
-    Channel: Channel;
-    views: number;
-    genre: string;
-    likes: number;
-    dislikes: number;
-    uploadDate: string; // ISO date string
-    subscriberCount: number;
-    comments: Comment[];
+    description?: string;
   }
 
 // For an array of videos
