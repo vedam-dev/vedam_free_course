@@ -96,7 +96,7 @@ const Certificate: React.FC = () => {
             width: { xs: '95%', md: '600px', lg:'960px' },
             aspectRatio:{
               xs: '321/244',
-              md: '29/22'
+              lg: '29/22'
             },
             height: 'auto',
             boxShadow: 3,

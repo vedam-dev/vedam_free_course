@@ -39,7 +39,7 @@ const Landing: React.FC = () => {
           }}
         >
           {/* Logo Section */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, md: 2 } }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, md: 0 } }}>
             <Box
               sx={{
                 width: { xs: '88px', md: '200px' },
@@ -47,7 +47,8 @@ const Landing: React.FC = () => {
                 backgroundImage: 'url("/assets/logo.png")',
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
+                backgroundPosition: 'left center', 
+                marginRight: '1px'
               }}
             />
             {/* Line Divider */}
@@ -57,7 +58,7 @@ const Landing: React.FC = () => {
                 width: '1px',
                 height: '44px',
                 backgroundColor: '#2C0052',
-                mx: 2,
+                marginRight:'56px'
               }}
             />
             <Box
@@ -82,7 +83,7 @@ const Landing: React.FC = () => {
                 whiteSpace: 'nowrap',
               }}
             >
-            CodeSprint
+              CodeSprint
             </Typography>
           </Box>
 
@@ -114,7 +115,7 @@ const Landing: React.FC = () => {
                 mb: 2,
               }}
             >
-            START SMART, START EARLY!
+              START SMART, START EARLY!
             </Typography>
 
             <Typography
@@ -127,12 +128,12 @@ const Landing: React.FC = () => {
                 mb: 3,
               }}
             >
-            Sprint into College
+              Sprint into College
               <br />
-            With a{' '}
+              With a{' '}
               <BaseDecoration>Clear</BaseDecoration>
               <br />
-            Advantage
+              Advantage
             </Typography>
 
             <Typography
@@ -145,9 +146,9 @@ const Landing: React.FC = () => {
                 mb: 4,
               }}
             >
-            A free program for 12th Grade
+              A free program for 12th Grade
               <br />
-            students starting B.Tech CS this year
+              students starting B.Tech CS this year
             </Typography>
 
             <Box sx={{
@@ -155,10 +156,10 @@ const Landing: React.FC = () => {
               flexDirection: { xs: 'column', md: 'column', lg: 'row' }, gap: 2, mb: 4
             }}>
               <BaseButton variant="outlined" size="large">
-              Join CodeSprint
+                Join CodeSprint
               </BaseButton>
               <BaseButton variant="contained" size="large">
-              Register for later
+                Register for later
               </BaseButton>
             </Box>
 
