@@ -32,3 +32,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, message: 'Failed to insert data' }, { status: 500 });
   }
 }
+
+
+// Mongo DB testing. To be added in phase-2 to for alpha testing
