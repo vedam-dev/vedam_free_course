@@ -1,67 +1,69 @@
-import React from "react";
-import { Box, Typography, Divider, Stack, useMediaQuery } from "@mui/material";
-import CourseCard from "@/components/CourseCard";
+'use client';
+import { Box, Divider, Stack, Typography, useMediaQuery } from '@mui/material';
+import React from 'react';
+
+import CourseCard from '@/components/CourseCard';
 const courseData = [
   {
-    id: "1",
+    id: '1',
     color:
-      "linear-gradient(90deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)",
+      'linear-gradient(90deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
     color2:
-      "linear-gradient(180deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)",
-    image: "/home/instructors/instructor.png",
-    companyname: "GOOGLE",
-    coursename: "C++ For Beginners",
-    level: "Beginner",
-    time: "4",
-    viewed: "true",
-    usedby: " Google, Microsoft, and Adobe",
+      'linear-gradient(180deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
+    image: '/home/instructors/instructor.png',
+    companyname: 'GOOGLE',
+    coursename: 'C++ For Beginners',
+    level: 'Beginner',
+    time: '4',
+    viewed: 'true',
+    usedby: ' Google, Microsoft, and Adobe',
   },
   {
-    id: "2",
+    id: '2',
     color:
-      "linear-gradient(90deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)",
+      'linear-gradient(90deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
     color2:
-      "linear-gradient(180deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)",
-    image: "/home/instructors/instructor.png",
-    companyname: "GOOGLE",
-    coursename: "C++ For Beginners",
-    level: "Beginner",
-    time: "4",
-    viewed: "true",
-    usedby: " Google, Microsoft, and Adobe",
+      'linear-gradient(180deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
+    image: '/home/instructors/instructor.png',
+    companyname: 'GOOGLE',
+    coursename: 'C++ For Beginners',
+    level: 'Beginner',
+    time: '4',
+    viewed: 'true',
+    usedby: ' Google, Microsoft, and Adobe',
   },
   {
-    id: "3",
+    id: '3',
     color:
-      "linear-gradient(90deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)",
+      'linear-gradient(90deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
     color2:
-      "linear-gradient(180deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)",
-    image: "/home/instructors/instructor.png",
-    companyname: "GOOGLE",
-    coursename: "C++ For Beginners",
-    level: "Beginner",
-    time: "4",
-    viewed: "true",
-    usedby: " Google, Microsoft, and Adobe",
+      'linear-gradient(180deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
+    image: '/home/instructors/instructor.png',
+    companyname: 'GOOGLE',
+    coursename: 'C++ For Beginners',
+    level: 'Beginner',
+    time: '4',
+    viewed: 'true',
+    usedby: ' Google, Microsoft, and Adobe',
   },
   {
-    id: "4",
+    id: '4',
     color:
-      "linear-gradient(90deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)",
+      'linear-gradient(90deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)',
     color2:
-      "linear-gradient(180deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)",
-    image: "/home/instructors/instructor.png",
-    companyname: "GOOGLE",
-    coursename: "C++ For Beginners",
-    level: "Beginner",
-    time: "4",
-    viewed: "true",
-    usedby: " Google, Microsoft, and Adobe",
+      'linear-gradient(180deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)',
+    image: '/home/instructors/instructor.png',
+    companyname: 'GOOGLE',
+    coursename: 'C++ For Beginners',
+    level: 'Beginner',
+    time: '4',
+    viewed: 'true',
+    usedby: ' Google, Microsoft, and Adobe',
   },
 ];
 
 export default function VideoCourses() {
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const isMobile = useMediaQuery('(max-width:600px)');
   return (
     <Box
       component="section"
@@ -72,12 +74,12 @@ export default function VideoCourses() {
       <Typography
         component="h2"
         sx={{
-          fontFamily: "Outfit, sans-serif",
+          fontFamily: 'Outfit, sans-serif',
           fontWeight: 500,
-          fontSize: { xs: "20px", md: "30px", lg: "40px" },
-          color: "#000",
-          textAlign: "left",
-          marginBottom: "48px",
+          fontSize: { xs: '20px', md: '30px', lg: '40px' },
+          color: '#000',
+          textAlign: 'left',
+          marginBottom: '48px',
         }}
       >
         Build for coders who want to start early
@@ -85,57 +87,57 @@ export default function VideoCourses() {
 
       <Box
         sx={{
-          display: "grid",
+          display: 'grid',
           gridTemplateColumns: {
-            xs: "repeat(2, 1fr)",
-            md: "auto auto auto auto auto",
+            xs: 'repeat(2, 1fr)',
+            md: 'auto auto auto auto auto',
           },
-          alignItems: "center",
-          justifyContent: { md: "space-between" },
+          alignItems: 'center',
+          justifyContent: { md: 'space-between' },
           gap: { xs: 1, md: 0 },
         }}
       >
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column',
             background: isMobile
-              ? "linear-gradient(to right, #A64EF4, #FE7E2B)"
-              : "#fff",
-            padding: "1.5px",
-            borderRadius: "16px",
+              ? 'linear-gradient(to right, #A64EF4, #FE7E2B)'
+              : '#fff',
+            padding: '1.5px',
+            borderRadius: '16px',
           }}
         >
           <Box
             sx={{
-              borderRadius: "14px",
-              backgroundColor: "#fff",
-              padding: "8px",
+              borderRadius: '14px',
+              backgroundColor: '#fff',
+              padding: '8px',
             }}
           >
             <Typography
               sx={{
-                fontFamily: "Outfit, sans-serif",
+                fontFamily: 'Outfit, sans-serif',
                 fontWeight: 500,
-                fontSize: { xs: "10px", md: "24px" },
-                lineHeight: { xs: "16px", md: "36px" },
-                color: "#565656",
-                textAlign: "left",
+                fontSize: { xs: '10px', md: '24px' },
+                lineHeight: { xs: '16px', md: '36px' },
+                color: '#565656',
+                textAlign: 'left',
               }}
             >
               Courses offered
             </Typography>
             <Typography
               sx={{
-                fontFamily: "Outfit, sans‑serif",
+                fontFamily: 'Outfit, sans‑serif',
                 fontWeight: 600,
-                fontSize: { xs: "12px", md: "32px" },
-                lineHeight: { xs: "16px", md: "36px" },
-                color: "#1E1E1E",
+                fontSize: { xs: '12px', md: '32px' },
+                lineHeight: { xs: '16px', md: '36px' },
+                color: '#1E1E1E',
                 mt: 0.5,
               }}
             >
-              4 Industry‑Led Modules
+              4 Industry-Led Modules
             </Typography>
           </Box>
         </Box>
@@ -144,52 +146,52 @@ export default function VideoCourses() {
           orientation="vertical"
           flexItem={false}
           sx={{
-            display: { xs: "none", md: "block" },
-            height: "4rem",
+            display: { xs: 'none', md: 'block' },
+            height: '4rem',
             mx: 2,
-            backgroundColor: "#BEBEBE",
+            backgroundColor: '#BEBEBE',
           }}
         />
 
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column',
             background: isMobile
-              ? "linear-gradient(to right, #A64EF4, #FE7E2B)"
-              : "#fff",
-            padding: "1.5px",
-            borderRadius: "16px",
+              ? 'linear-gradient(to right, #A64EF4, #FE7E2B)'
+              : '#fff',
+            padding: '1.5px',
+            borderRadius: '16px',
           }}
         >
           <Box
             sx={{
-              borderRadius: "14px",
-              backgroundColor: "#fff",
-              padding: "8px",
+              borderRadius: '14px',
+              backgroundColor: '#fff',
+              padding: '8px',
             }}
           >
             <Typography
               sx={{
-                fontFamily: "Outfit, sans-serif",
+                fontFamily: 'Outfit, sans-serif',
                 fontWeight: 500,
-                fontSize: { xs: "10px", md: "24px" },
-                llineHeight: { xs: "16px", md: "36px" },
-                color: "#565656",
-                textAlign: "left",
+                fontSize: { xs: '10px', md: '24px' },
+                llineHeight: { xs: '16px', md: '36px' },
+                color: '#565656',
+                textAlign: 'left',
               }}
             >
               Duration
             </Typography>
             <Typography
               sx={{
-                fontFamily: "Outfit, sans‑serif",
+                fontFamily: 'Outfit, sans‑serif',
                 fontWeight: 600,
-                fontSize: { xs: "12px", md: "32px" },
-                lineHeight: { xs: "16px", md: "36px" },
-                color: "#1E1E1E",
+                fontSize: { xs: '12px', md: '32px' },
+                lineHeight: { xs: '16px', md: '36px' },
+                color: '#1E1E1E',
                 mt: 0.5,
-                textAlign: "left",
+                textAlign: 'left',
               }}
             >
               Less than 2 hour
@@ -201,52 +203,52 @@ export default function VideoCourses() {
           orientation="vertical"
           flexItem={false}
           sx={{
-            display: { xs: "none", md: "block" },
-            height: "4rem",
+            display: { xs: 'none', md: 'block' },
+            height: '4rem',
             mx: 2,
-            backgroundColor: "#BEBEBE",
+            backgroundColor: '#BEBEBE',
           }}
         />
 
         <Box
           sx={{
-            display: "inline-flex",
-            alignItems: "center",
-            border: isMobile ? "1px solid #02901A" : "2px solid #02901A",
-            borderRadius: "100px",
+            display: 'inline-flex',
+            alignItems: 'center',
+            border: isMobile ? '1px solid #02901A' : '2px solid #02901A',
+            borderRadius: '100px',
             px: 4,
             py: 0.5,
-            gridColumn: { xs: "1 / -1", md: "auto" },
+            gridColumn: { xs: '1 / -1', md: 'auto' },
           }}
         >
           <Typography
             component="span"
             sx={{
-              display: "flex",
-              fontFamily: "Outfit, sans-serif",
+              display: 'flex',
+              fontFamily: 'Outfit, sans-serif',
               fontWeight: 600,
-              fontSize: { xs: "12px", md: "24px" },
-              color: "#02901A",
+              fontSize: { xs: '12px', md: '24px' },
+              color: '#02901A',
               ml: 1,
               lineHeight: 1.1,
-              mx: "auto",
-              alignItems: "center",
-              justifyContent: "center",
+              mx: 'auto',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             <Box
               sx={{
-                mr: isMobile ? "0px" : "8px",
-                display: "flex",
-                flex: "center",
-                alignItems: "center",
-                justifyContent: "center",
+                mr: isMobile ? '0px' : '8px',
+                display: 'flex',
+                flex: 'center',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width={isMobile ? "20" : "36"}
-                height={isMobile ? "10" : "30"}
+                width={isMobile ? '20' : '36'}
+                height={isMobile ? '10' : '30'}
                 viewBox="0 0 36 35"
                 fill="none"
               >
@@ -258,9 +260,9 @@ export default function VideoCourses() {
             </Box>
             <Box
               sx={{
-                display: "flex",
-                flexDirection: { sm: "row", md: "column" },
-                textAlign:"left"
+                display: 'flex',
+                flexDirection: { sm: 'row', md: 'column' },
+                textAlign: 'left',
               }}
             >
               <Box component="span">Beginner</Box>
