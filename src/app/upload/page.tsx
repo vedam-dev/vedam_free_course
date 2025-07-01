@@ -12,8 +12,8 @@ import './style.css';
 
 const UploadPage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
+  const [topic, setTopic] = useState<string>('');
   const [status, setStatus] = useState<string>('');
   const [videoUrl, setVideoUrl] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,13 +41,21 @@ const UploadPage = () => {
       return;
     }
 
-    if(!username || !password) {
-      setStatus('Please enter your Streamable credentials.');
+    if(!title) {
+      setStatus('Please enter a video title.');
       setLoading(false);
+      return;
     }
 
-    // Check file size (limit to 500MB)
-    const maxSize = 500 * 1024 * 1024; // 500MB in bytes
+    if(!process.env.NEXT_PUBLIC_STREAMABLE_USERNAME ||
+       !process.env.NEXT_PUBLIC_STREAMABLE_PASSWORD) {
+      setStatus('Server configuration error. Please contact support.');
+      setLoading(false);
+      return;
+    }
+
+    // Check file size (limit to 1GB)
+    const maxSize = 1024 * 1024 * 1024; // 1GB in bytes
     if(file.size > maxSize) {
       setStatus('File size too large. Maximum size is 500MB.');
       setLoading(false);
@@ -76,8 +84,10 @@ const UploadPage = () => {
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('username', username || 'hrishabh.bharati@vedam.org');
-    formData.append('password', password || 'abcd@123');
+    formData.append('username', process.env.NEXT_PUBLIC_STREAMABLE_USERNAME);
+    formData.append('password', process.env.NEXT_PUBLIC_STREAMABLE_PASSWORD);
+    formData.append('title', title);
+    formData.append('topic', topic);
 
     try {
       setUploadProgress('Uploading to Streamable...');
@@ -95,8 +105,8 @@ const UploadPage = () => {
         setUploadProgress('');
 
         // Clear form
-        setUsername('');
-        setPassword('');
+        setTitle('');
+        setTopic('');
         if(fileInputRef.current) {
           fileInputRef.current.value = '';
         }
@@ -123,12 +133,15 @@ const UploadPage = () => {
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement>,
-    type: 'username' | 'password'
+    type: 'title' | 'topic'
   ) => {
-    if(type === 'username') {
-      setUsername(e.target.value || 'hrishabh.bharati@vedam.org');
-    } else {
-      setPassword(e.target.value || 'abcd@123');
+    switch (type) {
+      case 'title':
+        setTitle(e.target.value);
+        break;
+      case 'topic':
+        setTopic(e.target.value);
+        break;
     }
   };
 
@@ -169,27 +182,28 @@ const UploadPage = () => {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label className="form-label">
-            Streamable Username{' '}
+            Video Title{' '}
             <input
               type="text"
-              value={username}
-              onChange={(e) => handleInputChange(e, 'username')}
-              placeholder="Enter your Streamable username"
+              value={title}
+              onChange={(e) => handleInputChange(e, 'title')}
+              placeholder="Enter video title"
               className="form-input"
               onFocus={handleFocus}
               onBlur={handleBlur}
+              required
             />
           </label>
         </div>
 
         <div className="form-group">
           <label className="form-label">
-            Streamable Password{' '}
+            Video Topic{' '}
             <input
-              type="password"
-              value={password}
-              onChange={(e) => handleInputChange(e, 'password')}
-              placeholder="Enter your Streamable password"
+              type="text"
+              value={topic}
+              onChange={(e) => handleInputChange(e, 'topic')}
+              placeholder="Enter video topic/category"
               className="form-input"
               onFocus={handleFocus}
               onBlur={handleBlur}
@@ -206,6 +220,7 @@ const UploadPage = () => {
               ref={fileInputRef}
               onChange={handleFileChange}
               className="form-file-input"
+              required
             />
           </label>
           <div className="file-info">
@@ -258,8 +273,7 @@ const UploadPage = () => {
       )}
 
       <div className="note">
-        <strong>Note:</strong> You need a Streamable account to upload videos.
-        The upload process may take a few minutes depending on your file size
+        <strong>Note:</strong> The upload process may take a few minutes depending on your file size
         and internet connection.
       </div>
     </div>

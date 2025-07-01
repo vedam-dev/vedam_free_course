@@ -27,8 +27,10 @@ export async function POST(request: Request) {
     const username = formData.get('username') as string | null;
     const password = formData.get('password') as string | null;
     const file = formData.get('file') as File | null;
+    const title = formData.get('title') as string | null;
+    const topic = formData.get('topic') as string | null;
 
-    const validationError = validateFormData(username, password, file);
+    const validationError = validateFormData(username, password, file, title);
     if(validationError) return validationError;
 
     const tempFilePath = await saveUploadedFile(file!);
@@ -48,7 +50,7 @@ export async function POST(request: Request) {
       const uploadResult = await upload.upload();
       console.log('Upload successful, shortcode:', uploadResult.shortcode);
 
-      const finalResult = await pollProcessingStatus(upload, tempFilePath);
+      const finalResult = await pollProcessingStatus(upload, tempFilePath, title, topic);
       return NextResponse.json(finalResult);
     } catch(uploadError) {
       console.error('Upload error:', uploadError);
@@ -72,13 +74,14 @@ export async function POST(request: Request) {
 function validateFormData(
   username: string | null,
   password: string | null,
-  file: File | null
+  file: File | null,
+  title: string | null
 ) {
-  if(!username || !password || !file) {
+  if(!username || !password || !file || !title) {
     return NextResponse.json(
       {
         error:
-          'Missing or invalid required fields: username, password, and file are required',
+          'Missing or invalid required fields: username, password, file, and title are required',
       },
       { status: 400 }
     );
@@ -119,6 +122,8 @@ function validateFormData(
 async function pollProcessingStatus(
   upload: ToStreamable,
   tempFilePath: string,
+  title: string | null,
+  topic: string | null,
   config: PollConfig = DEFAULT_POLL_CONFIG
 ) {
   let attempts = 0;
@@ -128,7 +133,13 @@ async function pollProcessingStatus(
       const statusData = await upload.status();
       console.log('Status check:', statusData);
 
-      const result = await handleStatusResult(statusData, upload, tempFilePath);
+      const result = await handleStatusResult(
+        statusData,
+        upload,
+        tempFilePath,
+        title,
+        topic
+      );
       if(result) return result;
 
       attempts++;
@@ -151,10 +162,18 @@ async function pollProcessingStatus(
 async function handleStatusResult(
   statusData: StreamableResponse,
   upload: ToStreamable,
-  tempFilePath: string
+  tempFilePath: string,
+  title: string | null,
+  topic: string | null
 ) {
   if(statusData.status === 2 && statusData.embed_code) {
-    return await processSuccessfulUpload(statusData, upload, tempFilePath);
+    return await processSuccessfulUpload(
+      statusData,
+      upload,
+      tempFilePath,
+      title,
+      topic
+    );
   } else if(statusData.status === 3) {
     cleanupTempFile(tempFilePath);
     throw new Error('Video processing failed on Streamable.');
@@ -165,20 +184,21 @@ async function handleStatusResult(
 async function processSuccessfulUpload(
   statusData: StreamableResponse,
   upload: ToStreamable,
-  tempFilePath: string
+  tempFilePath: string,
+  title: string | null,
+  topic: string | null
 ) {
   const streamableUrl = `https://streamable.com/${upload.shortcode}`;
   const embedCode = `${statusData.embed_code}`;
 
   const videoData: VideoData = {
     shortcode: upload.shortcode ?? '',
-    category: 'default',
-    title: statusData.title ?? 'Untitled Video',
+    topic: topic || 'default',
+    title: title || 'Untitled Video',
     streamableUrl: streamableUrl,
-    videoCdnUrl:
-      statusData.files?.mp4?.url ?? '',
+    videoCdnUrl: statusData.files?.mp4?.url ?? '',
     embedCode: embedCode,
-    thumbnailUrl: statusData.thumbnail_url ?? '',
+    thumbnailUrl: statusData.thumbnail_url ?? ''
   };
 
   try {
@@ -221,7 +241,7 @@ async function saveToSupabase(videoData: VideoData) {
     );
 
     const { data, error } = await supabase
-      .from('streamable')
+      .from('content') // Table name of supabase
       .insert([videoData])
       .select()
       .single();

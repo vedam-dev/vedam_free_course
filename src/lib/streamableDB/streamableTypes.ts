@@ -1,6 +1,6 @@
 export interface VideoData {
-    shortcode: string;
-  category: string;
+  shortcode: string;
+  topic: string;
   title: string;
   streamableUrl: string;
   videoCdnUrl: string;
