@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase';
 export async function GET() {
   try {
     const { data, error } = await supabase
-      .from('user-data')
+      .from('users')
       .select('*')
       .order('created_at', { ascending: true });
 
@@ -46,9 +46,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Step 1: Upsert into user-data table
+    // Step 1: Upsert into users table
     const { data: userData, error: userError } = await supabase
-      .from('user-data')
+      .from('users')
       .upsert([{
         name,
         email,
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       .select();
 
     if(userError) {
-      console.error('Supabase user-data upsert error:', userError);
+      console.error('Supabase users upsert error:', userError);
       return NextResponse.json(
         { error: 'Failed to save user data' },
         { status: 500 }

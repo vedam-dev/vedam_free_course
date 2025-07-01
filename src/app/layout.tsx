@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Outfit } from 'next/font/google';
 
-
+import './globals.css';
 import UTMCaptureClient from '../components/UTMCaptureClient';
 const geistSans = Geist({
   variable: '--font-geist-sans',

@@ -1,9 +1,3 @@
-/**
- * to-streamable - Upload video quickly to Streamable.com
- * @author Zach Bruggeman <mail@bruggie.com>
- * @package to-streamable
- */
-
 
 import { NextResponse } from 'next/server';
 

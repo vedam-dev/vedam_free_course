@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 import OtpModal from '@/components/otp/OtpModal';
 
+
 import HomePage from './home/client/HomePage';
 
 export default function HomePageComponent() {
@@ -76,7 +77,7 @@ export default function HomePageComponent() {
 
       <Box sx={{ textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>
-            OTP Verification Demo2 by Vedam
+        OTP Verification Demo
         </Typography>
 
         <Button
