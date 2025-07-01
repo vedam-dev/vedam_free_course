@@ -1,3 +1,4 @@
+'use client';
 import { Box } from '@mui/material';
 import React from 'react';
 
@@ -27,17 +28,50 @@ const videos: VideoList = videosData.map((v) => ({
 const page = () => {
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2 }}>
+    <Box
+      position="relative"
+      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2 }}
+    >
       <Header />
-      <Box sx={{ width: '100%', maxWidth: 1200, display: 'flex', alignItems: 'center' }}>
+      <Box
+        position="relative"
+        sx={{ width: '100%',display: 'flex', alignItems: 'center' }}>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignSelf: 'start' }}>
+        <Box
+          position="relative"
+          sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignSelf: 'start', top: 40, left: 0, padding: 2 }}
+        >
           <VideoPlayerCard videoUrl="https://www.youtube.com/watch?v=dQw4w9WgXcQ" />
           <Details title={''} />
 
         </Box>
 
-        <AsideVideoList videos={videos} />
+        <Box
+          position="relative"
+          sx={{
+            display: 'flex',
+            // flexDirection: 'column',
+            width: '50%',
+            alignSelf: 'start',
+            top: 40,
+            left: 0,
+            padding: 1,
+            height: 'calc(100vh + 20px)',
+            overflowY: 'auto',
+            // overflowX: '',
+            // Enables vertical scrolling
+            // '&::-webkit-scrollbar': { // Optional: customize scrollbar
+            //   // width: '6px',
+            // },
+            // '&::-webkit-scrollbar-thumb': {
+            //   backgroundColor: 'rgba(0,0,0,0.2)',
+            //   borderRadius: '3px',
+            // }
+          }}
+        >
+          <AsideVideoList videos={videos} />
+        </Box>
+
       </Box>
 
 

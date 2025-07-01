@@ -23,7 +23,7 @@ const Header = () => {
         borderColor: 'grey.200',
         boxShadow: 'sm',
         height: '64px',
-        zIndex: (theme) => theme.zIndex.drawer + 1,
+        // zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
       <Toolbar
