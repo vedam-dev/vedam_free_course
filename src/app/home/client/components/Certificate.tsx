@@ -9,7 +9,6 @@ const Certificate: React.FC = () => {
       sx={{
         position: 'relative',
         width: '100vw',
-        // height: '100vh',
         overflow: 'hidden',
       }}
     >
@@ -88,7 +87,7 @@ const Certificate: React.FC = () => {
           src="/assets/certificate/certificate.png"
           alt="Certificate"
           sx={{
-            width: { xs: '95%', md: '600px', lg:'960px' },
+            width: { xs:'95%', md: '600px', lg:'960px' },
             aspectRatio:{
               xs: '321/244',
               lg: '29/22'

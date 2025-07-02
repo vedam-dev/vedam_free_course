@@ -107,8 +107,11 @@ export default function VideoCourses() {
             fontWeight: 500,
             fontSize: { xs: '20px', md: '30px', lg: '40px' },
             color: '#000',
-            textAlign: 'left',
-            marginBottom: '48px',
+            textAlign: { xs:'center',md:'left' },
+            marginBottom: {
+              xs:'24px',
+              md:'48px'
+            },
           }}
         >
           Build for coders who want to {' '}<BaseDecoration>start early</BaseDecoration>
@@ -246,7 +249,7 @@ export default function VideoCourses() {
               border: isMobile ? '1px solid #02901A' : '2px solid #02901A',
               borderRadius: '100px',
               px: 4,
-              py: 0.5,
+              py: 1.5,
               gridColumn: { xs: '1 / -1', md: 'auto' },
             }}
           >
