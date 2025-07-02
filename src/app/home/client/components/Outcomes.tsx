@@ -1,4 +1,4 @@
-'use client'; // Must be at the very top
+'use client';
 
 import { Box, Container, Typography, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
@@ -49,7 +49,7 @@ const data = [
 ];
 
 const Outcomes = () => {
-  const isMobile = useMediaQuery('(max-width:600px)'); // ✅ Hook must be inside component
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   return (
     <Container maxWidth="lg">

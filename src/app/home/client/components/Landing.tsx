@@ -96,8 +96,8 @@ const Landing: React.FC = () => {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        px: { xs: 2, md: 6 },
-        py: { xs: 2, md: 4 },
+        px: { xs: 0, md: 6 },
+        py: { xs: 1, md: 4 },
       }}
     >
       <Container maxWidth='lg'>
@@ -162,15 +162,19 @@ const Landing: React.FC = () => {
 
 
           {/* Header Buttons */}
-          <Box sx={{ display: { xs: 'flex', md: 'flex' }, gap: 2, alignItems: 'end', pl:{ xs:'16px',md:'0px' } }}>
+          <Box sx={{ display: { xs: 'flex', md: 'flex' }, gap: 2, alignItems: 'end', pl: { xs: '16px', md: '0px' } }}>
             {isLoggedIn ? (
-              <Avatar sx={{ bgcolor: stringToColor(username || 'U'), width:{ xs:'28px', md:'40px' } , height: { xs:'28px', md:'40px' } , fontWeight: 700, fontSize: { xs:15,md:22 } }}>
+              <Avatar sx={{ bgcolor: stringToColor(username || 'U'), width: { xs: '28px', md: '40px' }, height: { xs: '28px', md: '40px' }, fontWeight: 700, fontSize: { xs: 15, md: 22 } }}>
                 {(username || 'U').charAt(0).toUpperCase()}
               </Avatar>
             ) : (
               <>
-                <BaseButton variant="outlined" onClick={() => setShowOtpModal(true)} sx={{ display:{ xs:'none', md:'block' } }}>Login</BaseButton>
-                <BaseButton variant="contained" onClick={() => setShowOtpModal(true)} sx={{ display:{ xs:'none', md:'block' } }}>Sign Up</BaseButton>
+                <BaseButton variant="outlined" onClick={() => setShowOtpModal(true)} sx={{
+                  px: { xs: 2, sm: 6 },
+                  py: { xs: 0.5, sm: 1 },
+                  fontSize: { xs: '0.75rem', sm: '1rem' },
+                }}>Login</BaseButton>
+                <BaseButton variant="contained" onClick={() => setShowOtpModal(true)} sx={{ display: { xs: 'none', md: 'block' } }}>Sign Up</BaseButton>
               </>
             )}
           </Box>
@@ -178,7 +182,7 @@ const Landing: React.FC = () => {
         </Box>
       </Container>
 
-      <Divider sx={{ display: { xs: 'block', md: 'none', lg: 'none' }, mt: '-40px', mb: '20px',backgroundColor:'#929292' }}/>
+      <Divider sx={{ display: { xs: 'block', md: 'none', lg: 'none' }, mt: '-40px', mb: '20px', backgroundColor: '#929292' }} />
 
       <Container maxWidth='lg'>
         {/* Main Content */}
