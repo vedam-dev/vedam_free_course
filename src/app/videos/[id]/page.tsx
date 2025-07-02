@@ -2,7 +2,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Fade, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
@@ -30,7 +30,8 @@ const VideoWatchPage = () => {
   const [loading, setLoading] = useState(true);
   const [groupedVideos, setGroupedVideos] = useState<Record<string, Video[]>>({});
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [completed, setCompleted] = useState(false);
+  const [snackbarMsg, setSnackbarMsg] = useState('');
+  const [completed, setCompleted] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -49,6 +50,8 @@ const VideoWatchPage = () => {
 
   useEffect(() => {
     // Fetch progress for this user and video
+    setLoading(true);
+
     const user_id = localStorage.getItem('userId');
     if(user_id && currentVideo) {
       fetch(`/api/progress?user_id=${user_id}`)
@@ -73,6 +76,8 @@ const VideoWatchPage = () => {
           }
         });
     }
+    setLoading(false);
+
   }, [currentVideo]);
 
   const handleVideoClick = (sc: string) => {
@@ -83,7 +88,8 @@ const VideoWatchPage = () => {
     if(!currentVideo) return;
     const user_id = localStorage.getItem('userId');
     if(!user_id) {
-      alert('You must be logged in to mark as completed.');
+      setSnackbarOpen(true);
+      setSnackbarMsg('You must be logged in to mark as completed.');
       return;
     }
     const body = {
@@ -99,12 +105,15 @@ const VideoWatchPage = () => {
       });
       if(res.ok) {
         setSnackbarOpen(true);
+        setSnackbarMsg('Marked as completed!');
         setCompleted(true);
       } else {
-        alert('Failed to mark as completed.');
+        setSnackbarOpen(true);
+        setSnackbarMsg('Failed to mark as completed.');
       }
     } catch{
-      alert('Error marking as completed.');
+      setSnackbarOpen(true);
+      setSnackbarMsg('Error marking as completed.');
     }
   };
 
@@ -126,18 +135,67 @@ const VideoWatchPage = () => {
             <VideoPlayerCard shortcode={currentVideo.shortcode}/>
 
             <p>{currentVideo.description}</p>
-            {completed ? (<Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-              <Typography>Completed</Typography> <CheckCircleIcon sx={{ color: 'green', fontSize: 28 }} /></Box>
-            ) : (
-              <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleMarkCompleted}>
-                Mark as Completed
-              </Button>
-            )}
+            <Box
+              sx={{
+                mt: 3,
+                mb: 2,
+                px: 3,
+                py: 1,
+                borderRadius: 3,
+                boxShadow: 2,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
+                backgroundColor: completed ? '#e6f9ed' : '#f5f5f5',
+                minHeight: 36,
+                minWidth: 260,
+                width:'auto',
+                position: 'relative',
+                overflow: 'hidden',
+              }}
+            >
+              {completed == undefined ? null :
+                <><Fade in={completed} timeout={400} unmountOnExit>
+                  <Box sx={{ display: 'flex', alignItems: 'center', position: 'absolute', left: 0, right: 0, justifyContent: 'space-between',px:1 }}>
+                    <Typography sx={{ fontWeight: 600, fontSize: 20 }}>
+                      Your Progress :
+                    </Typography>
+                    <Box sx={{ display:'flex',alignItems:'center' }}>
+                      <CheckCircleIcon sx={{ color: '#2ecc40', fontSize: 24, mr: 1 }} />
+                      <Typography sx={{ color: '#218838',opacity:0.8, fontWeight: 600, fontSize: 20 }}>
+                      Completed
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Fade>
+                <Fade in={!completed} timeout={400} unmountOnExit>
+                  <Box sx={{ display: 'flex', alignItems: 'center', position: 'absolute', left: 0, right: 0, justifyContent: 'space-between',px:1 }}>
+                    <Typography sx={{ fontWeight: 600, fontSize: 18 }}>
+                      Your Progress :
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      color="warning"
+                      sx={{
+                        fontWeight: 600,
+                        fontSize: 16,
+                        p: 1,
+                        my: 1.5,
+                        borderRadius: 3,
+                        boxShadow: '0 2px 8px #0001',
+                      }}
+                      onClick={handleMarkCompleted}
+                    >
+                        Mark as Completed
+                    </Button>
+                  </Box>
+                </Fade></>}
+            </Box>
             <Snackbar
               open={snackbarOpen}
               autoHideDuration={3000}
               onClose={() => setSnackbarOpen(false)}
-              message="Marked as completed!"
+              message={snackbarMsg}
             />
           </>
         ) : (
