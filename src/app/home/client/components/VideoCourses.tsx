@@ -1,6 +1,5 @@
 'use client';
 import { Alert, Box, Container, Divider, Snackbar,Stack, Typography ,useMediaQuery } from '@mui/material';
-import { Alert, Box, Container, Divider, Snackbar,Stack, Typography ,useMediaQuery } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -82,7 +81,6 @@ export default function VideoCourses() {
     if(!user_id) {
       setSnackbarMsg('You must be logged in to mark as completed.');
       setSnackbarOpen(true);
-      return;
     } else {
       router.push(`/videos/${'shortcode' in firstVideo && firstVideo.shortcode ? firstVideo.shortcode : firstVideo.id}`);
     }
