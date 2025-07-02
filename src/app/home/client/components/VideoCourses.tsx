@@ -328,13 +328,13 @@ export default function VideoCourses() {
                   />
                   <Box sx={{ flex: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                     <Box>
-                      <Skeleton width="50%" height={30} animation="wave" />
-                      <Skeleton width="80%" height={24} animation="wave" sx={{ mt: 1 }} />
-                      <Skeleton width="60%" height={20} animation="wave" sx={{ mt: 1 }} />
+                      <Skeleton width="70%" height={30} animation="wave" />
+                      <Skeleton width="100%" height={24} animation="wave" sx={{ mt: 1 }} />
+                      <Skeleton width="80%" height={20} animation="wave" sx={{ mt: 1 }} />
                     </Box>
                     <Skeleton
                       variant="rectangular"
-                      width={100}
+                      width={200}
                       height={44}
                       animation="wave"
                       sx={{ borderRadius: '12px' }}

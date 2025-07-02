@@ -44,7 +44,6 @@ const data = [
     content: 'Get an edge over your peers on coding skills',
     bgcolor: '#D8E5FF',
     bordercolor: '#6381BD',
-    hasLineGap: true,
   },
 ];
 
@@ -136,6 +135,7 @@ const Outcomes = () => {
                       fontFamily: 'Outfit, sans-serif',
                       fontSize: { xs: '2rem', md: '2.5rem' },
                       fontWeight: 600,
+                      textAlign:'left'
                     }}
                   >
                     {item.s_no}
@@ -149,6 +149,7 @@ const Outcomes = () => {
                       lineHeight: 1.4,
                       color: '#1E1E1E',
                       fontWeight: 300,
+                      textAlign:'left'
                     }}
                   >
                     <Box component="span" sx={{ fontWeight: 700 }}>
