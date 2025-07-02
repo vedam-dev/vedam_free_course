@@ -1,8 +1,14 @@
 'use client';
+
+
 import './style.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useMediaQuery } from '@mui/material';
 
 const VideosPage = () => {
+
+ const isMobile = useMediaQuery('(max-width:1200px)');
+
   const [shortcode, setShortcode] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -45,6 +51,56 @@ const VideosPage = () => {
     console.log(data.data);
     setSupabaseData(data.data);
   };
+
+  if (isMobile) {
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '80vh',
+        padding: '20px',
+        textAlign: 'center',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        color: 'white'
+      }}>
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '20px',
+          padding: '40px 30px',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          maxWidth: '400px',
+          width: '100%'
+        }}>
+          <div style={{
+            fontSize: '60px',
+            marginBottom: '20px'
+          }}>
+            🖥️
+          </div>
+          <h2 style={{
+            fontSize: '24px',
+            fontWeight: 'bold',
+            marginBottom: '15px',
+            color: 'white'
+          }}>
+            Desktop Required
+          </h2>
+          <p style={{
+            fontSize: '18px',
+            lineHeight: '1.6',
+            margin: '0',
+            color: 'rgba(255, 255, 255, 0.9)'
+          }}>
+            Open in Desktop to play Video : Login on Desktop
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
