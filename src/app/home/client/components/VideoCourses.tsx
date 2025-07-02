@@ -103,7 +103,7 @@ export default function VideoCourses() {
             fontWeight: 500,
             fontSize: { xs: '20px', md: '30px', lg: '40px' },
             color: '#000',
-            textAlign: 'center',
+            textAlign: {xs:'center',md:"left"},
             marginBottom: {
               xs:'24px',
               md:'48px'
@@ -300,7 +300,7 @@ export default function VideoCourses() {
           </Box>
         </Box>
 
-        <Box sx={{ py: {xs: '2', md: '4'} }}>
+        <Box sx={{ py: 4 }}>
           <Stack spacing={4}>
             {Object.entries(groupedContent).map(([topic, videos], idx) => {
               const templateIdx = topicTemplateMap[topic] ?? (idx % courseData.length);

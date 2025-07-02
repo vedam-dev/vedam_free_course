@@ -169,8 +169,8 @@ const Landing: React.FC = () => {
               </Avatar>
             ) : (
               <>
-                <BaseButton variant="outlined" onClick={() => setShowOtpModal(true)}>Login</BaseButton>
-                <BaseButton variant="contained" onClick={() => setShowOtpModal(true)}>Sign Up</BaseButton>
+                <BaseButton variant="outlined" onClick={() => setShowOtpModal(true)} sx={{display:{xs:'none', md:"block"}}}>Login</BaseButton>
+                <BaseButton variant="contained" onClick={() => setShowOtpModal(true)} sx={{display:{xs:'none', md:"block"}}}>Sign Up</BaseButton>
               </>
             )}
           </Box>
