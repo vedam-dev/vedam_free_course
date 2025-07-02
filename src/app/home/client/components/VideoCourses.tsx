@@ -1,5 +1,5 @@
 'use client';
-import { Alert, Box, Container, Divider, Snackbar,Stack, Typography ,useMediaQuery } from '@mui/material';
+import { Alert, Box, Container, Divider, Skeleton,Snackbar, Stack ,Typography, useMediaQuery } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -67,13 +67,18 @@ export default function VideoCourses() {
   const isMobile = useMediaQuery('(max-width:600px)');
   const [groupedContent, setGroupedContent] = useState<Record<string, Video[]>>({});
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState('');
 
   useEffect(() => {
     fetch('/api/content')
-      .then(res => res.json())
-      .then(json => setGroupedContent(json.data || {}));
+      .then((res) => res.json())
+      .then((json) => {
+        setGroupedContent(json.data ?? {});
+        setIsLoading(false);
+      })
+      .catch(() => setIsLoading(false));
   }, []);
 
   const handleVideoCardClick = (firstVideo: Video) => {
@@ -81,7 +86,6 @@ export default function VideoCourses() {
     if(!user_id) {
       setSnackbarMsg('You must be logged in to mark as completed.');
       setSnackbarOpen(true);
-      return;
     } else {
       router.push(`/videos/${'shortcode' in firstVideo && firstVideo.shortcode ? firstVideo.shortcode : firstVideo.id}`);
     }
@@ -103,8 +107,11 @@ export default function VideoCourses() {
             fontWeight: 500,
             fontSize: { xs: '20px', md: '30px', lg: '40px' },
             color: '#000',
-            textAlign: 'left',
-            marginBottom: '48px',
+            textAlign: { xs:'center',md:'left' },
+            marginBottom: {
+              xs:'24px',
+              md:'48px'
+            },
           }}
         >
           Build for coders who want to {' '}<BaseDecoration>start early</BaseDecoration>
@@ -242,7 +249,7 @@ export default function VideoCourses() {
               border: isMobile ? '1px solid #02901A' : '2px solid #02901A',
               borderRadius: '100px',
               px: 4,
-              py: 0.5,
+              py: 1.5,
               gridColumn: { xs: '1 / -1', md: 'auto' },
             }}
           >
@@ -299,32 +306,69 @@ export default function VideoCourses() {
 
         <Box sx={{ py: 4 }}>
           <Stack spacing={4}>
-            {Object.entries(groupedContent).map(([topic, videos], idx) => {
-              const templateIdx = topicTemplateMap[topic] ?? (idx % courseData.length);
-              const ref = courseData[templateIdx];
-              const firstVideo = videos[0];
-              return (
-                <Box key={topic} sx={{ mb: 6 }} >
-                  <CourseCard
-                    onClick={() => {handleVideoCardClick(firstVideo);}}
-                    course={{
-                      id: firstVideo.id,
-                      color: ref.color,
-                      color2: ref.color2,
-                      image: ref.image,
-                      companyname: ref.companyname,
-                      coursename: topic,
-                      level: ref.level,
-                      time: ref.time,
-                      viewed: ref.viewed,
-                      usedby: ref.usedby,
+            {isLoading
+              ? [...Array(3)].map((_, idx) => (
+                <Box
+                  key={idx}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: { xs: 'column', md: 'row' },
+                    gap: 2,
+                    mb: 6,
+                  }}
+                >
+                  <Skeleton
+                    variant="rectangular"
+                    animation="wave"
+                    sx={{
+                      flex: 1,
+                      borderRadius: '24px',
+                      height: 220,
                     }}
                   />
+                  <Box sx={{ flex: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <Box>
+                      <Skeleton width="50%" height={30} animation="wave" />
+                      <Skeleton width="80%" height={24} animation="wave" sx={{ mt: 1 }} />
+                      <Skeleton width="60%" height={20} animation="wave" sx={{ mt: 1 }} />
+                    </Box>
+                    <Skeleton
+                      variant="rectangular"
+                      width={100}
+                      height={44}
+                      animation="wave"
+                      sx={{ borderRadius: '12px' }}
+                    />
+                  </Box>
                 </Box>
-              );
-            })}
+              ))
+              : Object.entries(groupedContent).map(([topic, videos], idx) => {
+                const templateIdx = topicTemplateMap[topic] ?? idx % courseData.length;
+                const ref = courseData[templateIdx];
+                const firstVideo = videos[0];
+                return (
+                  <Box key={topic} sx={{ mb: 6 }}>
+                    <CourseCard
+                      onClick={() => handleVideoCardClick(firstVideo)}
+                      course={{
+                        id: firstVideo.id,
+                        color: ref.color,
+                        color2: ref.color2,
+                        image: ref.image,
+                        companyname: ref.companyname,
+                        coursename: topic,
+                        level: ref.level,
+                        time: ref.time,
+                        viewed: ref.viewed,
+                        usedby: ref.usedby,
+                      }}
+                    />
+                  </Box>
+                );
+              })}
           </Stack>
         </Box>
+
       </Box>
       <Snackbar
         open={snackbarOpen}
