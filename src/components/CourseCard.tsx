@@ -39,8 +39,34 @@ const CourseCard: React.FC<CourseCardProps> = ({ course,onClick }) => {
         overflow: 'hidden',
         minHeight: { xs: 'auto', md: 300 },
         background: { xs: course.color2, md: course.color },
+        position: 'relative',
       }}
     >
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          overflow: 'hidden',
+          zIndex: 0,
+        }}
+      >
+        <Image
+          src="/home/eclipse.png"
+          alt="Eclipse background"
+          width={isMobile ? 500 : 600}
+          height={isMobile ? 600 : 700}
+          style={{
+            position:'absolute',
+            left:isMobile ? -350 : -100,
+            bottom:isMobile ? 0 : 60,
+            top:isMobile ? -50 : 0,
+            transform: isMobile ? 'rotate(90deg)' : 'rotate(0deg)',
+            opacity: 1,
+
+          }}
+        />
+      </Box>
       <Box
         sx={{
           position: 'relative',
@@ -179,6 +205,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course,onClick }) => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
+          zIndex:'3'
         }}
       >
         <Typography
