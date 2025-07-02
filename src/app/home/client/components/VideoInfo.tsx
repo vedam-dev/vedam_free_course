@@ -196,7 +196,7 @@ const VideoInfo: React.FC = () => {
             <>
               <Box
                 component="img"
-                src="/home/videoInfo/videoThumbnail.png"
+                src="/home/videoInfo/videoThumbnail.jpeg"
                 alt="Tech Minds Behind Vedam"
                 sx={{
                   position: 'absolute',
@@ -235,8 +235,6 @@ const VideoInfo: React.FC = () => {
               </Box>
             </>
           )}
-
-
         </Box>
       </Box>
     </Container>

@@ -1,4 +1,4 @@
-'use client'; // Must be at the very top
+'use client';
 
 import { Box, Container, Typography, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
@@ -44,12 +44,12 @@ const data = [
     content: 'Get an edge over your peers on coding skills',
     bgcolor: '#D8E5FF',
     bordercolor: '#6381BD',
-    hasLineGap: true,
+    hasLineGap:'false'
   },
 ];
 
 const Outcomes = () => {
-  const isMobile = useMediaQuery('(max-width:600px)'); // ✅ Hook must be inside component
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   return (
     <Container maxWidth="lg">
@@ -136,6 +136,7 @@ const Outcomes = () => {
                       fontFamily: 'Outfit, sans-serif',
                       fontSize: { xs: '2rem', md: '2.5rem' },
                       fontWeight: 600,
+                      textAlign:'left'
                     }}
                   >
                     {item.s_no}
@@ -149,6 +150,7 @@ const Outcomes = () => {
                       lineHeight: 1.4,
                       color: '#1E1E1E',
                       fontWeight: 300,
+                      textAlign:'left'
                     }}
                   >
                     <Box component="span" sx={{ fontWeight: 700 }}>
