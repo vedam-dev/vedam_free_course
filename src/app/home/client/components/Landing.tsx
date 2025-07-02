@@ -23,11 +23,11 @@ const temp = ['Beginner Friendly', 'Free of Cost', 'No prior experience required
 // Helper to get random color
 function stringToColor(str: string) {
   let hash = 0;
-  for(let i = 0; i < str.length; i++) {
+  for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
   let color = '#';
-  for(let i = 0; i < 3; i++) {
+  for (let i = 0; i < 3; i++) {
     const value = (hash >> (i * 8)) & 0xff;
     color += ('00' + value.toString(16)).slice(-2);
   }
@@ -47,7 +47,7 @@ const Landing: React.FC = () => {
 
   // Initialize MSG91 OTP widget
   useEffect(() => {
-    if(showOtpModal && typeof window !== 'undefined') {
+    if (showOtpModal && typeof window !== 'undefined') {
       const configuration = {
         widgetId: process.env.NEXT_PUBLIC_MSG91_WIDGET_ID,
         tokenAuth: process.env.NEXT_PUBLIC_MSG91_AUTH_KEY,
@@ -64,14 +64,14 @@ const Landing: React.FC = () => {
       script.src =
         'https://control.msg91.com/app/assets/otp-provider/otp-provider.js';
       script.onload = () => {
-        if(window.initSendOTP) {
+        if (window.initSendOTP) {
           window.initSendOTP(configuration);
         }
       };
       document.body.appendChild(script);
 
       return () => {
-        if(document.body.contains(script)) {
+        if (document.body.contains(script)) {
           document.body.removeChild(script);
         }
       };
@@ -87,7 +87,7 @@ const Landing: React.FC = () => {
     // Handle successful verification here
     // Save user data, redirect, etc.
   };
-  if(!hasMounted) return null;
+  if (!hasMounted) return null;
   return (
 
     <Box
@@ -96,8 +96,8 @@ const Landing: React.FC = () => {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        px: { xs: 2, md: 6 },
-        py: { xs: 2, md: 4 },
+        px: { xs: 0, md: 6 },
+        py: { xs: 1, md: 4 },
       }}
     >
       <Container maxWidth='lg'>
@@ -162,15 +162,19 @@ const Landing: React.FC = () => {
 
 
           {/* Header Buttons */}
-          <Box sx={{ display: { xs: 'flex', md: 'flex' }, gap: 2, alignItems: 'end', pl:{ xs:'16px',md:'0px' } }}>
+          <Box sx={{ display: { xs: 'flex', md: 'flex' }, gap: 2, alignItems: 'end', pl: { xs: '16px', md: '0px' } }}>
             {isLoggedIn ? (
-              <Avatar sx={{ bgcolor: stringToColor(username || 'U'), width:{ xs:'28px', md:'40px' } , height: { xs:'28px', md:'40px' } , fontWeight: 700, fontSize: { xs:15,md:22 } }}>
+              <Avatar sx={{ bgcolor: stringToColor(username || 'U'), width: { xs: '28px', md: '40px' }, height: { xs: '28px', md: '40px' }, fontWeight: 700, fontSize: { xs: 15, md: 22 } }}>
                 {(username || 'U').charAt(0).toUpperCase()}
               </Avatar>
             ) : (
               <>
-                <BaseButton variant="outlined" onClick={() => setShowOtpModal(true)} sx={{ display:{ xs:'none', md:'block' } }}>Login</BaseButton>
-                <BaseButton variant="contained" onClick={() => setShowOtpModal(true)} sx={{ display:{ xs:'none', md:'block' } }}>Sign Up</BaseButton>
+                <BaseButton variant="outlined" onClick={() => setShowOtpModal(true)} sx={{
+                  px: { xs: 2, sm: 6 },
+                  py: { xs: 0.5, sm: 1 },
+                  fontSize: { xs: '0.75rem', sm: '1rem' },
+                }}>Login</BaseButton>
+                <BaseButton variant="contained" onClick={() => setShowOtpModal(true)} sx={{ display: { xs: 'none', md: 'block' } }}>Sign Up</BaseButton>
               </>
             )}
           </Box>
@@ -178,7 +182,7 @@ const Landing: React.FC = () => {
         </Box>
       </Container>
 
-      <Divider sx={{ display: { xs: 'block', md: 'none', lg: 'none' }, mt: '-40px', mb: '20px',backgroundColor:'#929292' }}/>
+      <Divider sx={{ display: { xs: 'block', md: 'none', lg: 'none' }, mt: '-40px', mb: '20px', backgroundColor: '#929292' }} />
 
       <Container maxWidth='lg'>
         {/* Main Content */}
