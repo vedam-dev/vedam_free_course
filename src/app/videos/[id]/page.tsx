@@ -3,6 +3,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Fade, Typography } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
@@ -23,6 +24,8 @@ interface Video {
 }
 
 const VideoWatchPage = () => {
+  const isMobile = useMediaQuery('(max-width:1200px)');
+  console.log(isMobile);
   const params = useParams();
   const router = useRouter();
   const { id: shortcode } = params as { id: string };
@@ -118,6 +121,57 @@ const VideoWatchPage = () => {
   };
 
   if(loading) return <div style={{ padding: 32 }}>Loading...</div>;
+
+
+  if(isMobile) {
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '80vh',
+        padding: '20px',
+        textAlign: 'center',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        color: 'white'
+      }}>
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '20px',
+          padding: '40px 30px',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          maxWidth: '400px',
+          width: '100%'
+        }}>
+          <div style={{
+            fontSize: '60px',
+            marginBottom: '20px'
+          }}>
+            🖥️
+          </div>
+          <h2 style={{
+            fontSize: '24px',
+            fontWeight: 'bold',
+            marginBottom: '15px',
+            color: 'white'
+          }}>
+            Desktop Required
+          </h2>
+          <p style={{
+            fontSize: '18px',
+            lineHeight: '1.6',
+            margin: '0',
+            color: 'rgba(255, 255, 255, 0.9)'
+          }}>
+            Open in Desktop to play Video : Login on Desktop
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ display: 'flex', minHeight: '80vh' }}>
