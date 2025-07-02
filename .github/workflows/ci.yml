@@ -1,58 +1,76 @@
-name: CI - Lint and Build Next.js
+  name: CI - Lint and Build Next.js
 
-on:
-  push:
-    branches:
-      - dev
+  on:
+    push:
+      branches:
+        - dev
 
-  pull_request:
-    branches:
-      - '*' 
+    pull_request:
+      branches:
+        - '*' 
 
-  workflow_dispatch:
+    workflow_dispatch:
 
-jobs:
-  ci:
-    if: |
-      github.event_name == 'push' ||
-      (
-        github.event_name == 'pull_request' &&
+  jobs:
+    ci:
+      if: |
+        github.event_name == 'push' ||
         (
-          startsWith(github.head_ref, 'feature/') ||
-          startsWith(github.head_ref, 'bugfix/') ||
-          startsWith(github.head_ref, 'hotfix/')
+          github.event_name == 'pull_request' &&
+          (
+            startsWith(github.head_ref, 'feature/') ||
+            startsWith(github.head_ref, 'bugfix/') ||
+            startsWith(github.head_ref, 'hotfix/')
+          )
         )
-      )
-    runs-on: ubuntu-latest
+      runs-on: ubuntu-latest
+      environment: vedam-free-course
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
 
-      - name: Detect package manager
-        id: detect-package-manager
-        run: |
-          if [ -f "yarn.lock" ]; then
-            echo "manager=yarn" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
-            echo "runner=yarn" >> $GITHUB_OUTPUT
-          else
-            echo "manager=npm" >> $GITHUB_OUTPUT
-            echo "command=ci" >> $GITHUB_OUTPUT
-            echo "runner=npx --no-install" >> $GITHUB_OUTPUT
-          fi
+        - name: Detect package manager
+          id: detect-package-manager
+          run: |
+            if [ -f "yarn.lock" ]; then
+              echo "manager=yarn" >> $GITHUB_OUTPUT
+              echo "command=install" >> $GITHUB_OUTPUT
+              echo "runner=yarn" >> $GITHUB_OUTPUT
+            else
+              echo "manager=npm" >> $GITHUB_OUTPUT
+              echo "command=ci" >> $GITHUB_OUTPUT
+              echo "runner=npx --no-install" >> $GITHUB_OUTPUT
+            fi
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: ${{ steps.detect-package-manager.outputs.manager }}
+        - name: Setup Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: "20"
+            cache: ${{ steps.detect-package-manager.outputs.manager }}
 
-      - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        - name: Create .env file from GitHub Secrets
+          run: |
+            echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env.local
+            echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env.local
+            echo "GA4_MEASUREMENT_ID=${{ secrets.GA4_MEASUREMENT_ID }}" >> .env.local
+            echo "GA4_API_SECRET=${{ secrets.GA4_API_SECRET }}" >> .env.local 
+            echo "STREAMABLE_USERNAME=${{ secrets.STREAMABLE_USERNAME }}" >> .env.local 
+            echo "STREAMABLE_PASSWORD=${{ secrets.STREAMABLE_PASSWORD }}" >> .env.local 
+            echo "MSG91_AUTH_KEY=${{ secrets.MSG91_AUTH_KEY }}" >> .env.local 
+            echo "MSG91_WIDGET_ID=${{ secrets.MSG91_WIDGET_ID }}" >> .env.local 
+            echo "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" >> .env.local 
+            echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.local 
 
-      - name: Run Lint
-        run: ${{ steps.detect-package-manager.outputs.runner }} next lint
+        - name: Confirm .env.local contents (safe for public values only)
+          run: cat .env.local
 
-      - name: Build project
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+
+        - name: Install dependencies
+          run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+
+        - name: Run Lint
+          run: ${{ steps.detect-package-manager.outputs.runner }} next lint
+
+        - name: Build project
+          run: ${{ steps.detect-package-manager.outputs.runner }} next build
