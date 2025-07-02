@@ -8,6 +8,8 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
+
+import BaseDecoration from '@/components/BaseDecoration';
 const Faq = () => {
   const Data = [
     {
@@ -48,7 +50,8 @@ const Faq = () => {
             color: '#2B2B2B',
           }}
         >
-          Got Some Questions{' '}
+          Got Some
+          {' '}<BaseDecoration>Questions</BaseDecoration>{' '}
         </Typography>
 
         <Typography
