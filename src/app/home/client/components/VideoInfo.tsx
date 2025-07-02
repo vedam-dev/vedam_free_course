@@ -235,8 +235,6 @@ const VideoInfo: React.FC = () => {
               </Box>
             </>
           )}
-
-
         </Box>
       </Box>
     </Container>

@@ -37,7 +37,6 @@ const Certificate: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          // justifyContent: 'center',
           px: 2,
           py: {
             xs: 4,

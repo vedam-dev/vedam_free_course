@@ -19,8 +19,6 @@ const HomePage = () => {
       <Outcomes/>
       <Faq/>
     </>
-
-
   );
 };
 
