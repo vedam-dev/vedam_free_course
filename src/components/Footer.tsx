@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Box, Typography, Link } from "@mui/material";
-import Image from "next/image";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import TelegramIcon from "@mui/icons-material/Telegram";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import XIcon from "@mui/icons-material/X";
+import InstagramIcon from '@mui/icons-material/Instagram';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import TelegramIcon from '@mui/icons-material/Telegram';
+import XIcon from '@mui/icons-material/X';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import { Box, Link, Typography } from '@mui/material';
+import Image from 'next/image';
+import * as React from 'react';
 
 interface FooterLink {
   label: string;
@@ -25,47 +25,47 @@ interface SocialLink {
 
 const FOOTER_LINKS: FooterColumn[] = [
   {
-    title: "Quick Links",
+    title: 'Quick Links',
     links: [
-      { label: "Terms of use", href: "/terms-of-use" },
-      { label: "Privacy Policy", href: "/privacy-policy" },
-      { label: "Refund Policy", href: "/refund-policy" },
+      { label: 'Terms of use', href: '/terms-of-use' },
+      { label: 'Privacy Policy', href: '/privacy-policy' },
+      { label: 'Refund Policy', href: '/refund-policy' },
     ],
   },
   {
-    title: "Contact Us",
+    title: 'Contact Us',
     links: [
-      { label: "connect@vedam.org", href: "mailto:connect@vedam.org" },
-      { label: "+91 92010 10176", href: "tel:9201010176" },
+      { label: 'connect@vedam.org', href: 'mailto:connect@vedam.org' },
+      { label: '+91 92010 10176', href: 'tel:9201010176' },
     ],
   },
 ];
 
-const SOCIAL_LINKS: SocialLink[] = [  // Correctly named in uppercase
+const SOCIAL_LINKS: SocialLink[] = [ // Correctly named in uppercase
   {
-    name: "YouTube",
-    url: "https://www.youtube.com/@VedamSchoolofTech_Official",
-    icon: <YouTubeIcon sx={{ color: "white" }} />,
+    name: 'YouTube',
+    url: 'https://www.youtube.com/@VedamSchoolofTech_Official',
+    icon: <YouTubeIcon sx={{ color: 'white' }} />,
   },
   {
-    name: "Instagram",
-    url: "https://www.instagram.com/vedamschooloftech_official/?igsh=MTRscTNtdGxnNG1yMQ%3D%3D#",
-    icon: <InstagramIcon sx={{ color: "white" }} />,
+    name: 'Instagram',
+    url: 'https://www.instagram.com/vedamschooloftech_official/?igsh=MTRscTNtdGxnNG1yMQ%3D%3D#',
+    icon: <InstagramIcon sx={{ color: 'white' }} />,
   },
   {
-    name: "LinkedIn",
-    url: "https://www.linkedin.com/company/vedam-school-of-technology/",
-    icon: <LinkedInIcon sx={{ color: "white" }} />,
+    name: 'LinkedIn',
+    url: 'https://www.linkedin.com/company/vedam-school-of-technology/',
+    icon: <LinkedInIcon sx={{ color: 'white' }} />,
   },
   {
-    name: "Telegram",
-    url: "https://t.me/vedamschooloftechnology",
-    icon: <TelegramIcon sx={{ color: "white" }} />,
+    name: 'Telegram',
+    url: 'https://t.me/vedamschooloftechnology',
+    icon: <TelegramIcon sx={{ color: 'white' }} />,
   },
   {
-    name: "Twitter",
-    url: "https://x.com/vedamschooltech",
-    icon: <XIcon sx={{ color: "white" }} />,
+    name: 'Twitter',
+    url: 'https://x.com/vedamschooltech',
+    icon: <XIcon sx={{ color: 'white' }} />,
   },
 ];
 
@@ -75,52 +75,52 @@ const Footer: React.FC = () => {
     <Box
       component="footer"
       sx={{
-        width: "100%",
-        background: "linear-gradient(to right, #6C10BC, #FB7F05)",
-        color: "white",
+        width: '100%',
+        background: 'linear-gradient(to right, #6C10BC, #FB7F05)',
+        color: 'white',
         py: { xs: 3, sm: 8 },
       }}
     >
       <Box
         sx={{
-          maxWidth: "1280px",
-          margin: "0 auto",
-          display: "flex",
-          flexDirection: "column",
-          pl: { xs: "20px", md: "77.2px" }, // Left space ~77.2px on desktop
-          pr: { xs: "20px", md: "calc(196px - 25%)" }, // Right space adjustment
+          maxWidth: '1280px',
+          margin: '0 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          pl: { xs: '20px', md: '77.2px' }, // Left space ~77.2px on desktop
+          pr: { xs: '20px', md: 'calc(196px - 25%)' }, // Right space adjustment
         }}
       >
         {/* Main Footer Columns */}
         <Box
           sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            justifyContent: { xs: "center", md: "space-between" }, // Center on mobile
-            alignItems: { xs: "center", md: "flex-start" }, // Center on mobile
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            justifyContent: { xs: 'center', md: 'space-between' }, // Center on mobile
+            alignItems: { xs: 'center', md: 'flex-start' }, // Center on mobile
             pb: 4,
             gap: { xs: 1, md: 0 },
           }}
         >
           {/* Logo Column */}
-          <Box sx={{ 
-            width: { xs: "100%", md: "25%" },
-            display: "flex",
-            justifyContent: { xs: "center", md: "flex-start" },
-            mt : {xs:"0px" ,md:"-30px"},
-            mr:  {xs: "0", md: "40px"}
+          <Box sx={{
+            width: { xs: '100%', md: '25%' },
+            display: 'flex',
+            justifyContent: { xs: 'center', md: 'flex-start' },
+            mt : { xs:'0px' ,md:'-30px' },
+            mr:  { xs: '0', md: '40px' }
           }}>
-            <Box sx={{ 
-              width: "262px", 
-              height: "147px",
-              position: "relative",
+            <Box sx={{
+              width: '262px',
+              height: '147px',
+              position: 'relative',
             }}>
               <Image
                 src="/home/videoInfo/Vedam_Final_Logo_White-1.png"
                 alt="Navbar Logo"
                 fill
                 style={{
-                  objectFit: "contain",
+                  objectFit: 'contain',
                 }}
               />
             </Box>
@@ -128,12 +128,12 @@ const Footer: React.FC = () => {
 
           {/* Links Columns */}
           {FOOTER_LINKS.map((column) => (
-            <Box 
+            <Box
               key={column.title}
-              sx={{ 
-                width: { xs: "100%", md: "25%" },
-                textAlign: { xs: "center", md: "left" }, // Center on mobile
-                ml : "10px"
+              sx={{
+                width: { xs: '100%', md: '25%' },
+                textAlign: { xs: 'center', md: 'left' }, // Center on mobile
+                ml : '10px'
               }}
             >
               <Typography
@@ -146,11 +146,11 @@ const Footer: React.FC = () => {
               >
                 {column.title}
               </Typography>
-              <Box sx={{ 
-                display: "flex", 
-                flexDirection: "column",
-                alignItems: { xs: "center", md: "flex-start" }, // Center on mobile
-                 
+              <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: { xs: 'center', md: 'flex-start' }, // Center on mobile
+
               }}>
                 {column.links.map((link) => (
                   <Link
@@ -160,7 +160,7 @@ const Footer: React.FC = () => {
                     underline="hover"
                     sx={{
                       fontSize: { xs: 14, sm: 16 },
-                      "&:hover": { color: "#FFA41A" },
+                      '&:hover': { color: '#FFA41A' },
                       mb: 1,
                     }}
                   >
@@ -172,9 +172,9 @@ const Footer: React.FC = () => {
           ))}
 
           {/* Social Links Column */}
-          <Box sx={{ 
-            width: { xs: "100%", md: "25%" },
-            textAlign: { xs: "center", md: "left" }, // Center on mobile
+          <Box sx={{
+            width: { xs: '100%', md: '25%' },
+            textAlign: { xs: 'center', md: 'left' }, // Center on mobile
           }}>
             <Typography
               variant="h6"
@@ -186,12 +186,12 @@ const Footer: React.FC = () => {
             >
               Follow Us
             </Typography>
-            <Box 
-              sx={{ 
-                display: "flex", 
-                flexDirection: { xs: "row", sm: "column" }, 
-                justifyContent: { xs: "center", md: "flex-start" },
-                flexWrap: "wrap",
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'row', sm: 'column' },
+                justifyContent: { xs: 'center', md: 'flex-start' },
+                flexWrap: 'wrap',
                 gap: 2,
               }}
             >
@@ -202,17 +202,17 @@ const Footer: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    color: "white",
-                    "&:hover": { color: "#FFA41A" },
-                    textDecoration: "none",
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: 'white',
+                    '&:hover': { color: '#FFA41A' },
+                    textDecoration: 'none',
                   }}
                 >
                   {social.icon}
-                  <Typography sx={{ 
+                  <Typography sx={{
                     fontSize: 16,
-                    display: { xs: "none", sm: "block" },
+                    display: { xs: 'none', sm: 'block' },
                     ml: 1,
                   }}>
                     {social.name}
@@ -226,9 +226,9 @@ const Footer: React.FC = () => {
         {/* Copyright Section */}
         <Box
           sx={{
-            borderTop: "1px solid rgba(255, 255, 255, 0.2)",
+            borderTop: '1px solid rgba(255, 255, 255, 0.2)',
             pt: 3,
-            textAlign: "center",
+            textAlign: 'center',
           }}
         >
           <Typography variant="body2" sx={{ fontSize: 14 }}>
