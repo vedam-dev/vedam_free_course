@@ -2,11 +2,10 @@ import { Box } from '@mui/material';
 import React from 'react';
 
 interface VideoPlayerCardProps {
-  videoUrl: string;
+  shortcode: string;
 }
 
-const VideoPlayerCard: React.FC<VideoPlayerCardProps> = ({ videoUrl }) => {
-  const videoId = new URL(videoUrl).searchParams.get('v');
+const VideoPlayerCard: React.FC<VideoPlayerCardProps> = ({ shortcode }) => {
 
   return (
     <Box
@@ -21,12 +20,8 @@ const VideoPlayerCard: React.FC<VideoPlayerCardProps> = ({ videoUrl }) => {
       <iframe
         width="100%"
         height="100%"
-        src={
-          videoUrl.includes('watch?v=')
-            ? `https://www.youtube.com/embed/${videoId}`
-            : videoUrl
-        }
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        src={`https://streamable.com/o/${shortcode}`}
+        allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture; web-share"
         title="YouTube video player"
         allowFullScreen
         style={{

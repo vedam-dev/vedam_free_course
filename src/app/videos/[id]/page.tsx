@@ -9,6 +9,8 @@ import Snackbar from '@mui/material/Snackbar';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
+import VideoPlayerCard from '../playVideo/client/components/VideoPlayerCard';
+
 interface Video {
   shortcode: string;
   id: string;
@@ -121,8 +123,7 @@ const VideoWatchPage = () => {
               <h1 style={{ margin: 0 }}>{currentVideo.title}</h1>
             </Box>
 
-            {/* Add video player here. currentVideo.streambaleUrl */}
-            <>VIdeo player</>
+            <VideoPlayerCard shortcode={currentVideo.shortcode}/>
 
             <p>{currentVideo.description}</p>
             {completed ? (<Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
