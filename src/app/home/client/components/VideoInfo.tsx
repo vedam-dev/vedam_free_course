@@ -39,7 +39,6 @@ const VideoInfo: React.FC = () => {
             color="text.secondary"
             sx={{
               marginTop:2,
-              paddingRight:6,
               letterSpacing: '0.5px',
               fontSize: { xs: '0.85rem', md: '1rem' },
               fontWeight: 500,
@@ -101,7 +100,7 @@ const VideoInfo: React.FC = () => {
                 alt="Divider Line"
                 style={{
                   width: '2px',
-                  height: '70px',
+                  height: '72px',
                   minWidth: '2px',
                   minHeight: '40px',
                 }}
