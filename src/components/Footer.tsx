@@ -88,8 +88,6 @@ const Footer: React.FC = () => {
             margin: '0 auto',
             display: 'flex',
             flexDirection: 'column',
-          // pl: { xs: '20px', md: '77.2px' }, // Left space ~77.2px on desktop
-          // pr: { xs: '20px', md: 'calc(196px - 25%)' }, // Right space adjustment
           }}
         >
           {/* Main Footer Columns */}
@@ -97,8 +95,8 @@ const Footer: React.FC = () => {
             sx={{
               display: 'flex',
               flexDirection: { xs: 'column', md: 'row' },
-              justifyContent: { xs: 'center', md: 'space-between' }, // Center on mobile
-              alignItems: { xs: 'center', md: 'flex-start' }, // Center on mobile
+              justifyContent: { xs: 'center', md: 'space-between' }, 
+              alignItems: { xs: 'center', md: 'flex-start' }, 
               pb: 4,
               gap: { xs: 1, md: 0 },
             }}
@@ -133,7 +131,7 @@ const Footer: React.FC = () => {
                 key={column.title}
                 sx={{
                   width: { xs: '100%', md: '25%' },
-                  textAlign: { xs: 'center', md: 'left' }, // Center on mobile
+                  textAlign: { xs: 'center', md: 'left' }, 
                   ml : '10px'
                 }}
               >
@@ -150,7 +148,7 @@ const Footer: React.FC = () => {
                 <Box sx={{
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: { xs: 'center', md: 'flex-start' }, // Center on mobile
+                  alignItems: { xs: 'center', md: 'flex-start' }, 
 
                 }}>
                   {column.links.map((link) => (
@@ -175,7 +173,7 @@ const Footer: React.FC = () => {
             {/* Social Links Column */}
             <Box sx={{
               width: { xs: '100%', md: '25%' },
-              textAlign: { xs: 'center', md: 'left' }, // Center on mobile
+              textAlign: { xs: 'center', md: 'left' }, 
             }}>
               <Typography
                 variant="h6"
