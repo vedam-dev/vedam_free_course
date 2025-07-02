@@ -10,14 +10,61 @@ import React, {
 } from 'react';
 import './style.css';
 
+const isGDrive = Boolean(process.env.NEXT_PUBLIC_GDRIVE);
+
 const UploadPage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState<string>('');
   const [topic, setTopic] = useState<string>('');
+  const [shortcode, setShortcode] = useState<string>('');
+  const [gdriveLink, setGdriveLink] = useState<string>('');
   const [status, setStatus] = useState<string>('');
   const [videoUrl, setVideoUrl] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<string>('');
+
+  // GDrive form submit
+  const handleGDriveSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('');
+    setLoading(true);
+    setUploadProgress('Saving to database...');
+
+    if (!gdriveLink || !shortcode) {
+      setStatus('Google Drive link and shortcode are required.');
+      setLoading(false);
+      setUploadProgress('');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          streamableUrl: gdriveLink,
+          shortcode,
+          title,
+          topic,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setStatus('Video info saved successfully!');
+        setVideoUrl(gdriveLink);
+        setGdriveLink('');
+        setShortcode('');
+        setTitle('');
+        setTopic('');
+      } else {
+        setStatus(data.error ?? 'Failed to save video info.');
+      }
+    } catch (err) {
+      setStatus('An error occurred. Please try again.');
+    }
+    setLoading(false);
+    setUploadProgress('');
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -174,6 +221,91 @@ const UploadPage = () => {
       }
     }
   };
+
+  if (isGDrive) {
+    return (
+      <div className="upload-container">
+        <h2 className="upload-title">Add Google Drive Video</h2>
+        <form onSubmit={handleGDriveSubmit}>
+          <div className="form-group">
+            <label className="form-label">
+              Google Drive Link{' '}
+              <input
+                type="url"
+                value={gdriveLink}
+                onChange={e => setGdriveLink(e.target.value)}
+                placeholder="Paste Google Drive share link"
+                className="form-input"
+                required
+              />
+            </label>
+          </div>
+          <div className="form-group">
+            <label className="form-label">
+              Shortcode{' '}
+              <input
+                type="text"
+                value={shortcode}
+                onChange={e => setShortcode(e.target.value)}
+                placeholder="Enter unique shortcode"
+                className="form-input"
+                required
+              />
+            </label>
+          </div>
+          <div className="form-group">
+            <label className="form-label">
+              Video Title{' '}
+              <input
+                type="text"
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+                placeholder="Enter video title"
+                className="form-input"
+              />
+            </label>
+          </div>
+          <div className="form-group">
+            <label className="form-label">
+              Video Topic{' '}
+              <input
+                type="text"
+                value={topic}
+                onChange={e => setTopic(e.target.value)}
+                placeholder="Enter video topic/category"
+                className="form-input"
+              />
+            </label>
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`submit-button${loading ? ' button-disabled' : ''}`}
+          >
+            {loading ? 'Saving...' : 'Save Video Info'}
+          </button>
+        </form>
+        {uploadProgress && <div className="upload-progress">{uploadProgress}</div>}
+        {status && (
+          <div className={`status-message${videoUrl ? ' status-success' : ' status-error'}`}>{status}</div>
+        )}
+        {videoUrl && (
+          <div className="video-result">
+            <div className="video-result-title">Your video info is saved!</div>
+            <a
+              href={videoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="video-link"
+            >
+              View on Google Drive →
+            </a>
+            <div className="video-url">{videoUrl}</div>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="upload-container">
