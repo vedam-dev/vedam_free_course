@@ -1,5 +1,5 @@
 'use client';
-import { Box, Container, Divider, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Alert, Box, Container, Divider, Snackbar,Stack, Typography ,useMediaQuery } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -9,7 +9,6 @@ interface Video {
   id: string;
   title: string;
   topic: string;
-  // Add other fields as needed
 }
 
 const courseData = [
@@ -67,6 +66,8 @@ export default function VideoCourses() {
   const isMobile = useMediaQuery('(max-width:600px)');
   const [groupedContent, setGroupedContent] = useState<Record<string, Video[]>>({});
   const router = useRouter();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMsg, setSnackbarMsg] = useState('');
 
   useEffect(() => {
     fetch('/api/content')
@@ -74,13 +75,24 @@ export default function VideoCourses() {
       .then(json => setGroupedContent(json.data || {}));
   }, []);
 
+  const handleVideoCardClick = (firstVideo: Video) => {
+    const user_id = localStorage.getItem('userId');
+    if(!user_id) {
+      setSnackbarMsg('You must be logged in to mark as completed.');
+      setSnackbarOpen(true);
+      return;
+    } else {
+      router.push(`/videos/${'shortcode' in firstVideo && firstVideo.shortcode ? firstVideo.shortcode : firstVideo.id}`);
+    }
+  };
+
   return (
     <Container maxWidth="lg">
       <Box
         component="section"
         sx={{
           py: { xs: 4, md: 8 },
-          px:1,
+          px: 1,
         }}
       >
         <Typography
@@ -94,7 +106,7 @@ export default function VideoCourses() {
             marginBottom: '48px',
           }}
         >
-        Build for coders who want to start early
+          Build for coders who want to start early
         </Typography>
 
         <Box
@@ -137,7 +149,7 @@ export default function VideoCourses() {
                   textAlign: 'left',
                 }}
               >
-              Courses offered
+                Courses offered
               </Typography>
               <Typography
                 sx={{
@@ -150,7 +162,7 @@ export default function VideoCourses() {
                   textAlign: 'left',
                 }}
               >
-              4 Industry-Led Modules
+                4 Industry-Led Modules
               </Typography>
             </Box>
           </Box>
@@ -194,7 +206,7 @@ export default function VideoCourses() {
                   textAlign: 'left',
                 }}
               >
-              Duration
+                Duration
               </Typography>
               <Typography
                 sx={{
@@ -207,7 +219,7 @@ export default function VideoCourses() {
                   textAlign: 'left',
                 }}
               >
-              Less than 2 hour
+                Less than 2 hour
               </Typography>
             </Box>
           </Box>
@@ -292,8 +304,9 @@ export default function VideoCourses() {
               const ref = courseData[templateIdx];
               const firstVideo = videos[0];
               return (
-                <Box key={topic} sx={{ mb: 6, cursor: 'pointer' }} onClick={() => router.push(`/videos/${'shortcode' in firstVideo && firstVideo.shortcode ? firstVideo.shortcode : firstVideo.id}`)}>
+                <Box key={topic} sx={{ mb: 6 }} >
                   <CourseCard
+                    onClick={() => {handleVideoCardClick(firstVideo);}}
                     course={{
                       id: firstVideo.id,
                       color: ref.color,
@@ -313,6 +326,16 @@ export default function VideoCourses() {
           </Stack>
         </Box>
       </Box>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={() => setSnackbarOpen(false)} severity="warning" sx={{ width: '100%' }}>
+          {snackbarMsg}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

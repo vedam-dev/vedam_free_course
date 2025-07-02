@@ -24,8 +24,10 @@ type Course = {
 
 interface CourseCardProps {
   course: Course;
+  onClick(): void;
+
 }
-const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
+const CourseCard: React.FC<CourseCardProps> = ({ course,onClick }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
   return (
     <Card
@@ -261,7 +263,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           </Box>
         )}
 
-        <Box sx={{ display: 'flex', gap: 0.5, mb: 3 }}>
+        <Box sx={{ display: 'flex', gap: 0.5, mb: 3, alignItems:'center' }}>
           <StarIcon sx={{ fontSize: { xs:15,md:20 }, color: '#666' }} />
 
           <Typography
@@ -274,8 +276,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
               fontWeight: 300,
               lineHeight: { xs:'18px', md:'36px' },
               display: 'inline-block',
-              verticalAlign: 'text-top',
-              textAlign:'left'
+              textAlign:'left',
             }}
           >
             Used by top companies like {course.usedby}
@@ -290,16 +291,10 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           }}
         >
           <BaseButton
-            variant="outlined"
-            fullWidth
-            sx={{ fontSize: '16px', lineHeight:{ xs:'14px', md:'28px' }, textWrap: 'nowrap',order: { xs: 2, sm: 1 } }}
-          >
-            Show Details
-          </BaseButton>
-          <BaseButton
             variant="contained"
             fullWidth
             sx={{ fontSize: '16px', lineHeight:{ xs:'14px', md:'28px' }, textWrap: 'nowrap',order: { xs: 1, sm: 2 } }}
+            onClick={onClick}
           >
             Start Free
           </BaseButton>
