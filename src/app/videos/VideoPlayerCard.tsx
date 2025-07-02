@@ -1,5 +1,6 @@
-import { Box } from '@mui/material';
-import React from 'react';
+import { Box } from "@mui/material";
+import Image from "next/image";
+import React from "react";
 
 interface VideoPlayerCardProps {
   shortcode: string;
@@ -7,35 +8,75 @@ interface VideoPlayerCardProps {
 
 const VideoPlayerCard: React.FC<VideoPlayerCardProps> = ({ shortcode }) => {
   const sourceType = process.env.NEXT_PUBLIC_GDRIVE;
-
-  const src = sourceType === 'google' ? `https://drive.google.com/file/d/${shortcode}/preview` : `https://streamable.com/e/${shortcode}`;
+  const src =
+    sourceType === "google"
+      ? `https://drive.google.com/file/d/${shortcode}/preview`
+      : `https://streamable.com/e/${shortcode}`;
 
   return (
     <Box
       sx={{
-        position: 'relative',
-        paddingTop: '56.25%',
-        width: '100%',
-        borderRadius: '8px',
-        overflow: 'hidden',
+        position: "relative",
+        paddingTop: "56.25%", // 16:9
+        width: "100%",
+        borderRadius: 2,
+        overflow: "hidden",
+        backgroundColor: "black",
       }}
     >
       <iframe
-        width="100%"
-        height="100%"
         src={src}
+        title="Video player"
         allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture; web-share"
-        title="YouTube video player"
         allowFullScreen
         style={{
-          position: 'absolute',
+          position: "absolute",
           top: 0,
           left: 0,
-          border: 'none',
+          width: "100%",
+          height: "100%",
+          border: "none",
+          zIndex: 1,
         }}
       />
+
+      <Box
+        sx={{
+          position: "absolute",
+          top: 12,
+          right: 12,
+          width: 40,
+          height: 40,
+          zIndex: 2,
+          pointerEvents: "auto",
+          background: "transparent",
+        }}
+      />
+
+      <Box
+        sx={{
+          position: "absolute",
+          top: 12,
+          right: 12,
+          width: 40,
+          height: 40,
+          zIndex: 3,
+          pointerEvents: "none",
+          background: "white",
+        }}
+      >
+        <Image
+          src="/home/videoInfo/VedamLogo.png"
+          alt="Vedam Logo"
+          fill
+          style={{ objectFit: "contain" }}
+          priority
+        />
+      </Box>
     </Box>
   );
 };
 
 export default VideoPlayerCard;
+
+// '/home/videoInfo/VedamLogo.png'
