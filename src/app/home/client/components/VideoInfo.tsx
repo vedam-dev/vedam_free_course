@@ -89,7 +89,9 @@ const VideoInfo: React.FC = () => {
             {/* Divider Line */}
             <Box
               sx={{
-                display: 'block',
+                display: {
+                  xs:'none',md:'block'
+                },
                 mx: { sm: 1, md: 2 },
               }}
             >

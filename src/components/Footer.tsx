@@ -3,7 +3,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import XIcon from '@mui/icons-material/X';
 import YouTubeIcon from '@mui/icons-material/YouTube';
-import { Box, Link, Typography } from '@mui/material';
+import { Box, Link, Typography, Container } from '@mui/material';
 import Image from 'next/image';
 import * as React from 'react';
 
@@ -81,14 +81,15 @@ const Footer: React.FC = () => {
         py: { xs: 3, sm: 8 },
       }}
     >
+      <Container maxWidth='lg'>
       <Box
         sx={{
           maxWidth: '1280px',
           margin: '0 auto',
           display: 'flex',
           flexDirection: 'column',
-          pl: { xs: '20px', md: '77.2px' }, // Left space ~77.2px on desktop
-          pr: { xs: '20px', md: 'calc(196px - 25%)' }, // Right space adjustment
+          // pl: { xs: '20px', md: '77.2px' }, // Left space ~77.2px on desktop
+          // pr: { xs: '20px', md: 'calc(196px - 25%)' }, // Right space adjustment
         }}
       >
         {/* Main Footer Columns */}
@@ -96,7 +97,7 @@ const Footer: React.FC = () => {
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', md: 'row' },
-            justifyContent: { xs: 'center', md: 'space-between' }, // Center on mobile
+            justifyContent: { xs: 'center', md: 'space-between'}, // Center on mobile
             alignItems: { xs: 'center', md: 'flex-start' }, // Center on mobile
             pb: 4,
             gap: { xs: 1, md: 0 },
@@ -236,6 +237,7 @@ const Footer: React.FC = () => {
           </Typography>
         </Box>
       </Box>
+      </Container>
     </Box>
   );
 };
