@@ -1,5 +1,3 @@
-import fs from 'fs';
-
 import { NextResponse } from 'next/server';
 
 import {
@@ -9,7 +7,6 @@ import {
 import { VideoData } from '../../../lib/streamableDB/streamableTypes';
 import { createSupabaseServerClient } from '../../../lib/streamableDB/supabaseServerClient';
 
-import saveUploadedFile from './saveUploadedFile';
 
 interface PollConfig {
   maxAttempts?: number;
@@ -33,13 +30,10 @@ export async function POST(request: Request) {
     const validationError = validateFormData(username, password, file, title);
     if(validationError) return validationError;
 
-    const tempFilePath = await saveUploadedFile(file!);
-    console.log('Temp file saved:', tempFilePath);
 
     try {
-      const stream = fs.createReadStream(tempFilePath);
       const upload = new ToStreamable({
-        file: stream,
+        file: file!,
         auth: {
           username: username!,
           password: password!,
@@ -47,14 +41,16 @@ export async function POST(request: Request) {
         params: [],
       });
 
+      console.log('Starting Streamable upload...');
       const uploadResult = await upload.upload();
       console.log('Upload successful, shortcode:', uploadResult.shortcode);
 
-      const finalResult = await pollProcessingStatus(upload, tempFilePath, title, topic);
+
+      const finalResult = await pollProcessingStatus(upload, title, topic);
       return NextResponse.json(finalResult);
     } catch(uploadError) {
       console.error('Upload error:', uploadError);
-      cleanupTempFile(tempFilePath);
+
       return NextResponse.json(
         {
           error: `Streamable upload failed: ${(uploadError as Error).message}`,
@@ -62,6 +58,7 @@ export async function POST(request: Request) {
         { status: 500 }
       );
     }
+
   } catch(error) {
     console.error('API route error:', error);
     return NextResponse.json(
@@ -119,9 +116,9 @@ function validateFormData(
   return null;
 }
 
+// Updated function signature: removed tempFilePath
 async function pollProcessingStatus(
   upload: ToStreamable,
-  tempFilePath: string,
   title: string | null,
   topic: string | null,
   config: PollConfig = DEFAULT_POLL_CONFIG
@@ -133,10 +130,10 @@ async function pollProcessingStatus(
       const statusData = await upload.status();
       console.log('Status check:', statusData);
 
+      // Updated function signature: removed tempFilePath
       const result = await handleStatusResult(
         statusData,
         upload,
-        tempFilePath,
         title,
         topic
       );
@@ -148,43 +145,43 @@ async function pollProcessingStatus(
       );
     } catch(error) {
       console.error('Status check error:', error);
-      cleanupTempFile(tempFilePath);
+      // No temp file to clean up here
       throw new Error(
         `Failed to check processing status: ${(error as Error).message}`
       );
     }
   }
 
-  cleanupTempFile(tempFilePath);
+  // No temp file to clean up here
   throw new Error('Processing timed out. Please try again later.');
 }
 
+// Updated function signature: removed tempFilePath
 async function handleStatusResult(
   statusData: StreamableResponse,
   upload: ToStreamable,
-  tempFilePath: string,
   title: string | null,
   topic: string | null
 ) {
   if(statusData.status === 2 && statusData.embed_code) {
+    // Updated function signature: removed tempFilePath
     return await processSuccessfulUpload(
       statusData,
       upload,
-      tempFilePath,
       title,
       topic
     );
   } else if(statusData.status === 3) {
-    cleanupTempFile(tempFilePath);
+    // No temp file to clean up here
     throw new Error('Video processing failed on Streamable.');
   }
   return null;
 }
 
+// Updated function signature: removed tempFilePath
 async function processSuccessfulUpload(
   statusData: StreamableResponse,
   upload: ToStreamable,
-  tempFilePath: string,
   title: string | null,
   topic: string | null
 ) {
@@ -209,7 +206,7 @@ async function processSuccessfulUpload(
     const savedData = await saveToSupabase(videoData);
     console.log('Successfully saved to Supabase:', savedData);
 
-    cleanupTempFile(tempFilePath);
+    // No temp file to clean up here
     return {
       id: upload.shortcode,
       status: 'processed',
@@ -223,7 +220,7 @@ async function processSuccessfulUpload(
       stack: (supabaseError as Error).stack,
       videoData,
     });
-    cleanupTempFile(tempFilePath);
+    // No temp file to clean up here
     throw new Error(
       `Video processed but failed to save to database: ${
         (supabaseError as Error).message
@@ -268,16 +265,5 @@ async function saveToSupabase(videoData: VideoData) {
       videoData,
     });
     throw new Error(`Supabase operation failed: ${(err as Error).message}`);
-  }
-}
-
-function cleanupTempFile(tempFilePath: string) {
-  try {
-    if(fs.existsSync(tempFilePath)) {
-      fs.unlinkSync(tempFilePath);
-      console.log('Temp file cleaned up:', tempFilePath);
-    }
-  } catch(cleanupErr) {
-    console.error('Error cleaning up temp file:', cleanupErr);
   }
 }
