@@ -3,8 +3,6 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 
-import BaseButton from '@/components/BaseButton';
-
 const Certificate: React.FC = () => {
   return (
     <Box
@@ -83,10 +81,6 @@ const Certificate: React.FC = () => {
           <br />
           of Completion at the end
         </Typography>
-
-        <BaseButton size="large" variant="outlined" sx={{ mb: { xs: 6, lg: 3 }, backgroundColor:'white' }}>
-          Start Learning for FREE
-        </BaseButton>
 
         <Box
           component="img"
