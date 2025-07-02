@@ -177,7 +177,6 @@ export default function VideoCourses() {
               backgroundColor: '#BEBEBE',
             }}
           />
-
           <Box
             sx={{
               display: 'flex',
