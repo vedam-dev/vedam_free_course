@@ -95,8 +95,8 @@ const Footer: React.FC = () => {
             sx={{
               display: 'flex',
               flexDirection: { xs: 'column', md: 'row' },
-              justifyContent: { xs: 'center', md: 'space-between' }, 
-              alignItems: { xs: 'center', md: 'flex-start' }, 
+              justifyContent: { xs: 'center', md: 'space-between' },
+              alignItems: { xs: 'center', md: 'flex-start' },
               pb: 4,
               gap: { xs: 1, md: 0 },
             }}
@@ -131,7 +131,7 @@ const Footer: React.FC = () => {
                 key={column.title}
                 sx={{
                   width: { xs: '100%', md: '25%' },
-                  textAlign: { xs: 'center', md: 'left' }, 
+                  textAlign: { xs: 'center', md: 'left' },
                   ml : '10px'
                 }}
               >
@@ -148,7 +148,7 @@ const Footer: React.FC = () => {
                 <Box sx={{
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: { xs: 'center', md: 'flex-start' }, 
+                  alignItems: { xs: 'center', md: 'flex-start' },
 
                 }}>
                   {column.links.map((link) => (
@@ -173,7 +173,7 @@ const Footer: React.FC = () => {
             {/* Social Links Column */}
             <Box sx={{
               width: { xs: '100%', md: '25%' },
-              textAlign: { xs: 'center', md: 'left' }, 
+              textAlign: { xs: 'center', md: 'left' },
             }}>
               <Typography
                 variant="h6"

@@ -23,11 +23,11 @@ const temp = ['Beginner Friendly', 'Free of Cost', 'No prior experience required
 // Helper to get random color
 function stringToColor(str: string) {
   let hash = 0;
-  for (let i = 0; i < str.length; i++) {
+  for(let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
   let color = '#';
-  for (let i = 0; i < 3; i++) {
+  for(let i = 0; i < 3; i++) {
     const value = (hash >> (i * 8)) & 0xff;
     color += ('00' + value.toString(16)).slice(-2);
   }
@@ -47,7 +47,7 @@ const Landing: React.FC = () => {
 
   // Initialize MSG91 OTP widget
   useEffect(() => {
-    if (showOtpModal && typeof window !== 'undefined') {
+    if(showOtpModal && typeof window !== 'undefined') {
       const configuration = {
         widgetId: process.env.NEXT_PUBLIC_MSG91_WIDGET_ID,
         tokenAuth: process.env.NEXT_PUBLIC_MSG91_AUTH_KEY,
@@ -64,14 +64,14 @@ const Landing: React.FC = () => {
       script.src =
         'https://control.msg91.com/app/assets/otp-provider/otp-provider.js';
       script.onload = () => {
-        if (window.initSendOTP) {
+        if(window.initSendOTP) {
           window.initSendOTP(configuration);
         }
       };
       document.body.appendChild(script);
 
       return () => {
-        if (document.body.contains(script)) {
+        if(document.body.contains(script)) {
           document.body.removeChild(script);
         }
       };
@@ -87,7 +87,7 @@ const Landing: React.FC = () => {
     // Handle successful verification here
     // Save user data, redirect, etc.
   };
-  if (!hasMounted) return null;
+  if(!hasMounted) return null;
   return (
 
     <Box
