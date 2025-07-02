@@ -102,7 +102,8 @@ function validateFormData(
   ];
   if(
     !allowedTypes.includes(file.type) &&
-    !file.name.match(/\.(mp4|avi|mov|wmv|flv|webm)$/i)
+    // FIX: Use RegExp.exec() method instead of RegExp.test() as recommended by SonarLint.
+    !(/\.(mp4|avi|mov|wmv|flv|webm)$/i).exec(file.name)
   ) {
     return NextResponse.json(
       {
@@ -190,8 +191,10 @@ async function processSuccessfulUpload(
 
   const videoData: VideoData = {
     shortcode: upload.shortcode ?? '',
-    topic: topic || 'default',
-    title: title || 'Untitled Video',
+    // FIX: Prefer using nullish coalescing operator (??) instead of a logical or (||) for safer operation.
+    topic: topic ?? 'default',
+    // FIX: Prefer using nullish coalescing operator (??) instead of a logical or (||) for safer operation.
+    title: title ?? 'Untitled Video',
     streamableUrl: streamableUrl,
     videoCdnUrl: statusData.files?.mp4?.url ?? '',
     embedCode: embedCode,
