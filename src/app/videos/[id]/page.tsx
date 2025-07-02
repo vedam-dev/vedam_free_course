@@ -120,18 +120,10 @@ const VideoWatchPage = () => {
               </IconButton>
               <h1 style={{ margin: 0 }}>{currentVideo.title}</h1>
             </Box>
-            {typeof currentVideo.streamableUrl === 'string' && currentVideo.streamableUrl ? (
-              <iframe
-                src={currentVideo.streamableUrl}
-                style={{ width: '100%', height: 400, border: 'none', borderRadius: 8 }}
-                allowFullScreen
-                title={currentVideo.title}
-              />
-            ) : (currentVideo.files && typeof currentVideo.files === 'object' && 'mp4' in currentVideo.files && currentVideo.files.mp4 && typeof currentVideo.files.mp4 === 'object' && 'url' in currentVideo.files.mp4 && typeof currentVideo.files.mp4.url === 'string') ? (
-              <video controls width="100%" src={currentVideo.files.mp4.url} style={{ borderRadius: 8 }} />
-            ) : (
-              <div>No video file available.</div>
-            )}
+
+            {/* Add video player here. currentVideo.streambaleUrl */}
+            <>VIdeo player</>
+
             <p>{currentVideo.description}</p>
             {completed ? (<Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
               <Typography>Completed</Typography> <CheckCircleIcon sx={{ color: 'green', fontSize: 28 }} /></Box>
