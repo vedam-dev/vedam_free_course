@@ -3,8 +3,8 @@ import { Alert, Box, Container, Divider, Snackbar,Stack, Typography ,useMediaQue
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-import CourseCard from '@/components/CourseCard';
 import BaseDecoration from '@/components/BaseDecoration';
+import CourseCard from '@/components/CourseCard';
 
 interface Video {
   id: string;
@@ -107,7 +107,7 @@ export default function VideoCourses() {
             marginBottom: '48px',
           }}
         >
-          Build for coders who want to {' '}<BaseDecoration>start early</BaseDecoration> 
+          Build for coders who want to {' '}<BaseDecoration>start early</BaseDecoration>
         </Typography>
 
         <Box

@@ -52,18 +52,18 @@ const CourseCard: React.FC<CourseCardProps> = ({ course,onClick }) => {
         }}
       >
         <Image
-          src="/home/eclipse.png" 
+          src="/home/eclipse.png"
           alt="Eclipse background"
-          width={isMobile?500:600}
-          height={isMobile?600:700}
+          width={isMobile ? 500 : 600}
+          height={isMobile ? 600 : 700}
           style={{
             position:'absolute',
-            left:isMobile?-350:-100,
-            bottom:isMobile?0:60,
-            top:isMobile?-50:0,
+            left:isMobile ? -350 : -100,
+            bottom:isMobile ? 0 : 60,
+            top:isMobile ? -50 : 0,
             transform: isMobile ? 'rotate(90deg)' : 'rotate(0deg)',
-            opacity: 1, 
-            
+            opacity: 1,
+
           }}
         />
       </Box>

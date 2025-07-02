@@ -44,7 +44,7 @@ const Landing: React.FC = () => {
     setHasMounted(true);
   }, []);
 
-  
+
   // Initialize MSG91 OTP widget
   useEffect(() => {
     if(showOtpModal && typeof window !== 'undefined') {
@@ -87,7 +87,7 @@ const Landing: React.FC = () => {
     // Handle successful verification here
     // Save user data, redirect, etc.
   };
-  if (!hasMounted) return null;
+  if(!hasMounted) return null;
   return (
 
     <Box
@@ -162,9 +162,9 @@ const Landing: React.FC = () => {
 
 
           {/* Header Buttons */}
-          <Box sx={{ display: { xs: 'flex', md: 'flex' }, gap: 2, alignItems: 'end', pl:{xs:"16px",md:"0px" }}}>
+          <Box sx={{ display: { xs: 'flex', md: 'flex' }, gap: 2, alignItems: 'end', pl:{ xs:'16px',md:'0px' } }}>
             {isLoggedIn ? (
-              <Avatar sx={{ bgcolor: stringToColor(username || 'U'), width:{xs:'28px', md:'40px'} , height: {xs:'28px', md:'40px'} , fontWeight: 700, fontSize: {xs:15,md:22} }}>
+              <Avatar sx={{ bgcolor: stringToColor(username || 'U'), width:{ xs:'28px', md:'40px' } , height: { xs:'28px', md:'40px' } , fontWeight: 700, fontSize: { xs:15,md:22 } }}>
                 {(username || 'U').charAt(0).toUpperCase()}
               </Avatar>
             ) : (
