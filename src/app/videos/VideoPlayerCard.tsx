@@ -78,5 +78,3 @@ const VideoPlayerCard: React.FC<VideoPlayerCardProps> = ({ shortcode }) => {
 };
 
 export default VideoPlayerCard;
-
-// '/home/videoInfo/VedamLogo.png'
