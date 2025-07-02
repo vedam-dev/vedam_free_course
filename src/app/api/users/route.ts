@@ -46,25 +46,48 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Step 1: Upsert into users table
+    // Step 1: Check if user with this mobile already exists
+    const { data: existingUser, error: findError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('mobile', mobile)
+      .single();
+
+    if(findError && findError.code !== 'PGRST116') { // PGRST116: No rows found
+      console.error('Supabase find user error:', findError);
+      return NextResponse.json(
+        { error: 'Failed to check existing user' },
+        { status: 500 }
+      );
+    }
+
+    if(existingUser) {
+      // User exists, just return the user data
+      return NextResponse.json(
+        {
+          message: 'User already exists',
+          user: existingUser,
+          utmUpdated: null
+        },
+        { status: 200 }
+      );
+    }
+
+    // Step 2: Insert new user
     const { data: userData, error: userError } = await supabase
       .from('users')
-      .upsert([{
-        name,
-        email,
-        mobile
-      }], { onConflict: 'mobile' })
+      .insert([{ name, email, mobile }])
       .select();
 
     if(userError) {
-      console.error('Supabase users upsert error:', userError);
+      console.error('Supabase users insert error:', userError);
       return NextResponse.json(
         { error: 'Failed to save user data' },
         { status: 500 }
       );
     }
 
-    // Step 2: Update utm-data using visitor_token from cookies
+    // Step 3: Update utm-data using visitor_token from cookies
     const { data: updatedUtmData, error: utmError } = await supabase
       .from('utm-data')
       .update({

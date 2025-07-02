@@ -1,22 +1,86 @@
 'use client';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {
+  Avatar,
   Box,
   Container,
   Divider,
   Stack,
   Typography
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+
 
 import BaseButton from '@/components/BaseButton';
 import BaseDecoration from '@/components/BaseDecoration';
+import OtpModal from '@/components/otp/OtpModal';
+import type { RootState } from '@/lib/store';
 
 
 const temp = ['Beginner Friendly', 'Free of Cost', 'No prior experience required'];
 
+// Helper to get random color
+function stringToColor(str: string) {
+  let hash = 0;
+  for(let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  let color = '#';
+  for(let i = 0; i < 3; i++) {
+    const value = (hash >> (i * 8)) & 0xff;
+    color += ('00' + value.toString(16)).slice(-2);
+  }
+  return color;
+}
 
 const Landing: React.FC = () => {
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+  const username = useSelector((state: RootState) => state.user.username);
+
+  // Initialize MSG91 OTP widget
+  useEffect(() => {
+    if(showOtpModal && typeof window !== 'undefined') {
+      const configuration = {
+        widgetId: process.env.NEXT_PUBLIC_MSG91_WIDGET_ID,
+        tokenAuth: process.env.NEXT_PUBLIC_MSG91_AUTH_KEY,
+        exposeMethods: true,
+        success: (data: unknown) => {
+          console.log('Verification success:', data);
+        },
+        failure: (error: unknown) => {
+          console.error('Verification failed:', error);
+        },
+      };
+
+      const script = document.createElement('script');
+      script.src =
+        'https://control.msg91.com/app/assets/otp-provider/otp-provider.js';
+      script.onload = () => {
+        if(window.initSendOTP) {
+          window.initSendOTP(configuration);
+        }
+      };
+      document.body.appendChild(script);
+
+      return () => {
+        if(document.body.contains(script)) {
+          document.body.removeChild(script);
+        }
+      };
+    }
+  }, [showOtpModal]);
+
+  const handleVerificationSuccess = (userData: {
+    name: string;
+    email: string;
+    phone: string;
+  }) => {
+    console.log('User verified successfully:', userData);
+    // Handle successful verification here
+    // Save user data, redirect, etc.
+  };
   return (
 
     <Box
@@ -91,15 +155,23 @@ const Landing: React.FC = () => {
 
 
           {/* Header Buttons */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
-            <BaseButton variant="outlined">Login</BaseButton>
-            <BaseButton variant="contained">Sign Up</BaseButton>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2, alignItems: 'center' }}>
+            {isLoggedIn ? (
+              <Avatar sx={{ bgcolor: stringToColor(username || 'U'), width: 40, height: 40, fontWeight: 700, fontSize: 22 }}>
+                {(username || 'U').charAt(0).toUpperCase()}
+              </Avatar>
+            ) : (
+              <>
+                <BaseButton variant="outlined" onClick={() => setShowOtpModal(true)}>Login</BaseButton>
+                <BaseButton variant="contained" onClick={() => setShowOtpModal(true)}>Sign Up</BaseButton>
+              </>
+            )}
           </Box>
 
         </Box>
       </Container>
 
-      <Divider sx={{ display: { xs: 'block', md: 'none', lg: 'none' }, mt: '-40px', mb: '20px',backgroundColor:'#929292' }}></Divider>
+      <Divider sx={{ display: { xs: 'block', md: 'none', lg: 'none' }, mt: '-40px', mb: '20px',backgroundColor:'#929292' }}/>
 
       <Container maxWidth='lg'>
         {/* Main Content */}
@@ -202,6 +274,11 @@ const Landing: React.FC = () => {
           />
         </Box>
       </Container>
+      <OtpModal
+        open={showOtpModal}
+        onClose={() => setShowOtpModal(false)}
+        onVerificationSuccess={handleVerificationSuccess}
+      />
     </Box>
 
   );

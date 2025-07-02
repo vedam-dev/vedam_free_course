@@ -4,6 +4,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Container,
   Typography,
 } from '@mui/material';
 import React from 'react';
@@ -36,7 +37,7 @@ const Faq = () => {
     },
   ];
   return (
-    <Box>
+    <Container maxWidth="lg">
       <Box>
         <Typography
           component="h2"
@@ -62,7 +63,7 @@ const Faq = () => {
           We Have Answered them for you?
         </Typography>
       </Box>
-      <Box sx={{ width: { sm: '100%', md: '85%' }, mx: 'auto', my: 4, mt: { xs:'4',md:'8' } }}>
+      <Box sx={{ width: { sm: '100%', md: '100%' }, mx: 2, my: 4, mt: { xs:'4',md:'8' } }}>
         {Data.map(({ id, question, ans }) => (
           <Box
             key={id}
@@ -147,7 +148,7 @@ const Faq = () => {
           </Box>
         ))}
       </Box>
-    </Box>
+    </Container>
   );
 };
 
