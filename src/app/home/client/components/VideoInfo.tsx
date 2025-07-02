@@ -21,7 +21,7 @@ const VideoInfo: React.FC = () => {
 
 
 
-    <Box sx={{ margin: 'auto', fontFamily: 'system-ui, sans-serif', bgcolor: '#fff', width:'1440', height:'800',background: 'linear-gradient(180deg, #A0EBD4 -98.87%, #FFF 100%)', }}>
+    <Box sx={{ margin: 'auto', fontFamily: 'system-ui, sans-serif', bgcolor: '#fff',background: 'linear-gradient(180deg, #A0EBD4 -98.87%, #FFF 100%)', }}>
       <Container maxWidth='lg'>
         {/* Top Header Section */}
         <Box
