@@ -30,7 +30,7 @@ const UploadPage = () => {
     setLoading(true);
     setUploadProgress('Saving to database...');
 
-    if (!gdriveLink || !shortcode) {
+    if(!gdriveLink || !shortcode) {
       setStatus('Google Drive link and shortcode are required.');
       setLoading(false);
       setUploadProgress('');
@@ -49,7 +49,7 @@ const UploadPage = () => {
         }),
       });
       const data = await res.json();
-      if (res.ok) {
+      if(res.ok) {
         setStatus('Video info saved successfully!');
         setVideoUrl(gdriveLink);
         setGdriveLink('');
@@ -59,7 +59,7 @@ const UploadPage = () => {
       } else {
         setStatus(data.error ?? 'Failed to save video info.');
       }
-    } catch (err) {
+    } catch{
       setStatus('An error occurred. Please try again.');
     }
     setLoading(false);
@@ -222,7 +222,7 @@ const UploadPage = () => {
     }
   };
 
-  if (isGDrive) {
+  if(isGDrive) {
     return (
       <div className="upload-container">
         <h2 className="upload-title">Add Google Drive Video</h2>

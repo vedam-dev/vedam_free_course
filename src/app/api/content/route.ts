@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
-import { supabase } from '@/lib/supabase';
 import { createSupabaseServerClient } from '@/lib/streamableDB/supabaseServerClient';
+import { supabase } from '@/lib/supabase';
 
 export async function GET() {
   try {
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { title, topic, streamableUrl, embedCode, shortcode } = body;
-    if (!title && !topic && !streamableUrl && !shortcode) {
+    if(!title && !topic && !streamableUrl && !shortcode) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
     const supabase = createSupabaseServerClient();
@@ -59,12 +59,12 @@ export async function POST(request: Request) {
       .insert([videoData])
       .select()
       .single();
-    if (error) {
+    if(error) {
       console.error('Supabase insert error:', error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
     return NextResponse.json({ data }, { status: 201 });
-  } catch (error) {
+  } catch(error) {
     console.error('API error (POST /content):', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
