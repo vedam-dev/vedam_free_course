@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import CourseCard from '@/components/CourseCard';
+import BaseDecoration from '@/components/BaseDecoration';
 
 interface Video {
   id: string;
@@ -106,7 +107,7 @@ export default function VideoCourses() {
             marginBottom: '48px',
           }}
         >
-          Build for coders who want to start early
+          Build for coders who want to {' '}<BaseDecoration>start early</BaseDecoration> 
         </Typography>
 
         <Box
