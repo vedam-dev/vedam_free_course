@@ -67,12 +67,12 @@ const VideoInfo: React.FC = () => {
                 mr: { xs: 0, md: 2 },
                 mb: { xs: 1, md: 0 },
                 width: { xs: 120, sm: 180, md: 220 },
-                minWidth: 90,
-                maxWidth: 263,
+                minWidth: 92,
+                maxWidth: 264,
               }}
             >
               <Image
-                width={263}
+                width={264}
                 height={104}
                 src="/home/videoInfo/VedamLogo.png"
                 alt="Vedam School of Technology Logo"
@@ -89,7 +89,7 @@ const VideoInfo: React.FC = () => {
             {/* Divider Line */}
             <Box
               sx={{
-                display: { xs: 'none', sm: 'block' },
+                display: 'block',
                 mx: { sm: 1, md: 2 },
               }}
             >
@@ -164,14 +164,14 @@ const VideoInfo: React.FC = () => {
     {/* video section */}
     <Container maxWidth='lg'>
       <Box sx={{
-        background: 'linear-gradient(135deg, #4a148c 0%, #1a237e 100%)',
-        borderRadius: 3,
+        background: '#8900FF',
+        borderRadius: 4,
         p: { xs: 1, md: 2 },
         color: 'white',
         boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
       }}>
 
-        <Box sx={{ position: 'relative', borderRadius: 3, overflow: 'hidden', pt: '56.25%' }}>
+        <Box sx={{ position: 'relative', borderRadius: 4, overflow: 'hidden', pt: '56.25%' }}>
           {playing ? (
             <iframe
               src="https://www.youtube.com/embed/R9moRoww1s4?si=VpQFQESryXAuR0_L"
@@ -185,7 +185,7 @@ const VideoInfo: React.FC = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                borderRadius: 12,
+                borderRadius: 4,
                 background: '#000',
                 border: 'none'
               }}
@@ -203,7 +203,7 @@ const VideoInfo: React.FC = () => {
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
-                  borderRadius: 12,
+                  borderRadius: 4,
                   background: '#000',
                   display: 'block'
                 }}
