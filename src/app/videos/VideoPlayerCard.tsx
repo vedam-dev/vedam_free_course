@@ -20,7 +20,7 @@ const VideoPlayerCard: React.FC<VideoPlayerCardProps> = ({ shortcode }) => {
       <iframe
         width="100%"
         height="100%"
-        src={`https://streamable.com/o/${shortcode}`}
+        src={`https://drive.google.com/file/d/${shortcode}/preview`}
         allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture; web-share"
         title="YouTube video player"
         allowFullScreen

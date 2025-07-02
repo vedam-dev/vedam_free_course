@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, {
   ChangeEvent,
@@ -7,27 +7,49 @@ import React, {
   MouseEvent,
   useRef,
   useState,
-} from 'react';
-import './style.css';
+} from "react";
+import "./style.css";
 
 const UploadPage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [title, setTitle] = useState<string>('');
-  const [topic, setTopic] = useState<string>('');
-  const [status, setStatus] = useState<string>('');
-  const [videoUrl, setVideoUrl] = useState<string>('');
+  const [title, setTitle] = useState<string>("");
+  const [topic, setTopic] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+  const [videoUrl, setVideoUrl] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [uploadProgress, setUploadProgress] = useState<string>('');
+  const [uploadProgress, setUploadProgress] = useState<string>("");
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authError, setAuthError] = useState("");
+  const [authLoading, setAuthLoading] = useState(false);
+
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setAuthError("");
+    setAuthLoading(true);
+
+    if (
+      username === process.env.NEXT_PUBLIC_ADMIN_USERNAME &&
+      password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD
+    ) {
+      setIsAuthenticated(true);
+    } else {
+      setAuthError("Invalid credentials");
+      setAuthLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus('');
-    setVideoUrl('');
+    setStatus("");
+    setVideoUrl("");
     setLoading(true);
-    setUploadProgress('Preparing upload...');
+    setUploadProgress("Preparing upload...");
 
-    if(!fileInputRef.current?.files) {
-      setStatus('Please select a video file.');
+    if (!fileInputRef.current?.files) {
+      setStatus("Please select a video file.");
       setLoading(false);
       return;
     }
@@ -35,129 +57,131 @@ const UploadPage = () => {
     const file = fileInputRef.current.files[0];
 
     // Validation
-    if(!file) {
-      setStatus('Please select a video file.');
+    if (!file) {
+      setStatus("Please select a video file.");
       setLoading(false);
       return;
     }
 
-    if(!title) {
-      setStatus('Please enter a video title.');
+    if (!title) {
+      setStatus("Please enter a video title.");
       setLoading(false);
       return;
     }
 
-    if(!process.env.NEXT_PUBLIC_STREAMABLE_USERNAME ||
-       !process.env.NEXT_PUBLIC_STREAMABLE_PASSWORD) {
-      setStatus('Server configuration error. Please contact support.');
+    if (
+      !process.env.NEXT_PUBLIC_STREAMABLE_USERNAME ||
+      !process.env.NEXT_PUBLIC_STREAMABLE_PASSWORD
+    ) {
+      setStatus("Server configuration error. Please contact support.");
       setLoading(false);
       return;
     }
 
     // Check file size (limit to 1GB)
     const maxSize = 1024 * 1024 * 1024; // 1GB in bytes
-    if(file.size > maxSize) {
-      setStatus('File size too large. Maximum size is 500MB.');
+    if (file.size > maxSize) {
+      setStatus("File size too large. Maximum size is 500MB.");
       setLoading(false);
       return;
     }
 
     // Check file type
     const allowedTypes = [
-      'video/mp4',
-      'video/avi',
-      'video/mov',
-      'video/wmv',
-      'video/flv',
-      'video/webm',
+      "video/mp4",
+      "video/avi",
+      "video/mov",
+      "video/wmv",
+      "video/flv",
+      "video/webm",
     ];
-    if(
+    if (
       !allowedTypes.includes(file.type) &&
       !RegExp(/\.(mp4|avi|mov|wmv|flv|webm)$/i).exec(file.name)
     ) {
       setStatus(
-        'Please select a valid video file (MP4, AVI, MOV, WMV, FLV, WebM).'
+        "Please select a valid video file (MP4, AVI, MOV, WMV, FLV, WebM)."
       );
       setLoading(false);
       return;
     }
 
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('username', process.env.NEXT_PUBLIC_STREAMABLE_USERNAME);
-    formData.append('password', process.env.NEXT_PUBLIC_STREAMABLE_PASSWORD);
-    formData.append('title', title);
-    formData.append('topic', topic);
+    formData.append("file", file);
+    formData.append("username", process.env.NEXT_PUBLIC_STREAMABLE_USERNAME);
+    formData.append("password", process.env.NEXT_PUBLIC_STREAMABLE_PASSWORD);
+    formData.append("title", title);
+    formData.append("topic", topic);
 
     try {
-      setUploadProgress('Uploading to Streamable...');
+      setUploadProgress("Uploading to Streamable...");
 
-      const res = await fetch('/api/upload', {
-        method: 'POST',
+      const res = await fetch("/api/upload", {
+        method: "POST",
         body: formData,
       });
 
       const data = await res.json();
 
-      if(res.ok && data.url) {
+      if (res.ok && data.url) {
         setVideoUrl(data.url);
-        setStatus('Upload successful!');
-        setUploadProgress('');
+        setStatus("Upload successful!");
+        setUploadProgress("");
 
         // Clear form
-        setTitle('');
-        setTopic('');
-        if(fileInputRef.current) {
-          fileInputRef.current.value = '';
+        setTitle("");
+        setTopic("");
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
         }
       } else {
-        setStatus(data.error ?? 'Upload failed.');
-        setUploadProgress('');
+        setStatus(data.error ?? "Upload failed.");
+        setUploadProgress("");
       }
-    } catch(err) {
-      console.error('Upload error:', err);
-      setStatus('An error occurred during upload. Please try again.');
-      setUploadProgress('');
+    } catch (err) {
+      console.error("Upload error:", err);
+      setStatus("An error occurred during upload. Please try again.");
+      setUploadProgress("");
     }
 
     setLoading(false);
   };
 
   const formatFileSize = (bytes: number): string => {
-    if(bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
+    return (bytes / Math.pow(k, i)).toFixed(2) + " " + sizes[i];
   };
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement>,
-    type: 'title' | 'topic'
+    type: "title" | "topic"
   ) => {
     switch (type) {
-      case 'title':
+      case "title":
         setTitle(e.target.value);
         break;
-      case 'topic':
+      case "topic":
         setTopic(e.target.value);
         break;
     }
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if(e.target.files?.[0]) {
+    if (e.target.files?.[0]) {
       const file = e.target.files[0];
       setStatus(`Selected: ${file.name} (${formatFileSize(file.size)})`);
     }
   };
 
   const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
-    e.target.classList.add('input-focus');
+    e.target.classList.add("input-focus");
   };
 
   const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
-    e.target.classList.remove('input-focus');
+    e.target.classList.remove("input-focus");
   };
 
   const handleButtonHover = (
@@ -166,14 +190,73 @@ const UploadPage = () => {
       | FocusEvent<HTMLButtonElement | HTMLAnchorElement>,
     hover: boolean
   ) => {
-    if(!loading) {
-      if(hover) {
-        (e.currentTarget as HTMLElement).classList.add('button-hover');
+    if (!loading && !authLoading) {
+      if (hover) {
+        (e.currentTarget as HTMLElement).classList.add("button-hover");
       } else {
-        (e.currentTarget as HTMLElement).classList.remove('button-hover');
+        (e.currentTarget as HTMLElement).classList.remove("button-hover");
       }
     }
   };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="upload-container">
+        <h2 className="upload-title">Video Upload Login</h2>
+
+        {authError && (
+          <div className="status-message status-error">{authError}</div>
+        )}
+
+        <form onSubmit={handleLogin}>
+          <div className="form-group">
+            <label className="form-label">
+              Username
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter username"
+                className="form-input"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                required
+                autoFocus
+              />
+            </label>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">
+              Password
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
+                className="form-input"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                required
+              />
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            disabled={authLoading}
+            className={`submit-button${authLoading ? " button-disabled" : ""}`}
+            onMouseOver={(e) => handleButtonHover(e, true)}
+            onMouseOut={(e) => handleButtonHover(e, false)}
+            onFocus={(e) => handleButtonHover(e, true)}
+            onBlur={(e) => handleButtonHover(e, false)}
+          >
+            {authLoading ? "Signing In..." : "Sign In"}
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="upload-container">
@@ -182,11 +265,11 @@ const UploadPage = () => {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label className="form-label">
-            Video Title{' '}
+            Video Title{" "}
             <input
               type="text"
               value={title}
-              onChange={(e) => handleInputChange(e, 'title')}
+              onChange={(e) => handleInputChange(e, "title")}
               placeholder="Enter video title"
               className="form-input"
               onFocus={handleFocus}
@@ -198,11 +281,11 @@ const UploadPage = () => {
 
         <div className="form-group">
           <label className="form-label">
-            Video Topic{' '}
+            Video Topic{" "}
             <input
               type="text"
               value={topic}
-              onChange={(e) => handleInputChange(e, 'topic')}
+              onChange={(e) => handleInputChange(e, "topic")}
               placeholder="Enter video topic/category"
               className="form-input"
               onFocus={handleFocus}
@@ -213,7 +296,7 @@ const UploadPage = () => {
 
         <div className="form-group">
           <label className="form-label">
-            Video File{' '}
+            Video File{" "}
             <input
               type="file"
               accept="video/*"
@@ -232,12 +315,13 @@ const UploadPage = () => {
         <button
           type="submit"
           disabled={loading}
-          className={`submit-button${loading ? ' button-disabled' : ''}`}
+          className={`submit-button${loading ? " button-disabled" : ""}`}
           onMouseOver={(e) => handleButtonHover(e, true)}
           onMouseOut={(e) => handleButtonHover(e, false)}
           onFocus={(e) => handleButtonHover(e, true)}
-          onBlur={(e) => handleButtonHover(e, false)}>
-          {loading ? 'Processing...' : 'Upload Video'}
+          onBlur={(e) => handleButtonHover(e, false)}
+        >
+          {loading ? "Processing..." : "Upload Video"}
         </button>
       </form>
 
@@ -248,8 +332,9 @@ const UploadPage = () => {
       {status && (
         <div
           className={`status-message${
-            videoUrl ? ' status-success' : ' status-error'
-          }`}>
+            videoUrl ? " status-success" : " status-error"
+          }`}
+        >
           {status}
         </div>
       )}
@@ -265,7 +350,8 @@ const UploadPage = () => {
             onMouseOver={(e) => handleButtonHover(e, true)}
             onMouseOut={(e) => handleButtonHover(e, false)}
             onFocus={(e) => handleButtonHover(e, true)}
-            onBlur={(e) => handleButtonHover(e, false)}>
+            onBlur={(e) => handleButtonHover(e, false)}
+          >
             View on Streamable →
           </a>
           <div className="video-url">{videoUrl}</div>
@@ -273,8 +359,8 @@ const UploadPage = () => {
       )}
 
       <div className="note">
-        <strong>Note:</strong> The upload process may take a few minutes depending on your file size
-        and internet connection.
+        <strong>Note:</strong> The upload process may take a few minutes
+        depending on your file size and internet connection.
       </div>
     </div>
   );

@@ -48,6 +48,7 @@ const Faq = () => {
             fontWeight: { xs: '550', md: '700 ' },
             fontSize: { xs: '28px', md: '48px' },
             color: '#2B2B2B',
+            textAlign:'center'
           }}
         >
           Got Some
@@ -61,6 +62,7 @@ const Faq = () => {
             fontWeight: { xs: '550', md: '700 ' },
             fontSize: { xs: '28px', md: '48px' },
             color: '#2B2B2B',
+            textAlign:'center'
           }}
         >
           We Have Answered them for you?
