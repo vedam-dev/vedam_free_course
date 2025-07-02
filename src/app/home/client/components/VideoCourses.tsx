@@ -81,7 +81,6 @@ export default function VideoCourses() {
     if(!user_id) {
       setSnackbarMsg('You must be logged in to mark as completed.');
       setSnackbarOpen(true);
-      return;
     } else {
       router.push(`/videos/${'shortcode' in firstVideo && firstVideo.shortcode ? firstVideo.shortcode : firstVideo.id}`);
     }

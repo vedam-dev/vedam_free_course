@@ -3,7 +3,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PersonIcon from '@mui/icons-material/Person';
 import StarIcon from '@mui/icons-material/Star';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Box, Card, Typography,useMediaQuery } from '@mui/material';
+import { Box, Card, Typography, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
 
@@ -27,14 +27,14 @@ interface CourseCardProps {
   onClick(): void;
 
 }
-const CourseCard: React.FC<CourseCardProps> = ({ course,onClick }) => {
+const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
   return (
     <Card
       sx={{
         display: 'flex',
         flexDirection: { xs: 'column', md: 'row' },
-        borderRadius:{ xs:'36px',md:'40px' } ,
+        borderRadius: { xs: '36px', md: '40px' },
         boxShadow: 3,
         overflow: 'hidden',
         minHeight: { xs: 'auto', md: 300 },
@@ -96,7 +96,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course,onClick }) => {
         <Box
           sx={{
             position: 'absolute',
-            right: { xs: '10px', sm:'30px', md: '40px' },
+            right: { xs: '10px', sm: '30px', md: '40px' },
             top: isMobile ? '55%' : '45%',
             transform: 'translateY(-50%)',
             display: 'flex',
@@ -174,10 +174,10 @@ const CourseCard: React.FC<CourseCardProps> = ({ course,onClick }) => {
                 ' 2px 2px   0 #000',
                 '0px  8px  0px #000',
               ].join(','),
-              mb: { sm:0.5,md:1 },
+              mb: { sm: 0.5, md: 1 },
             }}
           >
-            GOOGLE
+            {course.companyname}
           </Typography>
 
           <Typography
@@ -228,17 +228,17 @@ const CourseCard: React.FC<CourseCardProps> = ({ course,onClick }) => {
 
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '12px', mb: 1 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <PersonIcon sx={{ fontSize: { xs:15,md:20 }, color: '#666' }} />
+            <PersonIcon sx={{ fontSize: { xs: 15, md: 20 }, color: '#666' }} />
 
             <Typography
               variant="body2"
               sx={{
                 color: '#000',
                 fontFamily: 'Outfit, sans-serif',
-                fontSize:{ xs:'12px',md:'16px' },
+                fontSize: { xs: '12px', md: '16px' },
                 fontStyle: 'normal',
                 fontWeight: 400,
-                lineHeight: { xs:'18px', md:'36px' },
+                lineHeight: { xs: '18px', md: '36px' },
                 display: 'inline-block',
                 verticalAlign: 'text-top',
               }}
@@ -248,17 +248,17 @@ const CourseCard: React.FC<CourseCardProps> = ({ course,onClick }) => {
           </Box>
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <AccessTimeIcon sx={{ fontSize: { xs:15,md:20 }, color: '#666' }} />
+            <AccessTimeIcon sx={{ fontSize: { xs: 15, md: 20 }, color: '#666' }} />
 
             <Typography
               variant="body2"
               sx={{
                 color: '#000',
                 fontFamily: 'Outfit, sans-serif',
-                fontSize:{ xs:'12px',md:'16px' },
+                fontSize: { xs: '12px', md: '16px' },
                 fontStyle: 'normal',
                 fontWeight: 400,
-                lineHeight: { xs:'18px', md:'36px' },
+                lineHeight: { xs: '18px', md: '36px' },
                 display: 'inline-block',
                 verticalAlign: 'text-top',
               }}
@@ -270,17 +270,17 @@ const CourseCard: React.FC<CourseCardProps> = ({ course,onClick }) => {
 
         {course.viewed === 'true' && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 1 }}>
-            <VisibilityIcon sx={{ fontSize: { xs:15,md:20 }, color: '#666' }} />
+            <VisibilityIcon sx={{ fontSize: { xs: 15, md: 20 }, color: '#666' }} />
 
             <Typography
               variant="body2"
               sx={{
                 color: '#000',
                 fontFamily: 'Outfit, sans-serif',
-                fontSize:{ xs:'12px',md:'16px' },
+                fontSize: { xs: '12px', md: '16px' },
                 fontStyle: 'normal',
                 fontWeight: 400,
-                lineHeight: { xs:'18px', md:'36px' },
+                lineHeight: { xs: '18px', md: '36px' },
                 display: 'inline-block',
                 verticalAlign: 'text-top',
               }}
@@ -290,20 +290,20 @@ const CourseCard: React.FC<CourseCardProps> = ({ course,onClick }) => {
           </Box>
         )}
 
-        <Box sx={{ display: 'flex', gap: 0.5, mb: 3, alignItems:'center' }}>
-          <StarIcon sx={{ fontSize: { xs:15,md:20 }, color: '#666' }} />
+        <Box sx={{ display: 'flex', gap: 0.5, mb: 3, alignItems: 'center' }}>
+          <StarIcon sx={{ fontSize: { xs: 15, md: 20 }, color: '#666' }} />
 
           <Typography
             variant="body2"
             sx={{
               color: '#171717',
               fontFamily: 'Outfit, sans-serif',
-              fontSize:{ xs:'10px',md:'12px' },
+              fontSize: { xs: '10px', md: '12px' },
               fontStyle: 'normal',
               fontWeight: 300,
-              lineHeight: { xs:'18px', md:'36px' },
+              lineHeight: { xs: '18px', md: '36px' },
               display: 'inline-block',
-              textAlign:'left',
+              textAlign: 'left',
             }}
           >
             Used by top companies like {course.usedby}
@@ -320,7 +320,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course,onClick }) => {
           <BaseButton
             variant="contained"
             fullWidth
-            sx={{ fontSize: '16px', lineHeight:{ xs:'14px', md:'28px' }, textWrap: 'nowrap',order: { xs: 1, sm: 2 } }}
+            sx={{ fontSize: '16px', lineHeight: { xs: '14px', md: '28px' }, textWrap: 'nowrap', order: { xs: 1, sm: 2 } }}
             onClick={onClick}
           >
             Start Free
