@@ -9,7 +9,7 @@ import Snackbar from '@mui/material/Snackbar';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-import VideoPlayerCard from '../playVideo/client/components/VideoPlayerCard';
+import VideoPlayerCard from '../VideoPlayerCard';
 
 interface Video {
   shortcode: string;
