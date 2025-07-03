@@ -133,9 +133,14 @@ const VideoWatchPage = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+<<<<<<< Updated upstream
         minHeight: '100vh',
         width:'100%',
         paddingY: '20px',
+=======
+        minHeight: '80vh',
+        padding: '20px',
+>>>>>>> Stashed changes
         textAlign: 'center',
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         color: 'white'
@@ -147,10 +152,15 @@ const VideoWatchPage = () => {
           padding: '40px 30px',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
           border: '1px solid rgba(255, 255, 255, 0.2)',
+<<<<<<< Updated upstream
           width: '80%',
           maxWidth:'480px',
           display:'flex',
           flexDirection:'column'
+=======
+          maxWidth: '400px',
+          width: '100%'
+>>>>>>> Stashed changes
         }}>
           <Box sx={{
             fontSize: '60px',
@@ -172,7 +182,11 @@ const VideoWatchPage = () => {
             margin: '0',
             color: 'rgba(255, 255, 255, 0.9)'
           }}>
+<<<<<<< Updated upstream
             Open in Desktop to play Video <br/> Login on Desktop
+=======
+            Open in Desktop to play Video : Login on Desktop
+>>>>>>> Stashed changes
           </Typography>
         </Box>
       </Box>
@@ -181,6 +195,13 @@ const VideoWatchPage = () => {
 
   if(Object.keys(groupedVideos).length === 0) {
     return <Box style={{ padding: 32 }}>Loading...</Box>;
+<<<<<<< Updated upstream
+=======
+
+
+
+
+>>>>>>> Stashed changes
   }
 
   return (
