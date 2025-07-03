@@ -118,13 +118,13 @@ const VideoWatchPage = () => {
     }
   };
 
-  if(loading) return <div style={{ padding: 32 }}>Loading...</div>;
+  if(loading) return <Box style={{ padding: 32 }}>Loading...</Box>;
 
 
 
   if(isMobile) {
     return (
-      <div style={{
+      <Box sx={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -135,7 +135,7 @@ const VideoWatchPage = () => {
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         color: 'white'
       }}>
-        <div style={{
+        <Box sx={{
           background: 'rgba(255, 255, 255, 0.1)',
           backdropFilter: 'blur(10px)',
           borderRadius: '20px',
@@ -145,37 +145,37 @@ const VideoWatchPage = () => {
           maxWidth: '400px',
           width: '100%'
         }}>
-          <div style={{
+          <Box sx={{
             fontSize: '60px',
             marginBottom: '20px'
           }}>
             🖥️
-          </div>
-          <h2 style={{
+          </Box>
+          <Typography variant='h2' sx={{
             fontSize: '24px',
             fontWeight: 'bold',
             marginBottom: '15px',
             color: 'white'
           }}>
             Desktop Required
-          </h2>
-          <p style={{
+          </Typography>
+          <Typography variant='subtitle2' style={{
             fontSize: '18px',
             lineHeight: '1.6',
             margin: '0',
             color: 'rgba(255, 255, 255, 0.9)'
           }}>
             Open in Desktop to play Video : Login on Desktop
-          </p>
-        </div>
-      </div>
+          </Typography>
+        </Box>
+      </Box>
     );
   }
 
   return (
-    <div style={{ display: 'flex', minHeight: '80vh' }}>
+    <Box style={{ display: 'flex', minHeight: '80vh' }}>
       {/* Main Video Player */}
-      <div style={{ flex: 2, padding: 32 }}>
+      <Box style={{ flex: 2, padding: 32 }}>
         {currentVideo ? (
           <>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -252,11 +252,11 @@ const VideoWatchPage = () => {
             />
           </>
         ) : (
-          <div>Video not found.</div>
+          <Box>Video not found.</Box>
         )}
-      </div>
+      </Box>
       {/* Sidebar with all videos */}
-      <div style={{ flex: 1, borderLeft: '1px solid #eee', padding: 24, background: '#fafafa' }}>
+      <Box style={{ flex: 1, borderLeft: '1px solid #eee', padding: 24, background: '#fafafa' }}>
         <h3>All Videos</h3>
         {Object.entries(groupedVideos).map(([topic, vids]) => (
           <Accordion key={topic} defaultExpanded={true} sx={{ mb: 1 }}>
@@ -285,8 +285,8 @@ const VideoWatchPage = () => {
             </AccordionDetails>
           </Accordion>
         ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
