@@ -9,6 +9,7 @@ import Footer from '@/components/Footer';
 
 import UTMCaptureClient from '../components/UTMCaptureClient';
 import { store } from '../lib/store';
+import ClientGaurd from '@/components/ClientGuard';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -37,7 +38,9 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} ${outfit.className }`}>
         <Provider store={store}>
           <UTMCaptureClient>
+            <ClientGaurd>
             {children}
+            </ClientGaurd>
             <Footer />
           </UTMCaptureClient>
         </Provider>
