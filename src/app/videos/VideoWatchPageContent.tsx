@@ -2,7 +2,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Fade, Skeleton,Typography, useMediaQuery  } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Fade, Typography,useMediaQuery  } from '@mui/material';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
@@ -191,118 +191,25 @@ const VideoWatchPage = () => {
   }
 
   if(Object.keys(groupedVideos).length === 0) {
-    return <Box sx={{ p: 4 }}>
-      <Box
-        sx={{
-          display: 'flex',
-          minHeight: '99vh',
-        }}
-      >
-        <Box
-          sx={{
-            flex: 2,
-            p: 4,
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-            <Skeleton variant="circular" width={40} height={40} sx={{ mr: 1 }} />
-            <Skeleton variant="text" width="60%" height={40} />
-          </Box>
-
-          <Skeleton
-            variant="rectangular"
-            sx={{ pb: '56.25%', mb: 2, width: '100%', borderRadius:3 }}
-          />
-
-          <Skeleton variant="text" sx={{ mb: 1 }} />
-          <Skeleton variant="text" width="80%" sx={{ mb: 1 }} />
-          <Skeleton variant="text" width="90%" />
-
-          <Skeleton
-            variant="rectangular"
-            sx={{
-              mt: 3,
-              mb: 2,
-              px: 3,
-              py: 1,
-              borderRadius: 3,
-              boxShadow: 2,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 2,
-              minHeight: 36,
-              minWidth: 260,
-              width: 'auto',
-            }}
-            height={60}
-          />
-        </Box>
-
-        <Box
-          sx={{
-            flex: 1,
-            borderLeft: '1px solid #eee',
-            p: 3,
-            background: '#fafafa',
-            height: '85vh',
-            overflow: 'scroll',
-          }}
-        >
-          <Typography component="h3">
-            <Skeleton variant="text" width="70%" />
-          </Typography>
-          {Array.from(new Array(3)).map((_, index) => (
-            <Accordion key={index} defaultExpanded={true} sx={{ mb: 1 }}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography fontWeight={600}>
-                  <Skeleton variant="text" width="50%" />
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0 }}>
-                  {Array.from(new Array(4)).map((_, idx) => (
-                    <Box component="li" key={idx} sx={{ mb: 1, p: 1 }}>
-                      <Skeleton variant="text" width="90%" />
-                    </Box>
-                  ))}
-                </Box>
-              </AccordionDetails>
-            </Accordion>
-          ))}
-        </Box>
-      </Box>
-    </Box>;
+    return <Box style={{ padding: 32 }}>Loading...</Box>;
   }
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        minHeight: '99vh',
-      }}
-    >
-      <Box
-        sx={{
-          flex: 2,
-          p: 4,
-        }}
-      >
+    <Box style={{ display: 'flex', minHeight: '99vh' }}>
+      {/* Main Video Player */}
+      <Box style={{ flex: 2, padding: 32 }}>
         {currentVideo ? (
           <>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
               <IconButton onClick={() => router.replace('/home')} sx={{ mr: 1 }}>
                 <ArrowBackIcon />
               </IconButton>
-              <Typography variant="h4" component="h1" sx={{ m: 0 }}>
-                {currentVideo.title}
-              </Typography>
+              <h1 style={{ margin: 0 }}>{currentVideo.title}</h1>
             </Box>
 
-            <VideoPlayerCard shortcode={currentVideo.shortcode} />
+            <VideoPlayerCard shortcode={currentVideo.shortcode}/>
 
-            <Typography variant="body1" sx={{ mt: 2 }}>
-              {currentVideo.description}
-            </Typography>
+            <p>{currentVideo.description}</p>
             <Box
               sx={{
                 mt: 3,
@@ -317,50 +224,47 @@ const VideoWatchPage = () => {
                 backgroundColor: completed ? '#e6f9ed' : '#f5f5f5',
                 minHeight: 36,
                 minWidth: 260,
-                width: 'auto',
+                width:'auto',
                 position: 'relative',
                 overflow: 'hidden',
               }}
             >
-              {completed === undefined ? null : (
-                <>
-                  <Fade in={completed} timeout={400} unmountOnExit>
-                    <Box sx={{ display: 'flex', alignItems: 'center', position: 'absolute', left: 0, right: 0, justifyContent: 'space-between', px: 1 }}>
-                      <Typography sx={{ fontWeight: 600, fontSize: 20 }}>
+              {completed == undefined ? null :
+                <><Fade in={completed} timeout={400} unmountOnExit>
+                  <Box sx={{ display: 'flex', alignItems: 'center', position: 'absolute', left: 0, right: 0, justifyContent: 'space-between',px:1 }}>
+                    <Typography sx={{ fontWeight: 600, fontSize: 20 }}>
                       Your Progress :
+                    </Typography>
+                    <Box sx={{ display:'flex',alignItems:'center' }}>
+                      <CheckCircleIcon sx={{ color: '#2ecc40', fontSize: 24, mr: 1 }} />
+                      <Typography sx={{ color: '#218838',opacity:0.8, fontWeight: 600, fontSize: 20 }}>
+                      Completed
                       </Typography>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <CheckCircleIcon sx={{ color: '#2ecc40', fontSize: 24, mr: 1 }} />
-                        <Typography sx={{ color: '#218838', opacity: 0.8, fontWeight: 600, fontSize: 20 }}>
-                        Completed
-                        </Typography>
-                      </Box>
                     </Box>
-                  </Fade>
-                  <Fade in={!completed} timeout={400} unmountOnExit>
-                    <Box sx={{ display: 'flex', alignItems: 'center', position: 'absolute', left: 0, right: 0, justifyContent: 'space-between', px: 1 }}>
-                      <Typography sx={{ fontWeight: 600, fontSize: 18 }}>
+                  </Box>
+                </Fade>
+                <Fade in={!completed} timeout={400} unmountOnExit>
+                  <Box sx={{ display: 'flex', alignItems: 'center', position: 'absolute', left: 0, right: 0, justifyContent: 'space-between',px:1 }}>
+                    <Typography sx={{ fontWeight: 600, fontSize: 18 }}>
                       Your Progress :
-                      </Typography>
-                      <Button
-                        variant="contained"
-                        color="warning"
-                        sx={{
-                          fontWeight: 600,
-                          fontSize: 16,
-                          p: 1,
-                          my: 1.5,
-                          borderRadius: 3,
-                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
-                        }}
-                        onClick={handleMarkCompleted}
-                      >
-                      Mark as Completed
-                      </Button>
-                    </Box>
-                  </Fade>
-                </>
-              )}
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      color="warning"
+                      sx={{
+                        fontWeight: 600,
+                        fontSize: 16,
+                        p: 1,
+                        my: 1.5,
+                        borderRadius: 3,
+                        boxShadow: '0 2px 8px #0001',
+                      }}
+                      onClick={handleMarkCompleted}
+                    >
+                        Mark as Completed
+                    </Button>
+                  </Box>
+                </Fade></>}
             </Box>
             <Snackbar
               open={snackbarOpen}
@@ -370,53 +274,37 @@ const VideoWatchPage = () => {
             />
           </>
         ) : (
-          <Box>
-            <Typography variant="h6">Video not found.</Typography>
-          </Box>
+          <Box>Video not found.</Box>
         )}
       </Box>
 
-      <Box
-        sx={{
-          flex: 1,
-          borderLeft: '1px solid #eee',
-          p: 3,
-          background: '#fafafa',
-          height: '85vh',
-          overflow: 'scroll',
-        }}
-      >
-        <Typography variant="h5" component="h3" sx={{ mb: 2 }}>
-        All Videos
-        </Typography>
+      {/* Sidebar with all videos */}
+      <Box style={{ flex: 1, borderLeft: '1px solid #eee', padding: 24, background: '#fafafa', height:'85vh', overflow:'scroll' }}>
+        <h3>All Videos</h3>
         {Object.entries(groupedVideos).map(([topic, vids]) => (
           <Accordion key={topic} defaultExpanded={true} sx={{ mb: 1 }}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography fontWeight={600}>{topic}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0 }}>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 {vids.map((video) => (
-                  <Box
-                    component="li"
+                  <li
                     key={video.shortcode}
-                    sx={{
-                      mb: 1,
+                    style={{
+                      marginBottom: 8,
                       cursor: 'pointer',
                       background: video.shortcode === shortcode ? '#e0e7ff' : 'transparent',
-                      borderRadius: 1.5,
-                      p: 1,
+                      borderRadius: 6,
+                      padding: 8,
                       fontWeight: video.shortcode === shortcode ? 800 : 400,
-                      '&:hover': {
-                        backgroundColor: video.shortcode === shortcode ? '#e0e7ff' : 'grey.100',
-                      },
                     }}
-                    onClick={() => handleVideoClick(video.shortcode)}
+                    onClick={() => handleVideoClick(video.shortcode as string)}
                   >
                     {video.title}
-                  </Box>
+                  </li>
                 ))}
-              </Box>
+              </ul>
             </AccordionDetails>
           </Accordion>
         ))}
