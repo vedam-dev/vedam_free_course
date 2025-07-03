@@ -33,6 +33,7 @@ const VideoWatchPage = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState('');
   const [completed, setCompleted] = useState<boolean | undefined>(undefined);
+  const [expandedTopic, setExpandedTopic] = useState<string | false>(false);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -85,6 +86,16 @@ const VideoWatchPage = () => {
     }
 
   }, [currentVideo]);
+
+  // Find the topic containing the current video by shortcode
+  useEffect(() => {
+    if(!shortcode || Object.keys(groupedVideos).length === 0) return;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const foundTopic = Object.entries(groupedVideos).find(([topic, vids]) =>
+      vids.some(v => v.shortcode === shortcode)
+    )?.[0];
+    if(foundTopic) setExpandedTopic(foundTopic);
+  }, [shortcode, groupedVideos]);
 
   const handleVideoClick = (sc: string) => {
     const params = new URLSearchParams(searchParams.toString());

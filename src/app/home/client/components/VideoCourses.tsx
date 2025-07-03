@@ -15,6 +15,9 @@ import React, { useEffect, useState } from 'react';
 
 import BaseDecoration from '@/components/BaseDecoration';
 import CourseCard from '@/components/CourseCard';
+import OtpModal from '@/components/otp/OtpModal';
+
+import { useOtpModal } from '../../../../../hooks/useOtpModal';
 
 interface Video {
   id: string;
@@ -29,7 +32,7 @@ const courseData = [
       'linear-gradient(90deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
     color2:
       'linear-gradient(180deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
-    image: '/home/instructors/instructor.png',
+    image: '/home/instructors/subhesh.png',
     companyname: 'GOOGLE',
     level: 'Beginner',
     time: '4',
@@ -41,9 +44,9 @@ const courseData = [
       'linear-gradient(90deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
     color2:
       'linear-gradient(180deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
-    image: '/home/instructors/instructor.png',
+    image: '/home/instructors/nishant.png',
     companyname: 'MICROSOFT',
-    level: 'Intermediate',
+    level: 'Beginner',
     time: '6',
     viewed: 'false',
     usedby: 'Microsoft, Amazon, and Facebook',
@@ -76,10 +79,10 @@ const courseData = [
 
 const topicTemplateMap: Record<string, number> = {
   DSA: 0,
-  'Machine Learning': 1,
-  'Template 1': 2,
+  'Template 1': 1,
+  'Prompt Engineering': 1,
   'Template 2': 3,
-  'Template 3': 0,
+  'Machine Learning': 0,
 };
 
 export default function VideoCourses() {
@@ -91,6 +94,12 @@ export default function VideoCourses() {
   const [isLoading, setIsLoading] = useState(true);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState('');
+
+  const {
+    showOtpModal,
+    setShowOtpModal,
+    handleVerificationSuccess
+  } = useOtpModal();
 
   useEffect(() => {
     fetch('/api/content')
@@ -105,8 +114,9 @@ export default function VideoCourses() {
   const handleVideoCardClick = (firstVideo: Video) => {
     const user_id = localStorage.getItem('userId');
     if(!user_id) {
-      setSnackbarMsg('You must be logged in to watch the videos.');
-      setSnackbarOpen(true);
+      setShowOtpModal(true);
+      // setSnackbarMsg('You must be logged in to watch the videos.');
+      // setSnackbarOpen(true);
       return;
     }
 
@@ -426,6 +436,15 @@ export default function VideoCourses() {
           {snackbarMsg}
         </Alert>
       </Snackbar>
+      <OtpModal
+        open={showOtpModal}
+        onClose={() => setShowOtpModal(false)}
+        onVerificationSuccess={(userData) => {
+          handleVerificationSuccess(userData);
+          setSnackbarMsg('Account verified successfully!');
+          setSnackbarOpen(true);
+        }}
+      />
     </Container>
   );
 }
