@@ -84,7 +84,7 @@ const VideoWatchPage = () => {
   }, [currentVideo]);
 
   useEffect(() => {
-    if (currentVideo && currentVideo.topic) {
+    if(currentVideo && currentVideo.topic) {
       setExpandedTopic(currentVideo.topic);
     }
   }, [currentVideo]);
@@ -137,7 +137,7 @@ const VideoWatchPage = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: '80vh',
+        minHeight: '100vh',
         padding: '20px',
         textAlign: 'center',
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -263,27 +263,68 @@ const VideoWatchPage = () => {
         )}
       </div>
       {/* Sidebar with all videos */}
-      <div style={{ flex: 1, borderLeft: '1px solid #eee', padding: 24, background: '#fafafa',height:'90vh',overflow:'scroll' }}>
-        <h3>All Videos</h3>
+      <Box
+        sx={{
+          flex: 1,
+          borderLeft: '1px solid #eee',
+          p: 3,
+          background: '#fff',
+          height: '85vh',
+          overflow: 'scroll',
+          scrollbarWidth: 'none',
+          borderRadius: { md: '24px', xs: '0' },
+          boxShadow: { md: 3, xs: 0 },
+          mt: { md: 4, xs: 0 },
+          mx: { md: 2, xs: 0 },
+          fontFamily: 'Outfit, sans-serif',
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: 700,
+            mb: 3,
+            color: '#272727',
+            fontFamily: 'Outfit, sans-serif',
+            letterSpacing: 0.5,
+          }}
+        >
+          All Videos
+        </Typography>
         {Object.entries(groupedVideos).map(([topic, vids]) => (
           <Accordion
             key={topic}
             expanded={expandedTopic === topic}
             onChange={(_e, isExpanded) => setExpandedTopic(isExpanded ? topic : false)}
-            sx={{ mb: 1 }}
+            sx={{
+              mb: 2,
+              background: '#fff',
+              borderRadius: 3,
+              boxShadow: expandedTopic === topic ? 3 : 1,
+              border: expandedTopic === topic ? '2px solid #e0e7ff' : '1px solid #eee',
+              transition: 'box-shadow 0.2s, border 0.2s',
+              fontFamily: 'Outfit, sans-serif',
+              '&:before': {
+                display: 'none',
+              }
+            }}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               sx={{
-                backgroundColor: currentVideo && currentVideo.topic === topic && expandedTopic === topic ? '#e0e7ff' : 'transparent',
+                backgroundColor: expandedTopic === topic ? '#e0e7ff' : 'transparent',
                 borderRadius: 2,
                 fontWeight: currentVideo && currentVideo.topic === topic ? 700 : 600,
-                transition: 'background 0.2s',
+                fontFamily: 'Outfit, sans-serif',
+                color: '#272727',
+                minHeight: 56,
               }}
             >
-              <Typography fontWeight={currentVideo && currentVideo.topic === topic ? 700 : 600}>{topic}</Typography>
+              <Typography fontWeight={currentVideo && currentVideo.topic === topic ? 700 : 600} sx={{ fontFamily: 'Outfit, sans-serif', fontSize: 18 }}>
+                {topic}
+              </Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails sx={{ px: 2, py: 1 }}>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 {vids.map((video) => (
                   <li
@@ -292,9 +333,13 @@ const VideoWatchPage = () => {
                       marginBottom: 8,
                       cursor: 'pointer',
                       background: video.shortcode === shortcode ? '#e0e7ff' : 'transparent',
-                      borderRadius: 6,
-                      padding: 8,
+                      borderRadius: 8,
+                      padding: '10px 14px',
                       fontWeight: video.shortcode === shortcode ? 700 : 400,
+                      color: video.shortcode === shortcode ? '#4B2996' : '#272727',
+                      fontFamily: 'Outfit, sans-serif',
+                      fontSize: 16,
+                      transition: 'background 0.2s, color 0.2s',
                     }}
                     onClick={() => handleVideoClick(video.shortcode as string)}
                   >
@@ -305,7 +350,7 @@ const VideoWatchPage = () => {
             </AccordionDetails>
           </Accordion>
         ))}
-      </div>
+      </Box>
     </div>
   );
 };
