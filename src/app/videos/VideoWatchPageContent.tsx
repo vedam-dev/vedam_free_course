@@ -2,7 +2,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Fade, Typography,useMediaQuery  } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Fade, Skeleton, Typography, useMediaQuery  } from '@mui/material';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
@@ -191,7 +191,87 @@ const VideoWatchPage = () => {
   }
 
   if(Object.keys(groupedVideos).length === 0) {
-    return <Box style={{ padding: 32 }}>Loading...</Box>;
+    return <Box sx={{ p: 4 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          minHeight: '99vh',
+        }}
+      >
+        <Box
+          sx={{
+            flex: 2,
+            p: 4,
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <Skeleton variant="circular" width={40} height={40} sx={{ mr: 1 }} />
+            <Skeleton variant="text" width="60%" height={40} />
+          </Box>
+
+          <Skeleton
+            variant="rectangular"
+            sx={{ pb: '56.25%', mb: 2, width: '100%', borderRadius:3 }}
+          />
+
+          <Skeleton variant="text" sx={{ mb: 1 }} />
+          <Skeleton variant="text" width="80%" sx={{ mb: 1 }} />
+          <Skeleton variant="text" width="90%" />
+
+          <Skeleton
+            variant="rectangular"
+            sx={{
+              mt: 3,
+              mb: 2,
+              px: 3,
+              py: 1,
+              borderRadius: 3,
+              boxShadow: 2,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+              minHeight: 36,
+              minWidth: 260,
+              width: 'auto',
+            }}
+            height={60}
+          />
+        </Box>
+
+        <Box
+          sx={{
+            flex: 1,
+            borderLeft: '1px solid #eee',
+            p: 3,
+            background: '#fafafa',
+            height: '85vh',
+            overflow: 'scroll',
+          }}
+        >
+          <Typography component="h3">
+            <Skeleton variant="text" width="70%" />
+          </Typography>
+          {Array.from(new Array(3)).map((_, index) => (
+            <Accordion key={index} defaultExpanded={true} sx={{ mb: 1 }}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography fontWeight={600}>
+                  <Skeleton variant="text" width="50%" />
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0 }}>
+                  {Array.from(new Array(4)).map((_, idx) => (
+                    <Box component="li" key={idx} sx={{ mb: 1, p: 1 }}>
+                      <Skeleton variant="text" width="90%" />
+                    </Box>
+                  ))}
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </Box>
+      </Box>
+    </Box>;
   }
 
   return (
