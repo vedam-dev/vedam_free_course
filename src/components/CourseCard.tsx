@@ -82,7 +82,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
             src={course.image}
             alt={`${course.companyname} instructor`}
             width={isMobile ? 200 : 300}
-            height={isMobile ? 240 : 380}
+            height={isMobile ? 240 : 460}
             style={{
               alignSelf: 'flex-start',
               position: 'absolute',
