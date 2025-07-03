@@ -1,6 +1,6 @@
 'use client';
-import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 
 interface ClientGuardProps {
@@ -11,9 +11,9 @@ export default function ClientGuard({ children }: Readonly<ClientGuardProps>) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === '/') return;
+    if(pathname === '/') return;
     const userId = localStorage.getItem('userId');
-    if (!userId) {
+    if(!userId) {
       router.push('/');
     }
   }, [router, pathname]);

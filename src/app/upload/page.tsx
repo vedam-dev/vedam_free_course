@@ -24,24 +24,24 @@ const UploadPage = () => {
   const [uploadProgress, setUploadProgress] = useState<string>('');
 
 
-    const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authError, setAuthError] = useState("");
+  const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
 
-    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setAuthError("");
+    setAuthError('');
     setAuthLoading(true);
 
-    if (
+    if(
       username === process.env.NEXT_PUBLIC_ADMIN_USERNAME &&
       password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD
     ) {
       setIsAuthenticated(true);
     } else {
-      setAuthError("Invalid credentials");
+      setAuthError('Invalid credentials');
       setAuthLoading(false);
     }
   };
@@ -247,67 +247,67 @@ const UploadPage = () => {
 
   if(isGDrive) {
 
-    if (!isAuthenticated) {
-    return (
-      <div className="upload-container">
-        <h2 className="upload-title">Video Upload Login</h2>
+    if(!isAuthenticated) {
+      return (
+        <div className="upload-container">
+          <h2 className="upload-title">Video Upload Login</h2>
 
-        {authError && (
-          <div className="status-message status-error">{authError}</div>
-        )}
+          {authError && (
+            <div className="status-message status-error">{authError}</div>
+          )}
 
-        <form onSubmit={handleLogin}>
-          <div className="form-group">
-            <label className="form-label">
+          <form onSubmit={handleLogin}>
+            <div className="form-group">
+              <label className="form-label">
               Username
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter username"
-                className="form-input"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                required
-                autoFocus
-              />
-            </label>
-          </div>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Enter username"
+                  className="form-input"
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  required
+                  autoFocus
+                />
+              </label>
+            </div>
 
-          <div className="form-group">
-            <label className="form-label">
+            <div className="form-group">
+              <label className="form-label">
               Password
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                className="form-input"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                required
-              />
-            </label>
-          </div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  className="form-input"
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  required
+                />
+              </label>
+            </div>
 
-          <button
-            type="submit"
-            disabled={authLoading}
-            className={`submit-button${authLoading ? " button-disabled" : ""}`}
-            onMouseOver={(e) => handleButtonHover(e, true)}
-            onMouseOut={(e) => handleButtonHover(e, false)}
-            onFocus={(e) => handleButtonHover(e, true)}
-            onBlur={(e) => handleButtonHover(e, false)}
-          >
-            {authLoading ? "Signing In..." : "Sign In"}
-          </button>
-        </form>
-      </div>
-    );
-  }
+            <button
+              type="submit"
+              disabled={authLoading}
+              className={`submit-button${authLoading ? ' button-disabled' : ''}`}
+              onMouseOver={(e) => handleButtonHover(e, true)}
+              onMouseOut={(e) => handleButtonHover(e, false)}
+              onFocus={(e) => handleButtonHover(e, true)}
+              onBlur={(e) => handleButtonHover(e, false)}
+            >
+              {authLoading ? 'Signing In...' : 'Sign In'}
+            </button>
+          </form>
+        </div>
+      );
+    }
 
 
-  
+
     return (
       <div className="upload-container">
         <h2 className="upload-title">Add Google Drive Video</h2>

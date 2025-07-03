@@ -5,11 +5,11 @@ import { Provider } from 'react-redux';
 
 import './globals.css';
 
+import ClientGaurd from '@/components/ClientGuard';
 import Footer from '@/components/Footer';
 
 import UTMCaptureClient from '../components/UTMCaptureClient';
 import { store } from '../lib/store';
-import ClientGaurd from '@/components/ClientGuard';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -39,7 +39,7 @@ export default function RootLayout({
         <Provider store={store}>
           <UTMCaptureClient>
             <ClientGaurd>
-            {children}
+              {children}
             </ClientGaurd>
             <Footer />
           </UTMCaptureClient>

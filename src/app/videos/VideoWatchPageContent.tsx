@@ -6,10 +6,10 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Fade, Typography } 
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
-import { useParams, useRouter } from 'next/navigation';
+import { usePathname, useRouter,useSearchParams  } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-import VideoPlayerCard from '../VideoPlayerCard';
+import VideoPlayerCard from './VideoPlayerCard';
 
 interface Video {
   shortcode: string;
@@ -23,11 +23,11 @@ interface Video {
 }
 
 const VideoWatchPage = () => {
-  const params = useParams();
   const router = useRouter();
-  const { id: shortcode } = params as { id: string };
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const shortcode = searchParams.get('v') ?? '';
   const [currentVideo, setCurrentVideo] = useState<Video | null>(null);
-  const [loading, setLoading] = useState(true);
   const [groupedVideos, setGroupedVideos] = useState<Record<string, Video[]>>({});
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState('');
@@ -35,7 +35,6 @@ const VideoWatchPage = () => {
 
   useEffect(() => {
     const fetchVideos = async () => {
-      setLoading(true);
       const res = await fetch('/api/content');
       const json = await res.json();
       // Flatten grouped content
@@ -43,14 +42,21 @@ const VideoWatchPage = () => {
       setGroupedVideos(json.data || {});
       const found = allVideos.find((v) => v.shortcode === shortcode);
       setCurrentVideo(found || null);
-      setLoading(false);
     };
     fetchVideos();
-  }, [shortcode]);
+  }, []);
+
+  useEffect(() => {
+    if(Object.keys(groupedVideos).length === 0) return;
+
+    const allVideos = Object.values(groupedVideos).flat();
+    const found = allVideos.find(v => v.shortcode === shortcode);
+    setCurrentVideo(found || null);
+  }, [shortcode, groupedVideos]);
 
   useEffect(() => {
     // Fetch progress for this user and video
-    setLoading(true);
+    if(!currentVideo) return;
 
     const user_id = localStorage.getItem('userId');
     if(user_id && currentVideo) {
@@ -76,13 +82,15 @@ const VideoWatchPage = () => {
           }
         });
     }
-    setLoading(false);
 
   }, [currentVideo]);
 
   const handleVideoClick = (sc: string) => {
-    router.push(`/videos/${sc}`);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('v', sc);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
+
 
   const handleMarkCompleted = async () => {
     if(!currentVideo) return;
@@ -117,7 +125,9 @@ const VideoWatchPage = () => {
     }
   };
 
-  if(loading) return <div style={{ padding: 32 }}>Loading...</div>;
+  if(Object.keys(groupedVideos).length === 0) {
+    return <div style={{ padding: 32 }}>Loading...</div>;
+  }
 
   return (
     <div style={{ display: 'flex', minHeight: '80vh' }}>
