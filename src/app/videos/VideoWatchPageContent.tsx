@@ -8,7 +8,6 @@ import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
 import { usePathname, useRouter,useSearchParams  } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-
 import VideoPlayerCard from './VideoPlayerCard';
 
 interface Video {
@@ -24,7 +23,6 @@ interface Video {
 
 const VideoWatchPage = () => {
   const isMobile = useMediaQuery('(max-width:1200px)');
-  const params = useParams();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
