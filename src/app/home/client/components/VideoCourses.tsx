@@ -32,7 +32,7 @@ const courseData = [
       'linear-gradient(90deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
     color2:
       'linear-gradient(180deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
-    image: '/home/instructors/instructor.png',
+    image: '/home/instructors/subhesh.png',
     companyname: 'GOOGLE',
     level: 'Beginner',
     time: '4',
@@ -44,7 +44,7 @@ const courseData = [
       'linear-gradient(90deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
     color2:
       'linear-gradient(180deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
-    image: '/home/instructors/instructor.png',
+    image: '/home/instructors/nishant.png',
     companyname: 'MICROSOFT',
     level: 'Intermediate',
     time: '6',
