@@ -171,7 +171,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     }
 
     if(isVerified) {
-      return; 
+      return;
     }
 
     setError(null);
@@ -232,7 +232,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
             console.error('No userId found in database response');
             setError('User data saved but ID not found. Please contact support.');
             setIsLoading(false);
-            setIsVerified(false); 
+            setIsVerified(false);
             return;
           }
 
@@ -275,7 +275,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
         } catch(dbError) {
           console.error('Error saving to database:', dbError);
           setError('Verification successful but failed to save data. Please try again.');
-          setIsVerified(false); 
+          setIsVerified(false);
         }
       } else {
         setError('OTP service not initialized. Please try again.');
@@ -283,7 +283,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     } catch(error) {
       console.error('Error verifying OTP:', error);
       setError('Invalid OTP. Please try again.');
-      setIsVerified(false); 
+      setIsVerified(false);
     } finally {
       setIsLoading(false);
     }
@@ -292,7 +292,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
   const handleResendOTP = () => {
     setOtp('');
     setError(null);
-    setIsVerified(false); 
+    setIsVerified(false);
     handleSendOTP();
   };
 
@@ -301,7 +301,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     setOtp('');
     setError(null);
     setSuccess(null);
-    setIsVerified(false); 
+    setIsVerified(false);
   };
 
   const handleModalClose = () => {
@@ -313,7 +313,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     setPhoneNumber('');
     setError(null);
     setSuccess(null);
-    setIsVerified(false); 
+    setIsVerified(false);
     setTouched({
       fullName: false,
       email: false,
