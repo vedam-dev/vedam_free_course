@@ -15,6 +15,9 @@ import React, { useEffect, useState } from 'react';
 
 import BaseDecoration from '@/components/BaseDecoration';
 import CourseCard from '@/components/CourseCard';
+import OtpModal from '@/components/otp/OtpModal';
+
+import { useOtpModal } from '../../../../../hooks/useOtpModal';
 
 interface Video {
   id: string;
@@ -92,6 +95,12 @@ export default function VideoCourses() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState('');
 
+  const {
+    showOtpModal,
+    setShowOtpModal,
+    handleVerificationSuccess
+  } = useOtpModal();
+
   useEffect(() => {
     fetch('/api/content')
       .then((res) => res.json())
@@ -105,8 +114,9 @@ export default function VideoCourses() {
   const handleVideoCardClick = (firstVideo: Video) => {
     const user_id = localStorage.getItem('userId');
     if(!user_id) {
-      setSnackbarMsg('You must be logged in to watch the videos.');
-      setSnackbarOpen(true);
+      setShowOtpModal(true);
+      // setSnackbarMsg('You must be logged in to watch the videos.');
+      // setSnackbarOpen(true);
       return;
     }
 
@@ -426,6 +436,15 @@ export default function VideoCourses() {
           {snackbarMsg}
         </Alert>
       </Snackbar>
+      <OtpModal
+        open={showOtpModal}
+        onClose={() => setShowOtpModal(false)}
+        onVerificationSuccess={(userData) => {
+          handleVerificationSuccess(userData);
+          setSnackbarMsg('Account verified successfully!');
+          setSnackbarOpen(true);
+        }}
+      />
     </Container>
   );
 }
