@@ -1,5 +1,15 @@
 'use client';
-import { Alert, Box, Container, Divider, Skeleton,Snackbar, Stack ,Typography, useMediaQuery } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Container,
+  Divider,
+  Skeleton,
+  Snackbar,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -10,12 +20,15 @@ interface Video {
   id: string;
   title: string;
   topic: string;
+  shortcode?: string;
 }
 
 const courseData = [
   {
-    color: 'linear-gradient(90deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
-    color2: 'linear-gradient(180deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
+    color:
+      'linear-gradient(90deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
+    color2:
+      'linear-gradient(180deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
     image: '/home/instructors/instructor.png',
     companyname: 'GOOGLE',
     level: 'Beginner',
@@ -24,8 +37,10 @@ const courseData = [
     usedby: 'Google, Microsoft, and Adobe',
   },
   {
-    color: 'linear-gradient(90deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
-    color2: 'linear-gradient(180deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
+    color:
+      'linear-gradient(90deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
+    color2:
+      'linear-gradient(180deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
     image: '/home/instructors/instructor.png',
     companyname: 'MICROSOFT',
     level: 'Intermediate',
@@ -34,8 +49,10 @@ const courseData = [
     usedby: 'Microsoft, Amazon, and Facebook',
   },
   {
-    color: 'linear-gradient(90deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
-    color2: 'linear-gradient(180deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
+    color:
+      'linear-gradient(90deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
+    color2:
+      'linear-gradient(180deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
     image: '/home/instructors/instructor.png',
     companyname: 'ADOBE',
     level: 'Advanced',
@@ -44,8 +61,10 @@ const courseData = [
     usedby: 'Adobe, Google, and Netflix',
   },
   {
-    color: 'linear-gradient(90deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)',
-    color2: 'linear-gradient(180deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)',
+    color:
+      'linear-gradient(90deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)',
+    color2:
+      'linear-gradient(180deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)',
     image: '/home/instructors/instructor.png',
     companyname: 'AMAZON',
     level: 'Beginner',
@@ -56,7 +75,7 @@ const courseData = [
 ];
 
 const topicTemplateMap: Record<string, number> = {
-  'DSA': 0,
+  DSA: 0,
   'Machine Learning': 1,
   'Template 1': 2,
   'Template 2': 3,
@@ -65,7 +84,9 @@ const topicTemplateMap: Record<string, number> = {
 
 export default function VideoCourses() {
   const isMobile = useMediaQuery('(max-width:600px)');
-  const [groupedContent, setGroupedContent] = useState<Record<string, Video[]>>({});
+  const [groupedContent, setGroupedContent] = useState<Record<string, Video[]>>(
+    {}
+  );
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -86,9 +107,12 @@ export default function VideoCourses() {
     if(!user_id) {
       setSnackbarMsg('You must be logged in to watch the videos.');
       setSnackbarOpen(true);
-    } else {
-      router.push(`/videos/${'shortcode' in firstVideo && firstVideo.shortcode ? firstVideo.shortcode : firstVideo.id}`);
+      return;
     }
+
+    // Safely get the shortcode or fallback to id
+    const videoIdentifier = firstVideo.shortcode ?? firstVideo.id;
+    router.push(`/videos?v=${encodeURIComponent(videoIdentifier)}`);
   };
 
   return (
@@ -107,14 +131,15 @@ export default function VideoCourses() {
             fontWeight: 500,
             fontSize: { xs: '20px', md: '30px', lg: '40px' },
             color: '#000',
-            textAlign: { xs:'center',md:'left' },
+            textAlign: { xs: 'center', md: 'left' },
             marginBottom: {
-              xs:'24px',
-              md:'48px'
+              xs: '24px',
+              md: '48px',
             },
           }}
         >
-          Build for coders who want to {' '}<BaseDecoration>start early</BaseDecoration>
+          Build for coders who want to{' '}
+          <BaseDecoration>start early</BaseDecoration>
         </Typography>
 
         <Box
@@ -326,11 +351,28 @@ export default function VideoCourses() {
                       height: 220,
                     }}
                   />
-                  <Box sx={{ flex: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <Box
+                    sx={{
+                      flex: 2,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                    }}
+                  >
                     <Box>
                       <Skeleton width="70%" height={30} animation="wave" />
-                      <Skeleton width="100%" height={24} animation="wave" sx={{ mt: 1 }} />
-                      <Skeleton width="80%" height={20} animation="wave" sx={{ mt: 1 }} />
+                      <Skeleton
+                        width="100%"
+                        height={24}
+                        animation="wave"
+                        sx={{ mt: 1 }}
+                      />
+                      <Skeleton
+                        width="80%"
+                        height={20}
+                        animation="wave"
+                        sx={{ mt: 1 }}
+                      />
                     </Box>
                     <Skeleton
                       variant="rectangular"
@@ -343,7 +385,8 @@ export default function VideoCourses() {
                 </Box>
               ))
               : Object.entries(groupedContent).map(([topic, videos], idx) => {
-                const templateIdx = topicTemplateMap[topic] ?? idx % courseData.length;
+                const templateIdx =
+                    topicTemplateMap[topic] ?? idx % courseData.length;
                 const ref = courseData[templateIdx];
                 const firstVideo = videos[0];
                 return (
@@ -368,7 +411,6 @@ export default function VideoCourses() {
               })}
           </Stack>
         </Box>
-
       </Box>
       <Snackbar
         open={snackbarOpen}
@@ -376,7 +418,11 @@ export default function VideoCourses() {
         onClose={() => setSnackbarOpen(false)}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert onClose={() => setSnackbarOpen(false)} severity="warning" sx={{ width: '100%' }}>
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity="warning"
+          sx={{ width: '100%' }}
+        >
           {snackbarMsg}
         </Alert>
       </Snackbar>
