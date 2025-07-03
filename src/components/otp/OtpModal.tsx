@@ -7,6 +7,7 @@ import {
   Button,
   CircularProgress,
   Divider,
+  Fade,
   IconButton,
   InputAdornment,
   Modal,
@@ -57,6 +58,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     email: false,
     phoneNumber: false,
   });
+  const [isVerified, setIsVerified] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -168,6 +170,10 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
       return;
     }
 
+    if(isVerified) {
+      return; 
+    }
+
     setError(null);
     setIsLoading(true);
 
@@ -185,6 +191,9 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
         // Wait for OTP verification to complete
         await verifyOtpPromise;
         console.log('OTP verified successfully');
+
+        // Mark as verified to prevent re-verification
+        setIsVerified(true);
 
         try {
           // Save user data to database
@@ -223,6 +232,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
             console.error('No userId found in database response');
             setError('User data saved but ID not found. Please contact support.');
             setIsLoading(false);
+            setIsVerified(false); 
             return;
           }
 
@@ -257,14 +267,15 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
             phone: phoneNumber,
           });
 
-          // Close modal after a short delay
+          // Close modal with fade effect after a short delay
           setTimeout(() => {
             setSuccess(null);
             handleModalClose();
-          }, 1500);
+          }, 2000);
         } catch(dbError) {
           console.error('Error saving to database:', dbError);
           setError('Verification successful but failed to save data. Please try again.');
+          setIsVerified(false); 
         }
       } else {
         setError('OTP service not initialized. Please try again.');
@@ -272,6 +283,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     } catch(error) {
       console.error('Error verifying OTP:', error);
       setError('Invalid OTP. Please try again.');
+      setIsVerified(false); 
     } finally {
       setIsLoading(false);
     }
@@ -280,6 +292,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
   const handleResendOTP = () => {
     setOtp('');
     setError(null);
+    setIsVerified(false); 
     handleSendOTP();
   };
 
@@ -288,6 +301,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     setOtp('');
     setError(null);
     setSuccess(null);
+    setIsVerified(false); 
   };
 
   const handleModalClose = () => {
@@ -299,6 +313,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     setPhoneNumber('');
     setError(null);
     setSuccess(null);
+    setIsVerified(false); 
     setTouched({
       fullName: false,
       email: false,
@@ -306,7 +321,6 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     });
     onClose();
   };
-
 
   useEffect(() => {
     if(open) {
@@ -333,143 +347,146 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
       onClose={handleModalClose}
       aria-labelledby="otp-modal-title"
       aria-describedby="otp-modal-description"
+      closeAfterTransition
     >
-      <Box sx={modalStyle} position="relative">
-        <IconButton onClick={handleModalClose} sx={{ position: 'absolute', top: 12, right: 12 }} aria-label="close">
-          <CloseIcon />
-        </IconButton>
+      <Fade in={open} timeout={500}>
+        <Box sx={modalStyle} position="relative">
+          <IconButton onClick={handleModalClose} sx={{ position: 'absolute', top: 12, right: 12 }} aria-label="close">
+            <CloseIcon />
+          </IconButton>
 
-        <Typography id="otp-modal-title" variant="h6" mb={2}>
-          {step === 'enterPhone' ? 'Enter Your Details' : 'Verify OTP'}
-        </Typography>
+          <Typography id="otp-modal-title" variant="h6" mb={2}>
+            {step === 'enterPhone' ? 'Enter Your Details' : 'Verify OTP'}
+          </Typography>
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error}
+            </Alert>
+          )}
 
-        {success && (
-          <Alert severity="success" sx={{ mb: 2 }}>
-            {success}
-          </Alert>
-        )}
+          {success && (
+            <Alert severity="success" sx={{ mb: 2 }}>
+              {success}
+            </Alert>
+          )}
 
-        {step === 'enterPhone' ? (
-          <>
-            <StyledInput
-              label="Full Name"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              onBlur={handleBlur('fullName')}
-              error={touched.fullName && errors.fullName}
-              helperText={touched.fullName && errors.fullName ? 'Name must be at least 3 characters' : ''}
-              placeholder="Enter your full name"
-            />
+          {step === 'enterPhone' ? (
+            <>
+              <StyledInput
+                label="Full Name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                onBlur={handleBlur('fullName')}
+                error={touched.fullName && errors.fullName}
+                helperText={touched.fullName && errors.fullName ? 'Name must be at least 3 characters' : ''}
+                placeholder="Enter your full name"
+              />
 
-            <StyledInput
-              label="Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onBlur={handleBlur('email')}
-              error={touched.email && errors.email}
-              helperText={touched.email && errors.email ? 'Please enter a valid email' : ''}
-              placeholder="Enter your email"
-            />
+              <StyledInput
+                label="Email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onBlur={handleBlur('email')}
+                error={touched.email && errors.email}
+                helperText={touched.email && errors.email ? 'Please enter a valid email' : ''}
+                placeholder="Enter your email"
+              />
 
-            <StyledInput
-              label="Mobile No."
-              type="tel"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
-              onBlur={handleBlur('phoneNumber')}
-              error={touched.phoneNumber && errors.phoneNumber}
-              helperText={touched.phoneNumber && errors.phoneNumber ? 'Please enter a valid 10-digit number' : ''}
-              placeholder="Enter your phone number"
-              inputProps={{ maxLength: 10 }}
-              startAdornment={<InputAdornment position="start">+91</InputAdornment>}
-            />
+              <StyledInput
+                label="Mobile No."
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
+                onBlur={handleBlur('phoneNumber')}
+                error={touched.phoneNumber && errors.phoneNumber}
+                helperText={touched.phoneNumber && errors.phoneNumber ? 'Please enter a valid 10-digit number' : ''}
+                placeholder="Enter your phone number"
+                inputProps={{ maxLength: 10 }}
+                startAdornment={<InputAdornment position="start">+91</InputAdornment>}
+              />
 
-            <Box display="flex" justifyContent="flex-end" gap={2} mt={3}>
-              <Button
-                variant="contained"
-                onClick={handleSendOTP}
-                disabled={isLoading}
-                fullWidth
-                sx={{
-                  backgroundColor: '#FFA41A',
-                  borderRadius: '12px',
-                  height: '56px',
-                }}
-                startIcon={isLoading ? <CircularProgress size={20} /> : null}
-              >
-                {isLoading ? 'Sending...' : 'Send OTP'}
-              </Button>
-            </Box>
-          </>
-        ) : (
-          <>
-            <Typography variant="body1" mb={2}>
-              OTP sent to +91{phoneNumber}
-            </Typography>
-
-            <StyledInput
-              label="OTP"
-              type="text"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-              placeholder="Enter 4-digit OTP"
-              inputProps={{ maxLength: 4 }}
-            />
-
-            <Box display="flex" justifyContent="space-between" alignItems="center" mt={1}>
-              <Box>
+              <Box display="flex" justifyContent="flex-end" gap={2} mt={3}>
                 <Button
-                  variant="text"
-                  size="small"
-                  onClick={handleResendOTP}
+                  variant="contained"
+                  onClick={handleSendOTP}
                   disabled={isLoading}
-                  sx={{ mr: 1, color: '#6C10BC' }}
+                  fullWidth
+                  sx={{
+                    backgroundColor: '#FFA41A',
+                    borderRadius: '12px',
+                    height: '56px',
+                  }}
+                  startIcon={isLoading ? <CircularProgress size={20} /> : null}
                 >
-                  Resend OTP
-                </Button>
-                <Button
-                  variant="text"
-                  size="small"
-                  onClick={handleUpdateNumber}
-                  disabled={isLoading}
-                  sx={{ ml: 1, color: '#6C10BC' }}
-                >
-                  Update Number
+                  {isLoading ? 'Sending...' : 'Send OTP'}
                 </Button>
               </Box>
-              <Typography variant="caption" color="text.secondary">
-                Valid for 5 minutes
+            </>
+          ) : (
+            <>
+              <Typography variant="body1" mb={2}>
+                OTP sent to +91{phoneNumber}
               </Typography>
-            </Box>
 
-            <Divider sx={{ my: 2 }} />
+              <StyledInput
+                label="OTP"
+                type="text"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+                placeholder="Enter 4-digit OTP"
+                inputProps={{ maxLength: 4 }}
+              />
 
-            <Box display="flex" justifyContent="flex-end" gap={2}>
-              <Button
-                variant="contained"
-                onClick={handleVerifyOTP}
-                disabled={isLoading || otp.length !== 4}
-                fullWidth
-                sx={{
-                  backgroundColor: '#FFA41A',
-                  borderRadius: '16px',
-                  height: '56px',
-                }}
-                startIcon={isLoading ? <CircularProgress size={20} /> : null}
-              >
-                {isLoading ? 'Verifying...' : 'Verify'}
-              </Button>
-            </Box>
-          </>
-        )}
-      </Box>
+              <Box display="flex" justifyContent="space-between" alignItems="center" mt={1}>
+                <Box>
+                  <Button
+                    variant="text"
+                    size="small"
+                    onClick={handleResendOTP}
+                    disabled={isLoading}
+                    sx={{ mr: 1, color: '#6C10BC' }}
+                  >
+                    Resend OTP
+                  </Button>
+                  <Button
+                    variant="text"
+                    size="small"
+                    onClick={handleUpdateNumber}
+                    disabled={isLoading}
+                    sx={{ ml: 1, color: '#6C10BC' }}
+                  >
+                    Update Number
+                  </Button>
+                </Box>
+                <Typography variant="caption" color="text.secondary">
+                  Valid for 5 minutes
+                </Typography>
+              </Box>
+
+              <Divider sx={{ my: 2 }} />
+
+              <Box display="flex" justifyContent="flex-end" gap={2}>
+                <Button
+                  variant="contained"
+                  onClick={handleVerifyOTP}
+                  disabled={isLoading || otp.length !== 4 || isVerified}
+                  fullWidth
+                  sx={{
+                    backgroundColor: isVerified ? '#4CAF50' : '#FFA41A',
+                    borderRadius: '16px',
+                    height: '56px',
+                  }}
+                  startIcon={isLoading ? <CircularProgress size={20} /> : null}
+                >
+                  {isLoading ? 'Verifying...' : isVerified ? 'Verified' : 'Verify'}
+                </Button>
+              </Box>
+            </>
+          )}
+        </Box>
+      </Fade>
     </Modal>
   );
 }
