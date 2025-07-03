@@ -84,7 +84,7 @@ export default function VideoCourses() {
   const handleVideoCardClick = (firstVideo: Video) => {
     const user_id = localStorage.getItem('userId');
     if(!user_id) {
-      setSnackbarMsg('You must be logged in to mark as completed.');
+      setSnackbarMsg('You must be logged in to watch the videos.');
       setSnackbarOpen(true);
     } else {
       router.push(`/videos/${'shortcode' in firstVideo && firstVideo.shortcode ? firstVideo.shortcode : firstVideo.id}`);

@@ -27,9 +27,9 @@ const FOOTER_LINKS: FooterColumn[] = [
   {
     title: 'Quick Links',
     links: [
-      { label: 'Terms of use', href: '/terms-of-use' },
-      { label: 'Privacy Policy', href: '/privacy-policy' },
-      { label: 'Refund Policy', href: '/refund-policy' },
+      { label: 'Terms of use', href: 'https://vedam.org/terms-of-use' },
+      { label: 'Privacy Policy', href: 'https://vedam.org/privacy-policy' },
+      { label: 'Refund Policy', href: 'https://vedam.org/refund-policy' },
     ],
   },
   {
@@ -157,6 +157,7 @@ const Footer: React.FC = () => {
                       href={link.href}
                       color="inherit"
                       underline="hover"
+                      target="_blank"
                       sx={{
                         fontSize: { xs: 14, sm: 16 },
                         '&:hover': { color: '#FFA41A' },

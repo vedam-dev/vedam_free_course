@@ -1,4 +1,5 @@
 'use client';
+
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Alert,
@@ -11,13 +12,12 @@ import {
   Modal,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { setIsLoggedIn, setMobile, setUserId, setUsername } from '@/lib/store';
 
 import StyledInput from '../shared/StyledInput';
-
 
 // Validation functions
 const validateEmail = (email: string) => {
@@ -34,20 +34,16 @@ const validateName = (name: string) => {
 };
 
 interface OtpModalProps {
-  open: boolean;
-  onClose: () => void;
+  open: boolean
+  onClose: () => void
   onVerificationSuccess: (userData: {
-    name: string;
-    email: string;
-    phone: string;
-  }) => void;
+    name: string
+    email: string
+    phone: string
+  }) => void
 }
 
-export default function OtpModal({
-  open,
-  onClose,
-  onVerificationSuccess,
-}: OtpModalProps) {
+export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpModalProps) {
   const [otp, setOtp] = useState('');
   const [step, setStep] = useState<'enterPhone' | 'enterOTP'>('enterPhone');
   const [isLoading, setIsLoading] = useState(false);
@@ -61,6 +57,7 @@ export default function OtpModal({
     email: false,
     phoneNumber: false,
   });
+
   const dispatch = useDispatch();
 
   const handleBlur = (field: keyof typeof touched) => () => {
@@ -92,9 +89,7 @@ export default function OtpModal({
 
     try {
       // Using MSG91 widget method
-      const formattedPhone = phoneNumber.startsWith('91')
-        ? phoneNumber
-        : `91${phoneNumber}`;
+      const formattedPhone = phoneNumber.startsWith('91') ? phoneNumber : `91${phoneNumber}`;
 
       if(window.sendOtp) {
         window.sendOtp(
@@ -109,7 +104,7 @@ export default function OtpModal({
             console.error('Error sending OTP:', error);
             setError('Failed to send OTP. Please try again.');
             setIsLoading(false);
-          }
+          },
         );
       } else {
         setError('OTP service not initialized. Please try again.');
@@ -123,9 +118,9 @@ export default function OtpModal({
   };
 
   const saveUserToDatabase = async (userData: {
-    name: string;
-    email: string;
-    phone: string;
+    name: string
+    email: string
+    phone: string
   }) => {
     try {
       const response = await fetch('/api/users', {
@@ -153,6 +148,20 @@ export default function OtpModal({
     }
   };
 
+  // Helper function to safely set localStorage
+  const setLocalStorageItem = (key: string, value: string) => {
+    try {
+      localStorage.setItem(key, value);
+      // Verify it was set correctly
+      const stored = localStorage.getItem(key);
+      if(stored !== value) {
+        console.warn(`Failed to set localStorage item: ${key}`);
+      }
+    } catch(error) {
+      console.error('Error setting localStorage:', error);
+    }
+  };
+
   const handleVerifyOTP = async () => {
     if(!otp || otp.length !== 4) {
       setError('Please enter a valid 4-digit OTP');
@@ -164,64 +173,106 @@ export default function OtpModal({
 
     try {
       if(window.verifyOtp) {
-        window.verifyOtp(
-          otp,
-          async () => {
-            console.log('OTP verified successfully');
+        // Create a promise to handle the OTP verification
+        const verifyOtpPromise = new Promise<void>((resolve, reject) => {
+          window.verifyOtp(
+            otp,
+            () => resolve(),
+            (error: unknown) => reject(error),
+          );
+        });
 
-            try {
-              // Save user data to database
-              const dbResult = await saveUserToDatabase({
-                name: fullName,
-                email: email,
-                phone: phoneNumber,
-              });
+        // Wait for OTP verification to complete
+        await verifyOtpPromise;
+        console.log('OTP verified successfully');
 
-              setSuccess('Verification successful! Data saved.');
+        try {
+          // Save user data to database
+          const dbResult = await saveUserToDatabase({
+            name: fullName,
+            email: email,
+            phone: phoneNumber,
+          });
 
-              // Store user_id and mobile in Redux
-              if(dbResult && dbResult.user && (dbResult.user.id || dbResult.user._id)) {
-                const userId = dbResult.user.id || dbResult.user._id;
-                dispatch(setUserId(userId));
-                localStorage.setItem('userId', userId);
-              }
-              dispatch(setMobile(phoneNumber));
-              dispatch(setIsLoggedIn(true));
-              dispatch(setUsername(fullName));
-              localStorage.setItem('isLoggedIn', 'true');
-              localStorage.setItem('username', fullName);
+          // Try multiple ways to extract userId from the response
+          let userId = null;
 
-              // Call the success callback with user data
-              onVerificationSuccess({
-                name: fullName,
-                email: email,
-                phone: phoneNumber,
-              });
-
-              setTimeout(() => {
-                setSuccess(null);
-                handleModalClose();
-              }, 1500);
-            } catch(dbError) {
-              console.error('Error saving to database:', dbError);
-              setError('Verification successful but failed to save data. Please try again.');
-            }
-
-            setIsLoading(false);
-          },
-          (error: unknown) => {
-            console.error('Error verifying OTP:', error);
-            setError('Invalid OTP. Please try again.');
-            setIsLoading(false);
+          // Check common response structures
+          if(dbResult?.id) {
+            userId = dbResult.id;
+          } else if(dbResult?._id) {
+            userId = dbResult._id;
+          } else if(dbResult?.user?.id) {
+            userId = dbResult.user.id;
+          } else if(dbResult?.user?._id) {
+            userId = dbResult.user._id;
+          } else if(dbResult?.data?.id) {
+            userId = dbResult.data.id;
+          } else if(dbResult?.data?._id) {
+            userId = dbResult.data._id;
+          } else if(dbResult?.insertedId) {
+            userId = dbResult.insertedId;
+          } else if(dbResult?.result?.insertedId) {
+            userId = dbResult.result.insertedId;
+          } else if(Array.isArray(dbResult?.user) && dbResult.user.length > 0) {
+            // Handle case where user is an array (like your response)
+            userId = dbResult.user[0]?.id || dbResult.user[0]?._id;
           }
-        );
+
+          if(!userId) {
+            console.error('No userId found in database response');
+            setError('User data saved but ID not found. Please contact support.');
+            setIsLoading(false);
+            return;
+          }
+
+          console.log('User authenticated successfully with ID:', userId);
+
+          // Update Redux state first
+          dispatch(setUserId(userId));
+          dispatch(setMobile(phoneNumber));
+          dispatch(setUsername(fullName));
+          dispatch(setIsLoggedIn(true));
+
+          // Set localStorage items with verification
+          setLocalStorageItem('userId', String(userId));
+          setLocalStorageItem('isLoggedIn', 'true');
+          setLocalStorageItem('username', fullName);
+          setLocalStorageItem('mobile', phoneNumber);
+
+          // Verify localStorage was set correctly
+          const storedUserId = localStorage.getItem('userId');
+          console.log('Stored userId in localStorage:', storedUserId);
+
+          if(storedUserId !== String(userId)) {
+            console.error('localStorage userId mismatch!', { expected: userId, stored: storedUserId });
+          }
+
+          setSuccess('Verification successful! Data saved.');
+
+          // Call the success callback with user data
+          onVerificationSuccess({
+            name: fullName,
+            email: email,
+            phone: phoneNumber,
+          });
+
+          // Close modal after a short delay
+          setTimeout(() => {
+            setSuccess(null);
+            handleModalClose();
+          }, 1500);
+        } catch(dbError) {
+          console.error('Error saving to database:', dbError);
+          setError('Verification successful but failed to save data. Please try again.');
+        }
       } else {
         setError('OTP service not initialized. Please try again.');
-        setIsLoading(false);
       }
     } catch(error) {
       console.error('Error verifying OTP:', error);
-      setError('Verification failed. Please try again.');
+      setError('Invalid OTP. Please try again.');
+    } finally {
       setIsLoading(false);
     }
   };
@@ -256,6 +307,13 @@ export default function OtpModal({
     onClose();
   };
 
+
+  useEffect(() => {
+    if(open) {
+      console.log('Modal opened, current localStorage userId:', localStorage.getItem('userId'));
+    }
+  }, [open]);
+
   const modalStyle = {
     position: 'absolute',
     top: '50%',
@@ -277,11 +335,7 @@ export default function OtpModal({
       aria-describedby="otp-modal-description"
     >
       <Box sx={modalStyle} position="relative">
-        <IconButton
-          onClick={handleModalClose}
-          sx={{ position: 'absolute', top: 12, right: 12 }}
-          aria-label="close"
-        >
+        <IconButton onClick={handleModalClose} sx={{ position: 'absolute', top: 12, right: 12 }} aria-label="close">
           <CloseIcon />
         </IconButton>
 
@@ -309,13 +363,10 @@ export default function OtpModal({
               onChange={(e) => setFullName(e.target.value)}
               onBlur={handleBlur('fullName')}
               error={touched.fullName && errors.fullName}
-              helperText={
-                touched.fullName && errors.fullName
-                  ? 'Name must be at least 3 characters'
-                  : ''
-              }
+              helperText={touched.fullName && errors.fullName ? 'Name must be at least 3 characters' : ''}
               placeholder="Enter your full name"
             />
+
             <StyledInput
               label="Email"
               type="email"
@@ -323,33 +374,23 @@ export default function OtpModal({
               onChange={(e) => setEmail(e.target.value)}
               onBlur={handleBlur('email')}
               error={touched.email && errors.email}
-              helperText={
-                touched.email && errors.email
-                  ? 'Please enter a valid email'
-                  : ''
-              }
+              helperText={touched.email && errors.email ? 'Please enter a valid email' : ''}
               placeholder="Enter your email"
             />
+
             <StyledInput
               label="Mobile No."
               type="tel"
               value={phoneNumber}
-              onChange={(e) =>
-                setPhoneNumber(e.target.value.replace(/\D/g, ''))
-              }
+              onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
               onBlur={handleBlur('phoneNumber')}
               error={touched.phoneNumber && errors.phoneNumber}
-              helperText={
-                touched.phoneNumber && errors.phoneNumber
-                  ? 'Please enter a valid 10-digit number'
-                  : ''
-              }
+              helperText={touched.phoneNumber && errors.phoneNumber ? 'Please enter a valid 10-digit number' : ''}
               placeholder="Enter your phone number"
               inputProps={{ maxLength: 10 }}
-              startAdornment={
-                <InputAdornment position="start">+91</InputAdornment>
-              }
+              startAdornment={<InputAdornment position="start">+91</InputAdornment>}
             />
+
             <Box display="flex" justifyContent="flex-end" gap={2} mt={3}>
               <Button
                 variant="contained"
@@ -372,6 +413,7 @@ export default function OtpModal({
             <Typography variant="body1" mb={2}>
               OTP sent to +91{phoneNumber}
             </Typography>
+
             <StyledInput
               label="OTP"
               type="text"
@@ -380,12 +422,8 @@ export default function OtpModal({
               placeholder="Enter 4-digit OTP"
               inputProps={{ maxLength: 4 }}
             />
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              mt={1}
-            >
+
+            <Box display="flex" justifyContent="space-between" alignItems="center" mt={1}>
               <Box>
                 <Button
                   variant="text"
@@ -410,7 +448,9 @@ export default function OtpModal({
                 Valid for 5 minutes
               </Typography>
             </Box>
+
             <Divider sx={{ my: 2 }} />
+
             <Box display="flex" justifyContent="flex-end" gap={2}>
               <Button
                 variant="contained"
@@ -437,8 +477,8 @@ export default function OtpModal({
 // Extend Window interface for MSG91 methods
 declare global {
   interface Window {
-    sendOtp: (phone: string, success: () => void, error: (err: unknown) => void) => void;
-    verifyOtp: (otp: string, success: () => void, error: (err: unknown) => void) => void;
-    initSendOTP: (config: unknown) => void;
+    sendOtp: (phone: string, success: () => void, error: (err: unknown) => void) => void
+    verifyOtp: (otp: string, success: () => void, error: (err: unknown) => void) => void
+    initSendOTP: (config: unknown) => void
   }
 }
