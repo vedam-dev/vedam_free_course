@@ -19,6 +19,7 @@ interface Video {
   thumbnail_url?: string;
   embedCode?: string;
   streamableUrl?: string;
+  topic?: string;
   [key: string]: unknown;
 }
 
@@ -33,6 +34,7 @@ const VideoWatchPage = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState('');
   const [completed, setCompleted] = useState<boolean | undefined>(undefined);
+  const [expandedTopic, setExpandedTopic] = useState<string | false>(false);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -79,6 +81,12 @@ const VideoWatchPage = () => {
     }
     setLoading(false);
 
+  }, [currentVideo]);
+
+  useEffect(() => {
+    if (currentVideo && currentVideo.topic) {
+      setExpandedTopic(currentVideo.topic);
+    }
   }, [currentVideo]);
 
   const handleVideoClick = (sc: string) => {
@@ -173,9 +181,9 @@ const VideoWatchPage = () => {
   }
 
   return (
-    <Box style={{ display: 'flex', minHeight: '80vh' }}>
+    <div style={{ display: 'flex', minHeight: '99vh' }}>
       {/* Main Video Player */}
-      <Box style={{ flex: 2, padding: 32 }}>
+      <div style={{ flex: 2, padding: 16 }}>
         {currentVideo ? (
           <>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -187,7 +195,6 @@ const VideoWatchPage = () => {
 
             <VideoPlayerCard shortcode={currentVideo.shortcode}/>
 
-            <p>{currentVideo.description}</p>
             <Box
               sx={{
                 mt: 3,
@@ -254,14 +261,27 @@ const VideoWatchPage = () => {
         ) : (
           <Box>Video not found.</Box>
         )}
-      </Box>
+      </div>
       {/* Sidebar with all videos */}
-      <Box style={{ flex: 1, borderLeft: '1px solid #eee', padding: 24, background: '#fafafa' }}>
+      <div style={{ flex: 1, borderLeft: '1px solid #eee', padding: 24, background: '#fafafa',height:'90vh',overflow:'scroll' }}>
         <h3>All Videos</h3>
         {Object.entries(groupedVideos).map(([topic, vids]) => (
-          <Accordion key={topic} defaultExpanded={true} sx={{ mb: 1 }}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography fontWeight={600}>{topic}</Typography>
+          <Accordion
+            key={topic}
+            expanded={expandedTopic === topic}
+            onChange={(_e, isExpanded) => setExpandedTopic(isExpanded ? topic : false)}
+            sx={{ mb: 1 }}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              sx={{
+                backgroundColor: currentVideo && currentVideo.topic === topic && expandedTopic === topic ? '#e0e7ff' : 'transparent',
+                borderRadius: 2,
+                fontWeight: currentVideo && currentVideo.topic === topic ? 700 : 600,
+                transition: 'background 0.2s',
+              }}
+            >
+              <Typography fontWeight={currentVideo && currentVideo.topic === topic ? 700 : 600}>{topic}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
@@ -285,8 +305,8 @@ const VideoWatchPage = () => {
             </AccordionDetails>
           </Accordion>
         ))}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 
