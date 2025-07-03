@@ -17,7 +17,7 @@ const VideoPlayerCard: React.FC<VideoPlayerCardProps> = ({ shortcode }) => {
     <Box
       sx={{
         position: 'relative',
-        paddingTop: '56.25%', // 16:9
+        paddingTop: '56.25%',
         width: '100%',
         borderRadius: 2,
         overflow: 'hidden',
