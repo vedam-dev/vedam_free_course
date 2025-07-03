@@ -137,7 +137,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
 
       if(!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to save user data');
+        throw new Error(errorData.error ?? 'Failed to save user data');
       }
 
       const data = await response.json();
@@ -216,7 +216,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
             userId = dbResult.result.insertedId;
           } else if(Array.isArray(dbResult?.user) && dbResult.user.length > 0) {
             // Handle case where user is an array (like your response)
-            userId = dbResult.user[0]?.id || dbResult.user[0]?._id;
+            userId = dbResult.user[0]?.id ?? dbResult.user[0]?._id;
           }
 
           if(!userId) {
