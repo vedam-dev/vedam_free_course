@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
 import { usePathname, useRouter,useSearchParams  } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+
 import VideoPlayerCard from './VideoPlayerCard';
 
 interface Video {
@@ -130,55 +131,55 @@ const VideoWatchPage = () => {
 
 
 
-  if(isMobile) {
-    return (
-      <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '80vh',
-        padding: '20px',
-        textAlign: 'center',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        color: 'white'
-      }}>
+    if(isMobile) {
+      return (
         <Box sx={{
-          background: 'rgba(255, 255, 255, 0.1)',
-          backdropFilter: 'blur(10px)',
-          borderRadius: '20px',
-          padding: '40px 30px',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          maxWidth: '400px',
-          width: '100%'
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '80vh',
+          padding: '20px',
+          textAlign: 'center',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          color: 'white'
         }}>
           <Box sx={{
-            fontSize: '60px',
-            marginBottom: '20px'
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: '20px',
+            padding: '40px 30px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            maxWidth: '400px',
+            width: '100%'
           }}>
+            <Box sx={{
+              fontSize: '60px',
+              marginBottom: '20px'
+            }}>
             🖥️
-          </Box>
-          <Typography variant='h2' sx={{
-            fontSize: '24px',
-            fontWeight: 'bold',
-            marginBottom: '15px',
-            color: 'white'
-          }}>
+            </Box>
+            <Typography variant='h2' sx={{
+              fontSize: '24px',
+              fontWeight: 'bold',
+              marginBottom: '15px',
+              color: 'white'
+            }}>
             Desktop Required
-          </Typography>
-          <Typography variant='subtitle2' style={{
-            fontSize: '18px',
-            lineHeight: '1.6',
-            margin: '0',
-            color: 'rgba(255, 255, 255, 0.9)'
-          }}>
+            </Typography>
+            <Typography variant='subtitle2' style={{
+              fontSize: '18px',
+              lineHeight: '1.6',
+              margin: '0',
+              color: 'rgba(255, 255, 255, 0.9)'
+            }}>
             Open in Desktop to play Video : Login on Desktop
-          </Typography>
+            </Typography>
+          </Box>
         </Box>
-      </Box>
-    );
-  }
+      );
+    }
   }
 
   return (
