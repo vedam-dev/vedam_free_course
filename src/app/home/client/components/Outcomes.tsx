@@ -44,7 +44,7 @@ const data = [
     content: 'Get an edge over your peers on coding skills',
     bgcolor: '#D8E5FF',
     bordercolor: '#6381BD',
-    hasLineGap:'false'
+    hasLineGap:false
   },
 ];
 

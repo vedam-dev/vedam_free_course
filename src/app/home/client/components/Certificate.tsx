@@ -83,7 +83,7 @@ const Certificate: React.FC = () => {
 
         <Box
           component="img"
-          src="/assets/certificate/certificate.png"
+          src="/certificate.jpg"
           alt="Certificate"
           sx={{
             width: { xs:'95%', md: '600px', lg:'960px' },
