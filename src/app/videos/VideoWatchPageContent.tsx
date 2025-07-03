@@ -46,7 +46,7 @@ const VideoWatchPage = () => {
       setCurrentVideo(found || null);
     };
     fetchVideos();
-  }, []);
+  }, [shortcode]);
 
   useEffect(() => {
     if(Object.keys(groupedVideos).length === 0) return;
@@ -359,35 +359,51 @@ const VideoWatchPage = () => {
       </Box>
 
       {/* Sidebar with all videos */}
-      <Box style={{ flex: 1, borderLeft: '1px solid #eee', padding: 24, background: '#fafafa', height:'85vh', overflow:'scroll' }}>
+      <Box style={{ flex: 1, borderLeft: '1px solid #eee', padding: 8, background: '#fafafa', height:'85vh', overflow:'scroll' }}>
         <h3>All Videos</h3>
-        {Object.entries(groupedVideos).map(([topic, vids]) => (
-          <Accordion key={topic} defaultExpanded={true} sx={{ mb: 1 }}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography fontWeight={600}>{topic}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                {vids.map((video) => (
-                  <li
-                    key={video.shortcode}
-                    style={{
-                      marginBottom: 8,
-                      cursor: 'pointer',
-                      background: video.shortcode === shortcode ? '#e0e7ff' : 'transparent',
-                      borderRadius: 6,
-                      padding: 8,
-                      fontWeight: video.shortcode === shortcode ? 800 : 400,
-                    }}
-                    onClick={() => handleVideoClick(video.shortcode as string)}
-                  >
-                    {video.title}
-                  </li>
-                ))}
-              </ul>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+        {Object.entries(groupedVideos).map(([topic, vids]) => {
+          const isTopicOfCurrentVideo = vids.some(v => v.shortcode === shortcode);
+          return (
+            <Accordion
+              key={topic}
+              expanded={expandedTopic === topic}
+              onChange={(_e, isExpanded) => setExpandedTopic(isExpanded ? topic : false)}
+              sx={{ mb: 1 }}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                sx={{
+                  // backgroundColor: isTopicOfCurrentVideo ? '#e0e7ff' : 'transparent',
+                  borderRadius: 2,
+                  fontWeight: isTopicOfCurrentVideo ? 800 : 500,
+                  transition: 'background 0.2s',
+                }}
+              >
+                <Typography fontWeight={isTopicOfCurrentVideo ? 700 : 600}>{topic}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  {vids.map((video) => (
+                    <li
+                      key={video.shortcode}
+                      style={{
+                        marginBottom: 8,
+                        cursor: 'pointer',
+                        background: video.shortcode === shortcode ? '#e0e7ff' : 'transparent',
+                        borderRadius: 6,
+                        padding: 8,
+                        fontWeight: video.shortcode === shortcode ? 800 : 400,
+                      }}
+                      onClick={() => handleVideoClick(video.shortcode as string)}
+                    >
+                      {video.title}
+                    </li>
+                  ))}
+                </ul>
+              </AccordionDetails>
+            </Accordion>
+          );
+        })}
       </Box>
     </Box>
   );
