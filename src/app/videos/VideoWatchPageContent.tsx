@@ -126,64 +126,65 @@ const VideoWatchPage = () => {
     }
   };
 
-  if(Object.keys(groupedVideos).length === 0) {
-    return <Box style={{ padding: 32 }}>Loading...</Box>;
-
-
-
-    if(isMobile) {
-      return (
+  if(isMobile) {
+    return (
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        width:'100%',
+        paddingY: '20px',
+        textAlign: 'center',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        color: 'white'
+      }}>
         <Box sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '80vh',
-          padding: '20px',
-          textAlign: 'center',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white'
+          background: 'rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '20px',
+          padding: '40px 30px',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          width: '80%',
+          maxWidth:'480px',
+          display:'flex',
+          flexDirection:'column'
         }}>
           <Box sx={{
-            background: 'rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(10px)',
-            borderRadius: '20px',
-            padding: '40px 30px',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            maxWidth: '400px',
-            width: '100%'
+            fontSize: '60px',
+            marginBottom: '20px'
           }}>
-            <Box sx={{
-              fontSize: '60px',
-              marginBottom: '20px'
-            }}>
             🖥️
-            </Box>
-            <Typography variant='h2' sx={{
-              fontSize: '24px',
-              fontWeight: 'bold',
-              marginBottom: '15px',
-              color: 'white'
-            }}>
-            Desktop Required
-            </Typography>
-            <Typography variant='subtitle2' style={{
-              fontSize: '18px',
-              lineHeight: '1.6',
-              margin: '0',
-              color: 'rgba(255, 255, 255, 0.9)'
-            }}>
-            Open in Desktop to play Video : Login on Desktop
-            </Typography>
           </Box>
+          <Typography variant='h2' sx={{
+            fontSize: '24px',
+            fontWeight: 'bold',
+            marginBottom: '15px',
+            color: 'white'
+          }}>
+            Desktop Required
+          </Typography>
+          <Typography variant='subtitle2' style={{
+            fontSize: '18px',
+            lineHeight: '1.6',
+            margin: '0',
+            color: 'rgba(255, 255, 255, 0.9)'
+          }}>
+            Open in Desktop to play Video <br/> Login on Desktop
+          </Typography>
         </Box>
-      );
-    }
+      </Box>
+    );
+  }
+
+  if(Object.keys(groupedVideos).length === 0) {
+    return <Box style={{ padding: 32 }}>Loading...</Box>;
   }
 
   return (
-    <Box style={{ display: 'flex', minHeight: '80vh' }}>
+    <Box style={{ display: 'flex', minHeight: '99vh' }}>
       {/* Main Video Player */}
       <Box style={{ flex: 2, padding: 32 }}>
         {currentVideo ? (
@@ -265,8 +266,9 @@ const VideoWatchPage = () => {
           <Box>Video not found.</Box>
         )}
       </Box>
+
       {/* Sidebar with all videos */}
-      <Box style={{ flex: 1, borderLeft: '1px solid #eee', padding: 24, background: '#fafafa' }}>
+      <Box style={{ flex: 1, borderLeft: '1px solid #eee', padding: 24, background: '#fafafa', height:'85vh', overflow:'scroll' }}>
         <h3>All Videos</h3>
         {Object.entries(groupedVideos).map(([topic, vids]) => (
           <Accordion key={topic} defaultExpanded={true} sx={{ mb: 1 }}>
@@ -284,7 +286,7 @@ const VideoWatchPage = () => {
                       background: video.shortcode === shortcode ? '#e0e7ff' : 'transparent',
                       borderRadius: 6,
                       padding: 8,
-                      fontWeight: video.shortcode === shortcode ? 700 : 400,
+                      fontWeight: video.shortcode === shortcode ? 800 : 400,
                     }}
                     onClick={() => handleVideoClick(video.shortcode as string)}
                   >
