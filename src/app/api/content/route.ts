@@ -10,7 +10,7 @@ export async function GET() {
       .select('*')
       .not('topic', 'is', null)
       .order('topic', { ascending: true })
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: true });
 
     if(error) throw error;
 

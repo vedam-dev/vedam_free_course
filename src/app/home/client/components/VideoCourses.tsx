@@ -46,7 +46,7 @@ const courseData = [
       'linear-gradient(180deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
     image: '/home/instructors/nishant.png',
     companyname: 'MICROSOFT',
-    level: 'Intermediate',
+    level: 'Beginner',
     time: '6',
     viewed: 'false',
     usedby: 'Microsoft, Amazon, and Facebook',
@@ -79,10 +79,10 @@ const courseData = [
 
 const topicTemplateMap: Record<string, number> = {
   DSA: 0,
-  'Machine Learning': 1,
-  'Template 1': 2,
+  'Template 1': 1,
+  'Prompt Engineering': 1,
   'Template 2': 3,
-  'Template 3': 0,
+  'Machine Learning': 0,
 };
 
 export default function VideoCourses() {
