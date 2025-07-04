@@ -48,7 +48,7 @@ const courseData = [
     companyname: 'MICROSOFT',
     level: 'Beginner',
     time: '6',
-    viewed: 'false',
+    viewed: 'true',
     usedby: 'Microsoft, Amazon, and Facebook',
   },
   {
