@@ -296,7 +296,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
                 verticalAlign: 'text-top',
               }}
             >
-              Viewed
+              Popular
             </Typography>
           </Box>
         )}
