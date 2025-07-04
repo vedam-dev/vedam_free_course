@@ -176,7 +176,7 @@ const VideoInfo: React.FC = () => {
         <Box sx={{ position: 'relative', borderRadius: 4, overflow: 'hidden', pt: '56.25%' }}>
           {playing ? (
             <iframe
-              src="https://www.youtube.com/embed/R9moRoww1s4?si=VpQFQESryXAuR0_L"
+              src="https://www.youtube.com/embed/vhf1ApCTKY8?si=VpQFQESryXAuR0_L&autoplay=1"
               title="Tech Minds Behind Vedam"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -196,7 +196,7 @@ const VideoInfo: React.FC = () => {
             <>
               <Box
                 component="img"
-                src="/home/videoInfo/videoThumbnail.jpeg"
+                src="/home/thumbnail.jpg"
                 alt="Tech Minds Behind Vedam"
                 sx={{
                   position: 'absolute',
