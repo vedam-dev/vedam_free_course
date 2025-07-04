@@ -34,6 +34,7 @@ const VideoWatchPage = () => {
   const [snackbarMsg, setSnackbarMsg] = useState('');
   const [completed, setCompleted] = useState<boolean | undefined>(undefined);
   const [expandedTopic, setExpandedTopic] = useState<string | false>(false);
+  const [showSkeleton, setShowSkeleton] = useState(false);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -50,10 +51,15 @@ const VideoWatchPage = () => {
 
   useEffect(() => {
     if(Object.keys(groupedVideos).length === 0) return;
+    setShowSkeleton(true);
+    const timer = setTimeout(() => {
+      setShowSkeleton(false);
+    }, 300);
 
     const allVideos = Object.values(groupedVideos).flat();
     const found = allVideos.find(v => v.shortcode === shortcode);
     setCurrentVideo(found || null);
+    return () => clearTimeout(timer);
   }, [shortcode, groupedVideos]);
 
   useEffect(() => {
@@ -213,11 +219,6 @@ const VideoWatchPage = () => {
             variant="rectangular"
             sx={{ pb: '56.25%', mb: 2, width: '100%', borderRadius:3 }}
           />
-
-          <Skeleton variant="text" sx={{ mb: 1 }} />
-          <Skeleton variant="text" width="80%" sx={{ mb: 1 }} />
-          <Skeleton variant="text" width="90%" />
-
           <Skeleton
             variant="rectangular"
             sx={{
@@ -278,7 +279,44 @@ const VideoWatchPage = () => {
     <Box style={{ display: 'flex', minHeight: '99vh' }}>
       {/* Main Video Player */}
       <Box style={{ flex: 2, padding: 32 }}>
-        {currentVideo ? (
+        {showSkeleton || !currentVideo ? (
+          <>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb:1 }}>
+              <Skeleton variant="circular" width={40} height={30} sx={{ mr: 1 }} />
+              <Skeleton variant="text" width="60%" height={40} />
+            </Box>
+
+            <Skeleton
+              variant="rectangular"
+              sx={{
+                position: 'relative',
+                paddingTop: '56.25%',
+                width: '100%',
+                borderRadius: 2,
+                overflow: 'hidden',
+              }}
+            />
+
+            <Skeleton
+              variant="rectangular"
+              sx={{
+                mt: 3,
+                mb: 2,
+                px: 3,
+                py: 1,
+                borderRadius: 3,
+                boxShadow: 2,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
+                minHeight: 36,
+                minWidth: 260,
+                width: 'auto',
+              }}
+              height={30}
+            />
+          </>
+        ) : (
           <>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
               <IconButton onClick={() => router.replace('/home')} sx={{ mr: 1 }}>
@@ -353,8 +391,6 @@ const VideoWatchPage = () => {
               message={snackbarMsg}
             />
           </>
-        ) : (
-          <Box>Video not found.</Box>
         )}
       </Box>
 
