@@ -105,7 +105,7 @@ const Outcomes = () => {
               >
                 {item.featured && (
                   <Image
-                    src="/home/star.png"
+                    src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/others/star.png"
                     alt="Featured"
                     width={isMobile ? 65 : 100}
                     height={isMobile ? 65 : 100}
