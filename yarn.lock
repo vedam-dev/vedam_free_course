@@ -3331,6 +3331,11 @@ next@15.3.4:
     "@next/swc-win32-x64-msvc" "15.3.4"
     sharp "^0.34.1"
 
+nodemailer@^7.0.4:
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-7.0.4.tgz#1204ca673026e93155d4a46eaa7c498a30fdd72a"
+  integrity sha512-9O00Vh89/Ld2EcVCqJ/etd7u20UhME0f/NToPfArwPEe1Don1zy4mAIz6ariRr7mJ2RDxtaDzN0WJVdVXPtZaw==
+
 oauth-sign@~0.9.0:
   version "0.9.0"
   resolved "https://registry.npmjs.org/oauth-sign/-/oauth-sign-0.9.0.tgz"
