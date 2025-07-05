@@ -66,7 +66,7 @@ const VideoPlayerCard: React.FC<VideoPlayerCardProps> = ({ shortcode }) => {
         }}
       >
         <Image
-          src="/home/videoInfo/VedamLogo.png"
+          src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/home/logo.png"
           alt="Vedam Logo"
           fill
           style={{ objectFit: 'contain' }}

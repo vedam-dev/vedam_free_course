@@ -20,7 +20,7 @@ const Certificate: React.FC = () => {
           left: 0,
           width: '100%',
           height: '100%',
-          backgroundImage: 'url("/assets/certificate/certificateBackground.png")',
+          backgroundImage: 'url("https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/certificate/certificateBackground.png")',
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
@@ -83,7 +83,7 @@ const Certificate: React.FC = () => {
 
         <Box
           component="img"
-          src="/certificate.jpg"
+          src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/certificate/certificate.jpg"
           alt="Certificate"
           sx={{
             width: { xs:'95%', md: '600px', lg:'960px' },
