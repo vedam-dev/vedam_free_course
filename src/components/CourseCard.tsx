@@ -4,10 +4,10 @@ import PersonIcon from '@mui/icons-material/Person';
 import StarIcon from '@mui/icons-material/Star';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Box, Card, Typography, useMediaQuery } from '@mui/material';
-import Image from 'next/image';
 import React from 'react';
 
 import BaseButton from './BaseButton';
+import OptimizedImage from './OptimizedImage';
 
 type Course = {
   id: string;
@@ -51,11 +51,12 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
           zIndex: 0,
         }}
       >
-        <Image
+        <OptimizedImage
           src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/instructor/eclipse.png"
           alt="Eclipse background"
           width={isMobile ? 500 : 600}
           height={isMobile ? 600 : 700}
+          sizes="(max-width: 600px) 500px, 600px"
           style={{
             position:'absolute',
             left:isMobile ? -350 : -100,
@@ -78,11 +79,13 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
         }}
       >
         <Box>
-          <Image
+          <OptimizedImage
             src={course.image}
             alt={`${course.companyname} instructor`}
             width={isMobile ? 200 : 300}
             height={isMobile ? 340 : 460}
+            sizes="(max-width: 600px) 200px, 300px"
+            priority={true}
             style={{
               alignSelf: 'flex-start',
               position: 'absolute',
@@ -108,11 +111,12 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
           }}
         >
           <Box sx={{ mb: -1 }}>
-            <Image
+            <OptimizedImage
               src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/others/star.png"
               width={isMobile ? 60 : 80}
               height={isMobile ? 60 : 80}
               alt="star"
+              sizes="(max-width: 600px) 60px, 80px"
               style={{
                 filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))',
               }}

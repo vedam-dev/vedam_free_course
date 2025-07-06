@@ -1,8 +1,9 @@
 'use client';
 
 import { Box, Container, Typography, useMediaQuery } from '@mui/material';
-import Image from 'next/image';
 import React from 'react';
+
+import OptimizedImage from '@/components/OptimizedImage';
 
 const data = [
   {
@@ -104,11 +105,12 @@ const Outcomes = () => {
                 }}
               >
                 {item.featured && (
-                  <Image
+                  <OptimizedImage
                     src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/others/star.png"
                     alt="Featured"
                     width={isMobile ? 65 : 100}
                     height={isMobile ? 65 : 100}
+                    sizes="(max-width: 600px) 65px, 100px"
                     style={{
                       position: 'absolute',
                       top: isMobile ? -35 : -56,

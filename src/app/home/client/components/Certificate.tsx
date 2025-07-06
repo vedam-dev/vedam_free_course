@@ -3,6 +3,8 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 
+import OptimizedBackgroundImage from '@/components/OptimizedBackgroundImage';
+
 const Certificate: React.FC = () => {
   return (
     <Box
@@ -13,17 +15,15 @@ const Certificate: React.FC = () => {
       }}
     >
       {/* Background */}
-      <Box
+      <OptimizedBackgroundImage
+        src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/certificate/certificateBackground.png"
+        priority={true}
         sx={{
           position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
           height: '100%',
-          backgroundImage: 'url("https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/certificate/certificateBackground.png")',
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
           zIndex: 0,
         }}
       />

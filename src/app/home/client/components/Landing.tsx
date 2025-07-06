@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 
 import BaseButton from '@/components/BaseButton';
 import BaseDecoration from '@/components/BaseDecoration';
+import OptimizedBackgroundImage from '@/components/OptimizedBackgroundImage';
 import OtpModal from '@/components/otp/OtpModal';
 import type { RootState } from '@/lib/store';
 
@@ -90,11 +91,12 @@ const Landing: React.FC = () => {
         >
           {/* Logo Section */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, lg: 0 } }}>
-            <Box
+            <OptimizedBackgroundImage
+              src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/home/logo.png"
+              priority={true}
               sx={{
                 width: { xs: '88px', md: '200px' },
                 height: { xs: '60px', md: '80px' },
-                backgroundImage: 'url("https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/home/logo.png")',
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'left center',
@@ -247,18 +249,19 @@ const Landing: React.FC = () => {
           </Box>
 
           {/* Right Section */}
-          <Box
+          <OptimizedBackgroundImage
+            src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/home/centralBox.png"
+            priority={true}
             sx={{
               flex: 1,
               minHeight: { xs: '300px', sm: '400px', md: '500px', lg: '672px' },
               width: '100%',
-              backgroundImage: {
-                xs: 'url("https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/home/centralBox.png")',
-                lg: 'url("https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/home/rightBox.png")'
-              },
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
+              '@media (min-width: 1200px)': {
+                backgroundImage: 'url("https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/home/rightBox.png")',
+              },
             }}
           />
         </Box>

@@ -4,8 +4,9 @@ import TelegramIcon from '@mui/icons-material/Telegram';
 import XIcon from '@mui/icons-material/X';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import { Box, Container, Link, Typography } from '@mui/material';
-import Image from 'next/image';
 import * as React from 'react';
+
+import OptimizedImage from './OptimizedImage';
 
 interface FooterLink {
   label: string;
@@ -114,13 +115,14 @@ const Footer: React.FC = () => {
                 height: '147px',
                 position: 'relative',
               }}>
-                <Image
+                <OptimizedImage
                   src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/footer/Vedam_Final_Logo_White-1.png"
                   alt="Navbar Logo"
                   fill
                   style={{
                     objectFit: 'contain',
                   }}
+                  sizes="(max-width: 768px) 262px, 262px"
                 />
               </Box>
             </Box>

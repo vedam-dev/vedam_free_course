@@ -2,8 +2,9 @@
 
 import { PlayCircleFilled } from '@mui/icons-material';
 import { Box, Container, IconButton, Typography } from '@mui/material';
-import Image from 'next/image';
 import React from 'react';
+
+import OptimizedImage from '@/components/OptimizedImage';
 const VideoInfo: React.FC = () => {
 
   const [playing, setPlaying] = React.useState(false);
@@ -71,7 +72,7 @@ const VideoInfo: React.FC = () => {
                 maxWidth: 264,
               }}
             >
-              <Image
+              <OptimizedImage
                 width={264}
                 height={104}
                 src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/home/logo.png"
@@ -82,7 +83,7 @@ const VideoInfo: React.FC = () => {
                   objectFit: 'contain',
                 }}
                 sizes="(max-width: 600px) 120px, (max-width: 900px) 180px, 220px"
-                priority
+                priority={true}
               />
             </Box>
 
@@ -95,11 +96,12 @@ const VideoInfo: React.FC = () => {
                 mx: { sm: 1, md: 2 },
               }}
             >
-              <Image
+              <OptimizedImage
                 src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/videoInfo/Line%2023%20(Stroke).svg"
                 width={2}
                 height={70}
                 alt="Divider Line"
+                sizes="2px"
                 style={{
                   width: '2px',
                   height: '72px',
