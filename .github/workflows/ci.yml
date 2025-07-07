@@ -40,6 +40,6 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa root@${{ secrets.REMOTE_IP }} << 'EOF'
             docker load -i /tmp/vedam-free-course.tar
             docker rm -f vedam-free-course || true
-            docker run -d -p 127.0.0.1:3001:3000 --name vedam-free-course vedam-free-course:latest
+            docker run -d -p 127.0.0.1:3002:3000 --name vedam-free-course vedam-free-course:latest
             docker system prune -a --force
           EOF
