@@ -35,7 +35,7 @@ const courseData = [
     image: '/home/instructors/subhesh.png',
     companyname: 'GOOGLE',
     level: 'Beginner',
-    time: '4',
+    time: '2',
     viewed: 'true',
     usedby: 'Google, Microsoft, and Adobe',
   },
@@ -59,7 +59,7 @@ const courseData = [
     image: '/home/instructors/instructor.png',
     companyname: 'ADOBE',
     level: 'Advanced',
-    time: '8',
+    time: '2',
     viewed: 'true',
     usedby: 'Adobe, Google, and Netflix',
   },
@@ -71,7 +71,7 @@ const courseData = [
     image: '/home/instructors/instructor.png',
     companyname: 'AMAZON',
     level: 'Beginner',
-    time: '3',
+    time: '2',
     viewed: 'false',
     usedby: 'Amazon, Google, and Microsoft',
   },
@@ -205,7 +205,7 @@ export default function VideoCourses() {
                   textAlign: 'left',
                 }}
               >
-                4 Industry-Led Modules
+                2 Industry-Led Modules
               </Typography>
             </Box>
           </Box>
@@ -261,7 +261,7 @@ export default function VideoCourses() {
                   textAlign: 'left',
                 }}
               >
-                Less than 2 hour
+                Less than 4 hour
               </Typography>
             </Box>
           </Box>
