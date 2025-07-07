@@ -52,7 +52,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
         }}
       >
         <Image
-          src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/instructor/eclipse.png"
+          src="/home/eclipse.png"
           alt="Eclipse background"
           width={isMobile ? 500 : 600}
           height={isMobile ? 600 : 700}
@@ -109,7 +109,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
         >
           <Box sx={{ mb: -1 }}>
             <Image
-              src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/others/star.png"
+              src="/home/star.png"
               width={isMobile ? 60 : 80}
               height={isMobile ? 60 : 80}
               alt="star"
