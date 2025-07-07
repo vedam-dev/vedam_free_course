@@ -3,7 +3,7 @@ name: Build and Deploy vedam-free-course
 on:
   push:
     branches:
-      - dev
+      - master
 
 jobs:
   deploy:
