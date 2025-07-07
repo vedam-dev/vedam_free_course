@@ -51,7 +51,7 @@ const Faq = () => {
           }}
         >
           Got Some
-          {' '}<BaseDecoration>Questions</BaseDecoration>{' '}
+          {' '}<BaseDecoration>Questions</BaseDecoration>{' '}?
         </Typography>
 
         <Typography
@@ -63,7 +63,7 @@ const Faq = () => {
             color: '#2B2B2B',
           }}
         >
-          We Have Answered them for you?
+          We Have Answered them for you
         </Typography>
       </Box>
       <Box sx={{ width: { sm: '100%', md: '100%' }, my: 4, mt: { xs:'4',md:'8' } }}>

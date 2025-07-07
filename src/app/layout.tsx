@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 
 import './globals.css';
 
+import ClientGaurd from '@/components/ClientGuard';
 import Footer from '@/components/Footer';
 
 import UTMCaptureClient from '../components/UTMCaptureClient';
@@ -37,7 +38,9 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} ${outfit.className }`}>
         <Provider store={store}>
           <UTMCaptureClient>
-            {children}
+            <ClientGaurd>
+              {children}
+            </ClientGaurd>
             <Footer />
           </UTMCaptureClient>
         </Provider>

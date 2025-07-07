@@ -1,22 +1,25 @@
+
 'use client';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {
+  Alert,
   Avatar,
   Box,
   Container,
   Divider,
+  Snackbar,
   Stack,
   Typography
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-
 import BaseButton from '@/components/BaseButton';
 import BaseDecoration from '@/components/BaseDecoration';
 import OtpModal from '@/components/otp/OtpModal';
 import type { RootState } from '@/lib/store';
 
+import { useOtpModal } from '../../../../../hooks/useOtpModal';
 
 const temp = ['Beginner Friendly', 'Free of Cost', 'No prior experience required'];
 
@@ -35,58 +38,33 @@ function stringToColor(str: string) {
 }
 
 const Landing: React.FC = () => {
-  const [showOtpModal, setShowOtpModal] = useState(false);
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const username = useSelector((state: RootState) => state.user.username);
   const [hasMounted, setHasMounted] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const {
+    showOtpModal,
+    setShowOtpModal,
+    handleVerificationSuccess
+  } = useOtpModal();
+
+  const handleJoinCodeSprint = () => {
+    if(!isLoggedIn) {
+      setShowOtpModal(true);
+      return;
+    }
+    else {
+      setSnackbarMessage(`Welcome back, ${username}!, You are already Logged In`);
+      setSnackbarOpen(true);
+    }
+  };
+
 
   useEffect(() => {
     setHasMounted(true);
   }, []);
 
-
-  // Initialize MSG91 OTP widget
-  useEffect(() => {
-    if(showOtpModal && typeof window !== 'undefined') {
-      const configuration = {
-        widgetId: process.env.NEXT_PUBLIC_MSG91_WIDGET_ID,
-        tokenAuth: process.env.NEXT_PUBLIC_MSG91_AUTH_KEY,
-        exposeMethods: true,
-        success: (data: unknown) => {
-          console.log('Verification success:', data);
-        },
-        failure: (error: unknown) => {
-          console.error('Verification failed:', error);
-        },
-      };
-
-      const script = document.createElement('script');
-      script.src =
-        'https://control.msg91.com/app/assets/otp-provider/otp-provider.js';
-      script.onload = () => {
-        if(window.initSendOTP) {
-          window.initSendOTP(configuration);
-        }
-      };
-      document.body.appendChild(script);
-
-      return () => {
-        if(document.body.contains(script)) {
-          document.body.removeChild(script);
-        }
-      };
-    }
-  }, [showOtpModal]);
-
-  const handleVerificationSuccess = (userData: {
-    name: string;
-    email: string;
-    phone: string;
-  }) => {
-    console.log('User verified successfully:', userData);
-    // Handle successful verification here
-    // Save user data, redirect, etc.
-  };
   if(!hasMounted) return null;
   return (
 
@@ -246,7 +224,7 @@ const Landing: React.FC = () => {
               display: 'flex',
               flexDirection: { xs: 'column', md: 'column', lg: 'row' }, gap: 2, mb: 4
             }}>
-              <BaseButton variant="outlined" size="large">
+              <BaseButton variant="outlined" size="large" onClick={handleJoinCodeSprint}>
                 Join CodeSprint
               </BaseButton>
               <BaseButton variant="contained" size="large">
@@ -285,6 +263,20 @@ const Landing: React.FC = () => {
           />
         </Box>
       </Container>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity={isLoggedIn ? 'success' : 'info'}
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
       <OtpModal
         open={showOtpModal}
         onClose={() => setShowOtpModal(false)}

@@ -82,12 +82,12 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
             src={course.image}
             alt={`${course.companyname} instructor`}
             width={isMobile ? 200 : 300}
-            height={isMobile ? 240 : 380}
+            height={isMobile ? 340 : 460}
             style={{
               alignSelf: 'flex-start',
               position: 'absolute',
               top: isMobile ? '56px' : '32px',
-              left: isMobile ? -40 : 16,
+              left: isMobile ? -30 : 16,
               objectFit: 'cover',
             }}
           />
@@ -97,13 +97,14 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
           sx={{
             position: 'absolute',
             right: { xs: '10px', sm: '30px', md: '40px' },
-            top: isMobile ? '55%' : '45%',
+            top: isMobile ? '60%' : '45%',
             transform: 'translateY(-50%)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             textAlign: 'center',
             zIndex: 2,
+
           }}
         >
           <Box sx={{ mb: -1 }}>
@@ -125,6 +126,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
               justifyContent: 'center',
               gap: 2,
               mb: 1,
+
             }}
           >
             <Box
@@ -160,11 +162,20 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
           <Typography
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              fontSize: { xs: '36px', md: '72px' },
+              fontSize: { xs: '28px', md: '72px' },
               fontWeight: 700,
               lineHeight: { xs: '32px', md: '58px' },
               color: '#fff',
-              textShadow: [
+              textShadow: { xs:[
+                '-2px  0    0 #000',
+                ' 0   -2px  0 #000',
+                ' 0    2px  0 #000',
+                '-2px -2px  0 #000',
+                ' 2px -2px  0 #000',
+                '-2px 2px   0 #000',
+                ' 2px 2px   0 #000',
+                '0px  5px  0px #000',
+              ].join(','),md:[
                 '-2px  0    0 #000',
                 ' 0   -2px  0 #000',
                 ' 0    2px  0 #000',
@@ -173,7 +184,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
                 '-2px 2px   0 #000',
                 ' 2px 2px   0 #000',
                 '0px  8px  0px #000',
-              ].join(','),
+              ].join(',') },
               mb: { sm: 0.5, md: 1 },
             }}
           >
@@ -285,7 +296,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
                 verticalAlign: 'text-top',
               }}
             >
-              Viewed
+              Popular
             </Typography>
           </Box>
         )}
