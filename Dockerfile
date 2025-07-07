@@ -16,6 +16,9 @@ FROM node:20-alpine AS builder
 # Set the working directory
 WORKDIR /app
 
+# Install yarn globally (alpine image doesn't come with yarn by default)
+RUN npm install -g yarn
+
 # Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
 
@@ -70,6 +73,9 @@ RUN addgroup --system --gid 1001 nodejs && \
 
 # Set the working directory
 WORKDIR /app
+
+# Install yarn globally in runner stage
+RUN npm install -g yarn
 
 # Copy package files
 COPY package.json yarn.lock ./
