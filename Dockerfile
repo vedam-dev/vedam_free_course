@@ -1,66 +1,48 @@
-# Use the official Node.js image with Alpine as the base image
+# Stage 1: Build
 FROM node:20-alpine AS builder
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json (or yarn.lock)
+# Copy package files and install dependencies
 COPY package.json package-lock.json* ./
-
-# Install dependencies
 RUN npm install
 
-# Copy the rest of the application files
+# Copy the rest of the app (including .env)
 COPY . .
 
-# Create .env file from build args (for build-time variables)
-ARG SUPABASE_URL
-ARG SUPABASE_ANON_KEY
-ARG GA4_MEASUREMENT_ID
-ARG GA4_API_SECRET
-ARG MSG91_AUTH_KEY
-ARG STREAMABLE_USERNAME
-ARG STREAMABLE_PASSWORD
-ARG MSG91_WIDGET_ID
-ARG MONGODB_URI
-ARG NEXT_PUBLIC_ADMIN_USERNAME
-ARG NEXT_PUBLIC_ADMIN_PASSWORD
-ARG NEXT_PUBLIC_GDRIVE
-RUN echo "NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}" > .env.local && \
-    echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}" >> .env.local && \
-    echo "NEXT_PUBLIC_GA4_MEASUREMENT_ID=${GA4_MEASUREMENT_ID}" >> .env.local && \
-    echo "NEXT_PUBLIC_MSG91_AUTH_KEY=${MSG91_AUTH_KEY}" >> .env.local && \
-    echo "NEXT_PUBLIC_MSG91_WIDGET_ID=${MSG91_WIDGET_ID}" >> .env.local && \
-    echo "NEXT_PUBLIC_STREAMABLE_USERNAME=${STREAMABLE_USERNAME}" >> .env.local && \
-    echo "NEXT_PUBLIC_STREAMABLE_PASSWORD=${STREAMABLE_PASSWORD}" >> .env.local && \
-    echo "NEXT_PUBLIC_MONGODB_URI=${MONGODB_URI}" >> .env.local && \
+# Set build-time environment variables from .env file
+# (Using `export` ensures they are available during `npm run build`)
+RUN set -a && . ./.env && set +a && \
+    echo "NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}" > .env.local && \
+    echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}" >> .env.local && \
+    echo "NEXT_PUBLIC_GA4_MEASUREMENT_ID=${NEXT_PUBLIC_GA4_MEASUREMENT_ID}" >> .env.local && \
+    echo "NEXT_PUBLIC_MSG91_AUTH_KEY=${NEXT_PUBLIC_MSG91_AUTH_KEY}" >> .env.local && \
+    echo "NEXT_PUBLIC_MSG91_WIDGET_ID=${NEXT_PUBLIC_MSG91_WIDGET_ID}" >> .env.local && \
+    echo "NEXT_PUBLIC_STREAMABLE_USERNAME=${NEXT_PUBLIC_STREAMABLE_USERNAME}" >> .env.local && \
+    echo "NEXT_PUBLIC_STREAMABLE_PASSWORD=${NEXT_PUBLIC_STREAMABLE_PASSWORD}" >> .env.local && \
+    echo "NEXT_PUBLIC_MONGODB_URI=${NEXT_PUBLIC_MONGODB_URI}" >> .env.local && \
     echo "GA4_API_SECRET=${GA4_API_SECRET}" >> .env.local && \
     echo "NEXT_PUBLIC_ADMIN_USERNAME=${NEXT_PUBLIC_ADMIN_USERNAME}" >> .env.local && \
     echo "NEXT_PUBLIC_ADMIN_PASSWORD=${NEXT_PUBLIC_ADMIN_PASSWORD}" >> .env.local && \
     echo "NEXT_PUBLIC_GDRIVE=${NEXT_PUBLIC_GDRIVE}" >> .env.local
 
-# Build the application
+# Build the app
 RUN npm run build
 
-# Use a smaller image for the final stage
+# Stage 2: Run
 FROM node:20-alpine AS runner
 
-# Set the working directory
 WORKDIR /app
 
-# Copy necessary files from the builder stage
+# Copy built files (excluding .env)
 COPY --from=builder /app/package.json /app/package-lock.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 
-# Create runtime environment variables (these will be injected by Northflank)
-# This creates the file structure but leaves it empty - values will come from deployment environment
-RUN touch .env.local && \
-    chmod +r .env.local
+# Runtime environment variables will be injected via `docker run -e` or orchestration
+# (No .env.local here to avoid hardcoding secrets in the image)
 
-# Expose the port the app runs on
 EXPOSE 3000
 
-# Command to run the application
-CMD ["npm","run","start"]
+CMD ["npm", "run", "start"]
