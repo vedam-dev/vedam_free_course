@@ -1,13 +1,17 @@
-name: Build and Deploy Docker Image to Remote Server -1
+name: Build and Deploy Vedam Free Course (Production)
 
 on:
   push:
     branches:
-      - master
+      - master  # Changed from 'dev' to 'master'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - name: Checkout repository
@@ -16,31 +20,57 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'  # Matches your admin-portal setup
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Prepare GitHub token
+        run: echo "${{ secrets.MY_GITHUB_TOKEN }}" > github_token.txt
+
       - name: Build Docker image
         run: |
-          docker build --build-arg GITHUB_TOKEN=${{ secrets.MY_GITHUB_TOKEN }} -t vedam-free-course:latest .
+          DOCKER_BUILDKIT=1 docker build \
+            --secret id=github_token,src=github_token.txt \
+            -t vedam-free-course:prod .  # Changed to :prod tag for master
 
-      - name: Save Docker image to tarball
-        run: docker save vedam-free-course:latest -o vedam-free-course.tar
+      - name: Save Docker image
+        run: docker save vedam-free-course:prod -o vedam-free-course-prod.tar
 
-      - name: Save SSH key
+      - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
           printf "%s" "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.REMOTE_IP }} $(ssh-keyscan -H ${{ secrets.REMOTE_IP }} 2>/dev/null)" >> ~/.ssh/known_hosts
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Copy Docker image to remote server
+      - name: Transfer image (bulletproof method)
         run: |
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa vedam-free-course.tar root@${{ secrets.REMOTE_IP }}:/tmp/vedam-free-course.tar
+          cat vedam-free-course-prod.tar | ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -T root@${{ secrets.REMOTE_IP }} \
+            "mkdir -p /opt/vedam-free-course && cat > /tmp/vedam-free-course-prod.tar && chmod 644 /tmp/vedam-free-course-prod.tar"
 
-    
-      - name: Load and run Docker image on remote server
+      - name: Deploy to production
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa root@${{ secrets.REMOTE_IP }} << 'EOF'
-            docker load -i /tmp/vedam-free-course.tar
-            docker rm -f vedam-free-course || true
-            docker run -d -p 127.0.0.1:3002:3000 --name vedam-free-course vedam-free-course:latest
+            # Cleanup existing deployment
+            docker rm -f vedam-free-course-prod || true
+            docker rmi vedam-free-course:prod || true
+            
+            # Load and deploy new image
+            docker load -i /tmp/vedam-free-course-prod.tar
+            docker run -d \
+              -p 127.0.0.1:3002:3000 \  # Same port as your working config
+              --name vedam-free-course-prod \  # Added -prod suffix
+              --restart unless-stopped \
+              -v /opt/vedam-free-course:/app/data \  # Example volume mount
+              vedam-free-course:prod
+            
+            # Post-deploy cleanup
+            rm -f /tmp/vedam-free-course-prod.tar
             docker system prune -a --force
           EOF
