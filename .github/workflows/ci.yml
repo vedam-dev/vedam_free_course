@@ -1,4 +1,4 @@
-name: Build and Deploy Docker Image to Remote Server -1
+name: Build and Deploy Vedam Free Course (Production)
 
 on:
   push:
@@ -8,6 +8,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - name: Checkout repository
