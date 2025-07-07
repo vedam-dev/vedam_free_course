@@ -1,0 +1,45 @@
+import { useState } from 'react';
+
+interface EmailData {
+  to: string
+  template?: string
+  templateData?: unknown
+  subject?: string
+  message?: string
+}
+
+export const useEmail = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const sendEmail = async (emailData: EmailData) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(emailData),
+      });
+
+      const result = await response.json();
+
+      if(!response.ok) {
+        throw new Error(result.error ?? 'Failed to send email');
+      }
+
+      return result;
+    } catch(err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to send email';
+      setError(errorMessage);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { sendEmail, isLoading, error };
+};
