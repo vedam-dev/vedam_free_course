@@ -10,13 +10,12 @@ const {
   GMAIL_USER,
 } = process.env;
 
-console.log(process.env);
 const oAuth2Client = new google.auth.OAuth2(
   GMAIL_CLIENT_ID,
   GMAIL_CLIENT_SECRET,
   'https://developers.google.com/oauthplayground' // or your redirect URI
 );
-
+console.log(oAuth2Client);
 oAuth2Client.setCredentials({ refresh_token: GMAIL_REFRESH_TOKEN });
 
 export async function POST(request: Request) {
@@ -24,7 +23,7 @@ export async function POST(request: Request) {
     const { to, subject, message } = await request.json();
 
     const accessToken = await oAuth2Client.getAccessToken();
-
+    console.log(accessToken);
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,
