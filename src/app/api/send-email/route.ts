@@ -1,64 +1,55 @@
 import { google } from 'googleapis';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
-const OAuth2 = google.auth.OAuth2;
+const {
+  GMAIL_CLIENT_ID,
+  GMAIL_CLIENT_SECRET,
+  GMAIL_REFRESH_TOKEN,
+  GMAIL_USER,
+} = process.env;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if(req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
+console.log(process.env);
+const oAuth2Client = new google.auth.OAuth2(
+  GMAIL_CLIENT_ID,
+  GMAIL_CLIENT_SECRET,
+  'https://developers.google.com/oauthplayground' // or your redirect URI
+);
 
-  const { to, subject, message } = req.body;
+oAuth2Client.setCredentials({ refresh_token: GMAIL_REFRESH_TOKEN });
 
-  if(!to || !subject || !message) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
-
-  const oauth2Client = new OAuth2(
-    process.env.EMAIL_CLIENT_ID,
-    process.env.EMAIL_CLIENT_SECRET,
-    'https://developers.google.com/oauthplayground'
-  );
-
-  oauth2Client.setCredentials({
-    refresh_token: process.env.EMAIL_REFRESH_TOKEN,
-  });
-
+export async function POST(request: Request) {
   try {
-    const { token } = await oauth2Client.getAccessToken();
+    const { to, subject, message } = await request.json();
+
+    const accessToken = await oAuth2Client.getAccessToken();
 
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
       auth: {
         type: 'OAuth2',
-        user: process.env.EMAIL_SENDER,
-        clientId: process.env.EMAIL_CLIENT_ID,
-        clientSecret: process.env.EMAIL_CLIENT_SECRET,
-        refreshToken: process.env.EMAIL_REFRESH_TOKEN,
-        accessToken: token as string,
+        user: GMAIL_USER,
+        clientId: GMAIL_CLIENT_ID,
+        clientSecret: GMAIL_CLIENT_SECRET,
+        refreshToken: GMAIL_REFRESH_TOKEN,
+        accessToken: accessToken?.token,
       },
-    });
+    } as SMTPTransport.Options);
 
-    const mailOptions = {
-      from: `Your App Name <${process.env.EMAIL_SENDER}>`,
+    await transporter.sendMail({
+      from: 'hrishabh.bharati@vedam.org',
       to,
       subject,
-      html: getEmailTemplate({ subject, message }),
-    };
+      text: message,
+      html: `<p>${message}</p>`,
+    });
 
-    const info = await transporter.sendMail(mailOptions);
-    return res.status(200).json({ success: true, messageId: info.messageId });
-
+    return NextResponse.json({ success: true });
   } catch(error) {
-    console.error('Email sending error:', error);
-    return res.status(500).json({ error: 'Failed to send email' });
+    const err = error as Error;
+    return NextResponse.json({ error: err.message || 'Failed to send email' }, { status: 500 });
   }
-}
-
-function getEmailTemplate({ subject, message }: { subject: string; message: string }) {
-  return `
-    <div style="font-family:sans-serif; padding:20px;">
-      <h2>${subject}</h2>
-      <p>${message}</p>
-    </div>
-  `;
 }

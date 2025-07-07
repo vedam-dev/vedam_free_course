@@ -4,8 +4,6 @@ import Script from 'next/script';
 
 
 
-
-import { ContactForm } from './email/Email';
 import HomePage from './home/client/HomePage';
 
 export default function HomePageComponent() {
@@ -33,7 +31,6 @@ export default function HomePageComponent() {
 
 
       <Box sx={{ textAlign: 'center' }}>
-        <ContactForm />
         <HomePage />
       </Box>
     </>

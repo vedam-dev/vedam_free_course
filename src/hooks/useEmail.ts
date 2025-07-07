@@ -2,8 +2,6 @@ import { useState } from 'react';
 
 interface EmailData {
   to: string
-  template?: string
-  templateData?: unknown
   subject?: string
   message?: string
 }
