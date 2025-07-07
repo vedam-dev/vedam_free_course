@@ -3,15 +3,17 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Install yarn globally (alpine image doesn't come with yarn by default)
+RUN npm install -g yarn
+
 # Copy package files and install dependencies
-COPY package.json package-lock.json* ./
-RUN npm install
+COPY package.json yarn.lock* ./
+RUN yarn install --frozen-lockfile
 
 # Copy the rest of the app (including .env)
 COPY . .
 
 # Set build-time environment variables from .env file
-# (Using `export` ensures they are available during `npm run build`)
 RUN set -a && . ./.env && set +a && \
     echo "NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}" > .env.local && \
     echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}" >> .env.local && \
@@ -27,22 +29,22 @@ RUN set -a && . ./.env && set +a && \
     echo "NEXT_PUBLIC_GDRIVE=${NEXT_PUBLIC_GDRIVE}" >> .env.local
 
 # Build the app
-RUN npm run build
+RUN yarn build
 
 # Stage 2: Run
 FROM node:20-alpine AS runner
 
 WORKDIR /app
 
+# Install yarn globally in runner stage
+RUN npm install -g yarn
+
 # Copy built files (excluding .env)
-COPY --from=builder /app/package.json /app/package-lock.json ./
+COPY --from=builder /app/package.json /app/yarn.lock ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 
-# Runtime environment variables will be injected via `docker run -e` or orchestration
-# (No .env.local here to avoid hardcoding secrets in the image)
-
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+CMD ["yarn", "start"]
