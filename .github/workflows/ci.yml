@@ -33,8 +33,7 @@ jobs:
 
       - name: Copy Docker image to remote server
         run: |
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa vedam-free-course.tar root@${{ secrets.REMOTE_IP }}:/tmp/vedam-free-course.tar
-
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" vedam-free-course.tar root@${{ secrets.REMOTE_IP }}:/tmp/
       - name: Load and run Docker image on remote server
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa root@${{ secrets.REMOTE_IP }} << 'EOF'
