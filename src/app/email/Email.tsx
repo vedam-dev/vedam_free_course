@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useEmail } from '../../hooks/useEmail';
 
 export const ContactForm = () => {
@@ -9,22 +11,22 @@ export const ContactForm = () => {
     try {
       // Send contact form email
       await sendEmail({
-        to: 'admin@yoursite.com',
-        template: 'contactForm',
-        templateData: {
+        to: 'yatnravi@gmail.com',
+        subject: 'contactForm',
+        message: JSON.stringify({
           name: formData.get('name'),
           email: formData.get('email'),
           message: formData.get('message'),
-        },
+        }),
       });
 
       // Send welcome email to user
       await sendEmail({
         to: formData.get('email') as string,
-        template: 'welcome',
-        templateData: {
+        subject: 'welcome',
+        message: JSON.stringify({
           name: formData.get('name'),
-        },
+        }),
       });
 
       alert('Emails sent successfully!');
@@ -36,6 +38,10 @@ export const ContactForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       {/* Form fields */}
+      <input type="text" placeholder='Enter Name' />
+      <input type="text" placeholder='Enter Email' />
+      <input type="text" placeholder='Enter Message' />
+
       <button type="submit" disabled={isLoading}>
         {isLoading ? 'Sending...' : 'Send'}
       </button>

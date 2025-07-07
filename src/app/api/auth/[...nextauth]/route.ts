@@ -5,7 +5,7 @@ import GoogleProvider from 'next-auth/providers/google';
 
 // @ts-expect-error: No type declarations for custom nodemailer utility
 import { createTransporter } from '../../../lib/nodemailer';
-
+console.log(process.env.GOOGLE_CLIENT_ID,process.env.GOOGLE_CLIENT_SECRET);
 if(!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   throw new Error('Missing required Google OAuth environment variables');
 }
