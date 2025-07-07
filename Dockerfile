@@ -3,9 +3,6 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Install yarn globally (alpine image doesn't come with yarn by default)
-RUN npm install -g yarn
-
 # Copy package files and install dependencies
 COPY package.json yarn.lock* ./
 RUN yarn install --frozen-lockfile
