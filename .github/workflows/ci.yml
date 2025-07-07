@@ -1,4 +1,4 @@
-name: Build and Deploy vedam-free-course
+name: Build and Deploy Docker Image to Remote Server
 
 on:
   push:
