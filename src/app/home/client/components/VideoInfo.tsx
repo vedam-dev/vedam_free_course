@@ -74,7 +74,7 @@ const VideoInfo: React.FC = () => {
               <Image
                 width={264}
                 height={104}
-                src="/home/videoInfo/VedamLogo.png"
+                src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/home/logo.png"
                 alt="Vedam School of Technology Logo"
                 style={{
                   width: '100%',
@@ -96,7 +96,7 @@ const VideoInfo: React.FC = () => {
               }}
             >
               <Image
-                src="/home/videoInfo/Line 23 (Stroke).svg"
+                src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/videoInfo/Line%2023%20(Stroke).svg"
                 width={2}
                 height={70}
                 alt="Divider Line"
@@ -176,7 +176,7 @@ const VideoInfo: React.FC = () => {
         <Box sx={{ position: 'relative', borderRadius: 4, overflow: 'hidden', pt: '56.25%' }}>
           {playing ? (
             <iframe
-              src="https://www.youtube.com/embed/R9moRoww1s4?si=VpQFQESryXAuR0_L"
+              src="https://www.youtube.com/embed/vhf1ApCTKY8?si=VpQFQESryXAuR0_L&autoplay=1"
               title="Tech Minds Behind Vedam"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -196,7 +196,7 @@ const VideoInfo: React.FC = () => {
             <>
               <Box
                 component="img"
-                src="/home/videoInfo/videoThumbnail.jpeg"
+                src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/videoInfo/thumbnail.jpg"
                 alt="Tech Minds Behind Vedam"
                 sx={{
                   position: 'absolute',

@@ -20,7 +20,7 @@ const BaseDecoration: React.FC<HighlightTextProps> = ({ children }) => {
           left: 0,
           right: 0,
           height: '20px',
-          backgroundImage: 'url("/assets/Vector8.png")',
+          backgroundImage: 'url("https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/others/Vector8.png")',
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
