@@ -33,9 +33,6 @@ FROM node:20-alpine AS runner
 
 WORKDIR /app
 
-# Install yarn globally in runner stage
-RUN npm install -g yarn
-
 # Copy built files (excluding .env)
 COPY --from=builder /app/package.json /app/yarn.lock ./
 COPY --from=builder /app/node_modules ./node_modules
