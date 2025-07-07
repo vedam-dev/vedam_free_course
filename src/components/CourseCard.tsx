@@ -104,6 +104,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
             alignItems: 'center',
             textAlign: 'center',
             zIndex: 2,
+
           }}
         >
           <Box sx={{ mb: -1 }}>
@@ -125,6 +126,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
               justifyContent: 'center',
               gap: 2,
               mb: 1,
+
             }}
           >
             <Box

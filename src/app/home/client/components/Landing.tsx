@@ -1,6 +1,8 @@
+
 'use client';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {
+  Alert,
   Avatar,
   Box,
   Container,
@@ -401,6 +403,20 @@ const Landing: React.FC = () => {
         ></Box>
 
       </Container>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity={isLoggedIn ? 'success' : 'info'}
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
       <OtpModal
         open={showOtpModal}
         onClose={() => setShowOtpModal(false)}
