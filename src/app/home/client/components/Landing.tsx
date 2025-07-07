@@ -94,7 +94,7 @@ const Landing: React.FC = () => {
               sx={{
                 width: { xs: '88px', md: '200px' },
                 height: { xs: '60px', md: '80px' },
-                backgroundImage: 'url("https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/home/logo.png")',
+                backgroundImage: 'url("/assets/logo.png")',
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'left center',
@@ -253,8 +253,8 @@ const Landing: React.FC = () => {
               minHeight: { xs: '300px', sm: '400px', md: '500px', lg: '672px' },
               width: '100%',
               backgroundImage: {
-                xs: 'url("https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/home/centralBox.png")',
-                lg: 'url("https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/home/rightBox.png")'
+                xs: 'url("/assets/centralBox.png")',
+                lg: 'url("/assets/rightBox.png")'
               },
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',

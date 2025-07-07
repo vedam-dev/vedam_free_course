@@ -32,7 +32,7 @@ const courseData = [
       'linear-gradient(90deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
     color2:
       'linear-gradient(180deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
-    image: 'https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/instructor/subhesh.png',
+    image: '/home/instructors/subhesh.png',
     companyname: 'GOOGLE',
     level: 'Beginner',
     time: '4',
@@ -44,7 +44,7 @@ const courseData = [
       'linear-gradient(90deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
     color2:
       'linear-gradient(180deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
-    image: 'https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/instructor/nishant.png',
+    image: '/home/instructors/nishant.png',
     companyname: 'MICROSOFT',
     level: 'Beginner',
     time: '6',
@@ -56,7 +56,7 @@ const courseData = [
       'linear-gradient(90deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
     color2:
       'linear-gradient(180deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
-    image: 'https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/instructor/instructor.png',
+    image: '/home/instructors/instructor.png',
     companyname: 'ADOBE',
     level: 'Advanced',
     time: '8',
@@ -68,7 +68,7 @@ const courseData = [
       'linear-gradient(90deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)',
     color2:
       'linear-gradient(180deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)',
-    image: 'https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/instructor/instructor.png',
+    image: '/home/instructors/instructor.png',
     companyname: 'AMAZON',
     level: 'Beginner',
     time: '3',

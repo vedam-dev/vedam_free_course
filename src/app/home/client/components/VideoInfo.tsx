@@ -74,7 +74,7 @@ const VideoInfo: React.FC = () => {
               <Image
                 width={264}
                 height={104}
-                src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/home/logo.png"
+                src="/home/videoInfo/VedamLogo.png"
                 alt="Vedam School of Technology Logo"
                 style={{
                   width: '100%',
@@ -96,7 +96,7 @@ const VideoInfo: React.FC = () => {
               }}
             >
               <Image
-                src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/videoInfo/Line%2023%20(Stroke).svg"
+                src="/home/videoInfo/Line 23 (Stroke).svg"
                 width={2}
                 height={70}
                 alt="Divider Line"
@@ -196,7 +196,7 @@ const VideoInfo: React.FC = () => {
             <>
               <Box
                 component="img"
-                src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/videoInfo/thumbnail.jpg"
+                src="/home/thumbnail.jpg"
                 alt="Tech Minds Behind Vedam"
                 sx={{
                   position: 'absolute',
