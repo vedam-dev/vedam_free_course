@@ -1,7 +1,13 @@
 'use client';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import React, { useState } from 'react';
 
 import { useEmail } from '../../hooks/useEmail';
+
 
 const SendEmailForm = () => {
   const [to, setTo] = useState('');
@@ -26,51 +32,67 @@ const SendEmailForm = () => {
     }
   };
 
-
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 400, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
-      <label>
-        To:
-        <input
-          type="email"
-          value={to}
-          onChange={e => setTo(e.target.value)}
-          required
-          placeholder="recipient@example.com"
-          style={{ width: '100%', padding: 6, marginTop: 2 }}
-        />
-      </label>
-      <label>
-        Subject:
-        <input
-          type="text"
-          value={subject}
-          onChange={e => setSubject(e.target.value)}
-          required
-          placeholder="Subject"
-          style={{ width: '100%', padding: 6, marginTop: 2 }}
-        />
-      </label>
-      <label>
-        Message:
-        <textarea
-          value={message}
-          onChange={e => setMessage(e.target.value)}
-          required
-          placeholder="Type your message here..."
-          rows={6}
-          style={{ width: '100%', padding: 6, marginTop: 2 }}
-        />
-      </label>
-      <button type="submit" disabled={isLoading} style={{ padding: 8, marginTop: 8 }}>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{
+        maxWidth: 400,
+        mx: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+      }}
+      noValidate
+      autoComplete="off"
+    >
+      <TextField
+        label="To"
+        type="email"
+        value={to}
+        onChange={e => setTo(e.target.value)}
+        required
+        placeholder="recipient@example.com"
+        fullWidth
+        margin="normal"
+        autoComplete="email"
+      />
+      <TextField
+        label="Subject"
+        type="text"
+        value={subject}
+        onChange={e => setSubject(e.target.value)}
+        required
+        placeholder="Subject"
+        fullWidth
+        margin="normal"
+      />
+      <TextField
+        label="Message"
+        value={message}
+        onChange={e => setMessage(e.target.value)}
+        required
+        placeholder="Type your message here..."
+        multiline
+        rows={6}
+        fullWidth
+        margin="normal"
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        disabled={isLoading}
+        sx={{ mt: 1 }}
+      >
         {isLoading ? 'Sending...' : 'Send'}
-      </button>
-      {error && <div style={{ color: 'red', marginTop: 8 }}>{error}</div>}
-      {success && <div style={{ color: 'green', marginTop: 8 }}>{success}</div>}
-    </form>
+      </Button>
+      <Stack spacing={1} sx={{ mt: 1 }}>
+        {error && <Alert severity="error">{error}</Alert>}
+        {success && <Alert severity="success">{success}</Alert>}
+      </Stack>
+    </Box>
   );
 };
 
-
 export default SendEmailForm;
-
