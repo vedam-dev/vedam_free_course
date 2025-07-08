@@ -115,7 +115,7 @@ const Footer: React.FC = () => {
                 position: 'relative',
               }}>
                 <Image
-                  src="https://acjlsquedaotbhbxmtee.supabase.co/storage/v1/object/public/vedam-website-assets/images/footer/Vedam_Final_Logo_White-1.png"
+                  src="/home/videoInfo/Vedam_Final_Logo_White-1.png"
                   alt="Navbar Logo"
                   fill
                   style={{
