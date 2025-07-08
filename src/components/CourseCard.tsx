@@ -162,7 +162,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
           <Typography
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              fontSize: { xs: '28px', md: '72px' },
+              fontSize: { xs: '28px', md: '56px' },
               fontWeight: 700,
               lineHeight: { xs: '32px', md: '58px' },
               color: '#fff',
@@ -183,7 +183,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
                 ' 2px -2px  0 #000',
                 '-2px 2px   0 #000',
                 ' 2px 2px   0 #000',
-                '0px  8px  0px #000',
+                '0px  6px  0px #000',
               ].join(',') },
               mb: { sm: 0.5, md: 1 },
             }}
