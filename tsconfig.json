@@ -24,6 +24,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/videos/page.jsx", "src/app/api/send-email/email.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/videos/page.jsx", "src/app/api/send-email/route.ts"],
   "exclude": ["node_modules"]
 }
