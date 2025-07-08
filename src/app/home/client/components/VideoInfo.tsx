@@ -151,14 +151,16 @@ const VideoInfo: React.FC = () => {
           </Box>
 
           {/* Text Display Section */}
-          <Box sx={{ textAlign: 'center', my: 4 }}>
+          <Box sx={{ textAlign: 'center', mb: 4 }}>
             <Typography
               component="p"
               sx={{
                 margin: '0 auto',
-                fontWeight: 700,
+                fontWeight: 600,
                 fontFamily: 'Outfit, sans‑serif',
                 fontSize: { xs: 16, sm: 36 },
+                mt: { xs: 2, sm: 3 },
+                mb: { xs: 3, sm: 4 },
               }}
             >
               Vedam School of Technology is an Advanced Tech College offering
