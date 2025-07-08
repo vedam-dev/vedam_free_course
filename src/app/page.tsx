@@ -3,6 +3,7 @@ import { Box } from '@mui/material';
 import Script from 'next/script';
 
 
+
 import HomePage from './home/client/HomePage';
 
 export default function HomePageComponent() {
@@ -30,7 +31,7 @@ export default function HomePageComponent() {
 
 
       <Box sx={{ textAlign: 'center' }}>
-        <HomePage/>
+        <HomePage />
       </Box>
     </>
   );
