@@ -8,11 +8,12 @@
       "command": "npm run dev"
     },
     {
-      "name": "Next.js: debug client-side",
-      "type": "chrome",
-      "request": "launch",
-      "url": "http://localhost:3000"
-    },
+          "name": "Next.js: debug client-side",
+          "type": "chrome",
+          "request": "launch",
+          "url": "http://localhost:3000",
+          "runtimeExecutable": "/path/to/your/chrome"
+        },
     {
       "name": "Next.js: debug client-side (Firefox)",
       "type": "firefox",
@@ -30,7 +31,7 @@
       "name": "Next.js: debug full stack",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/node_modules/.bin/next",
+      "program": "${workspaceFolder}/node_modules/next/dist/bin/next",
       "runtimeArgs": ["--inspect"],
       "skipFiles": ["<node_internals>/**"],
       "serverReadyAction": {
@@ -40,147 +41,6 @@
         "uriFormat": "%s",
         "webRoot": "${workspaceFolder}"
       }
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch Next.js Server (Dev)",
-      "program": "${workspaceFolder}/node_modules/.bin/next",
-      "args": ["dev"],
-      "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal",
-      "env": {
-        "NODE_ENV": "development",
-        "NEXTAUTH_URL": "http://localhost:3000",
-        "NEXTAUTH_SECRET": "your-secret-here",
-        "GOOGLE_CLIENT_ID": "your-google-client-id",
-        "GOOGLE_CLIENT_SECRET": "your-google-client-secret"
-      },
-      "sourceMaps": true,
-      "outFiles": ["${workspaceFolder}/.next/**/*.js"],
-      "skipFiles": ["<node_internals>/**"],
-      "preLaunchTask": "tsc: build"
-    },
-    {
-      "type": "node",
-      "request": "attach",
-      "name": "Attach to Next.js Server",
-      "port": 9229,
-      "address": "localhost",
-      "localRoot": "${workspaceFolder}",
-      "remoteRoot": "${workspaceFolder}",
-      "sourceMaps": true,
-      "outFiles": ["${workspaceFolder}/.next/**/*.js"],
-      "skipFiles": ["<node_internals>/**"]
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Launch Chrome for Next.js",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}",
-      "sourceMaps": true,
-      "trace": true,
-      "runtimeExecutable": "stable",
-      "userDataDir": "${workspaceFolder}/.vscode/chrome",
-      "resolveSourceMapLocations": [
-        "${workspaceFolder}/**",
-        "!**/node_modules/**"
-      ]
-    },
-    {
-      "type": "chrome",
-      "request": "attach",
-      "name": "Attach to Chrome for Next.js",
-      "port": 9222,
-      "urlFilter": "http://localhost:3000/*",
-      "webRoot": "${workspaceFolder}",
-      "sourceMaps": true,
-      "trace": true,
-      "resolveSourceMapLocations": [
-        "${workspaceFolder}/**",
-        "!**/node_modules/**"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Debug Jest Tests (TypeScript)",
-      "program": "${workspaceFolder}/node_modules/.bin/jest",
-      "args": [
-        "--runInBand",
-        "--config",
-        "${workspaceFolder}/jest.config.ts"
-      ],
-      "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "sourceMaps": true,
-      "outFiles": ["${workspaceFolder}/**/*.js"],
-      "skipFiles": ["<node_internals>/**"],
-      "env": {
-        "NODE_ENV": "test",
-        "NEXTAUTH_URL": "http://localhost:3000",
-        "NEXTAUTH_SECRET": "your-secret-here"
-      },
-      "preLaunchTask": "tsc: build"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Debug Next.js Build",
-      "program": "${workspaceFolder}/node_modules/.bin/next",
-      "args": ["build"],
-      "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal",
-      "sourceMaps": true,
-      "outFiles": ["${workspaceFolder}/.next/**/*.js"],
-      "skipFiles": ["<node_internals>/**"],
-      "env": {
-        "NODE_ENV": "production"
-      }
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Debug Next.js Start (Production)",
-      "program": "${workspaceFolder}/node_modules/.bin/next",
-      "args": ["start"],
-      "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal",
-      "sourceMaps": true,
-      "outFiles": ["${workspaceFolder}/.next/**/*.js"],
-      "skipFiles": ["<node_internals>/**"],
-      "env": {
-        "NODE_ENV": "production",
-        "NEXTAUTH_URL": "http://localhost:3000",
-        "NEXTAUTH_SECRET": "your-secret-here",
-        "GOOGLE_CLIENT_ID": "your-google-client-id",
-        "GOOGLE_CLIENT_SECRET": "your-google-client-secret"
-      }
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Debug TypeScript API Route",
-      "program": "${workspaceFolder}/node_modules/.bin/next",
-      "args": ["dev"],
-      "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal",
-      "sourceMaps": true,
-      "outFiles": ["${workspaceFolder}/.next/**/*.js"],
-      "skipFiles": ["<node_internals>/**"],
-      "env": {
-        "NODE_ENV": "development",
-        "NODE_OPTIONS": "--inspect"
-      },
-      "preLaunchTask": "tsc: build"
-    }
-  ],
-  "compounds": [
-    {
-      "name": "Debug Next.js Full Stack",
-      "configurations": ["Launch Next.js Server (Dev)", "Launch Chrome for Next.js"]
     }
   ]
 }
