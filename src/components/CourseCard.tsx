@@ -246,9 +246,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
               sx={{
                 color: '#000',
                 fontFamily: 'Outfit, sans-serif',
-                fontSize: { xs: '12px', md: '16px' },
+                fontSize: { xs: '12px', md: '20px' },
                 fontStyle: 'normal',
-                fontWeight: 400,
+                fontWeight: 500,
                 lineHeight: { xs: '18px', md: '36px' },
                 display: 'inline-block',
                 verticalAlign: 'text-top',
@@ -266,9 +266,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
               sx={{
                 color: '#000',
                 fontFamily: 'Outfit, sans-serif',
-                fontSize: { xs: '12px', md: '16px' },
+                fontSize: { xs: '12px', md: '20px' },
                 fontStyle: 'normal',
-                fontWeight: 400,
+                fontWeight: 500,
                 lineHeight: { xs: '18px', md: '36px' },
                 display: 'inline-block',
                 verticalAlign: 'text-top',
@@ -288,9 +288,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
               sx={{
                 color: '#000',
                 fontFamily: 'Outfit, sans-serif',
-                fontSize: { xs: '12px', md: '16px' },
+                fontSize: { xs: '12px', md: '20px' },
                 fontStyle: 'normal',
-                fontWeight: 400,
+                fontWeight: 500,
                 lineHeight: { xs: '18px', md: '36px' },
                 display: 'inline-block',
                 verticalAlign: 'text-top',
@@ -301,18 +301,18 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
           </Box>
         )}
 
-        <Box sx={{ display: 'flex', gap: 0.5, mb: 3, alignItems: 'center' }}>
-          <StarIcon sx={{ fontSize: { xs: 15, md: 20 }, color: '#666' }} />
+        <Box sx={{ display: 'flex', gap: 0.5, mb: 3 }}>
+          <StarIcon sx={{ fontSize: { xs: 15, md: 20 }, color: '#666', mt:{xs:"0px",md:"4px"} }} />
 
           <Typography
             variant="body2"
             sx={{
               color: '#171717',
               fontFamily: 'Outfit, sans-serif',
-              fontSize: { xs: '10px', md: '12px' },
+              fontSize: { xs: '12px', md: '18px' },
               fontStyle: 'normal',
-              fontWeight: 300,
-              lineHeight: { xs: '18px', md: '36px' },
+              fontWeight: {xs:300,md:400},
+              lineHeight: { xs: '18px', md: '28px' },
               display: 'inline-block',
               textAlign: 'left',
             }}

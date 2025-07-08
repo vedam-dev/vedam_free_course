@@ -59,12 +59,12 @@ const Outcomes = () => {
           sx={{
             color: '#1E1E1E',
             fontFamily: 'Outfit, sans-serif',
-            fontSize: { xs: '1.5rem', sm: '2.75rem', md: '3.25rem' },
-            fontWeight: 700,
+            fontSize: { xs: '1.25rem', sm: '2.75rem' },
+            fontWeight: 500,
             mb: { xs: 2, md: 6 },
           }}
         >
-          <Box component="span" sx={{ color: '#8A18FF' }}>Outcomes</Box>{' '}
+          <Box component="span" sx={{ color: '#8A18FF',fontWeight: 700, fontSize: { xs: '1.25rem', sm: '2.75rem', md: '3.25rem' },}}>Outcomes</Box>{' '}
         that make you ready before college starts
         </Typography>
 
@@ -123,7 +123,9 @@ const Outcomes = () => {
                   sx={{
                     bgcolor: item.bgcolor,
                     borderRadius: '24px',
-                    p: { xs: 2.5, md: 3.75 },
+                    px: { xs: 2.5, md: 3.75 },
+                    pt: { xs: 2.5, md: 3.75 },
+                    pb:0,
                     minHeight: { md: 290 },
                     background: `linear-gradient(${item.bgcolor}, ${item.bgcolor}) padding-box,
                                linear-gradient(to top, ${item.bordercolor}, transparent) border-box`,

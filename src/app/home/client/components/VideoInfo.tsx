@@ -201,9 +201,9 @@ const VideoInfo: React.FC = () => {
       <Container maxWidth="lg">
         <Box
           sx={{
-            background: '#8900FF',
+            background: ' #8900FF',
             borderRadius: 4,
-            p: { xs: 1, md: 2 },
+            p: { xs: 1, md: 1.5 },
             color: 'white',
             boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
           }}

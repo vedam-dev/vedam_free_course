@@ -148,7 +148,7 @@ export default function VideoCourses() {
             },
           }}
         >
-          Build for coders who want to{' '}
+          Built for coders who want to{' '}
           <BaseDecoration>start early</BaseDecoration>
         </Typography>
 
@@ -261,7 +261,7 @@ export default function VideoCourses() {
                   textAlign: 'left',
                 }}
               >
-                Less than 4 hour
+                4 hour
               </Typography>
             </Box>
           </Box>
