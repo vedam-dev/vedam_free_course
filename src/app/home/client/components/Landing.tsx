@@ -103,15 +103,15 @@ const Landing: React.FC = () => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: { xs: 0.5, sm: 1, lg: 0 },
+              gap: { xs: 0, sm: 1, lg: 0 },
               flex: 1,
               minWidth: 0, // Allows shrinking
             }}
           >
             <Box
               sx={{
-                width: { xs: '70px', sm: '88px', md: '200px' },
-                height: { xs: '48px', sm: '60px', md: '80px' },
+                width: { xs: '70px', sm: '88px', md: '160px' },
+                height: { xs: '48px', sm: '60px', md: '100px' },
                 backgroundImage: 'url("/assets/logo.png")',
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
@@ -127,7 +127,7 @@ const Landing: React.FC = () => {
                 width: '1px',
                 height: '44px',
                 backgroundColor: '#2C0052',
-                marginRight: '56px',
+                mx:{ xs:0,md:2 },
                 flexShrink: 0,
               }}
             />
@@ -235,6 +235,7 @@ const Landing: React.FC = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: { xs: 3, md: 4 },
+            mt:10,
           }}
         >
           {/* Left Section */}
@@ -396,7 +397,7 @@ const Landing: React.FC = () => {
             width: { xs: '100%', lg: '100%' },
             maxWidth: { xs: '100%', lg: '900px' },
             backgroundImage: 'url("/home/circlebackground.png")',
-            opacity: 0.9,
+            opacity: 0.8,
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
