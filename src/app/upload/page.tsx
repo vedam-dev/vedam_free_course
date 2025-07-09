@@ -10,8 +10,8 @@ import React, {
 } from 'react';
 import './style.css';
 
-const isGDrive = Boolean(process.env.NEXT_PUBLIC_GDRIVE);
-
+const isGDrive = process.env.NEXT_PUBLIC_PUBLIC_GDRIVE;
+console.log(isGDrive);
 const UploadPage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState<string>('');
@@ -245,7 +245,7 @@ const UploadPage = () => {
     }
   };
 
-  if(isGDrive) {
+  if(isGDrive === 'google') {
 
     if(!isAuthenticated) {
       return (
