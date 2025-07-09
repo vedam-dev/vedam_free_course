@@ -64,7 +64,7 @@ const Outcomes = () => {
             mb: { xs: 2, md: 6 },
           }}
         >
-          <Box component="span" sx={{ color: '#8A18FF',fontWeight: 700, fontSize: { xs: '1.25rem', sm: '2.75rem', md: '3.25rem' },}}>Outcomes</Box>{' '}
+          <Box component="span" sx={{ color: '#8A18FF',fontWeight: 700, fontSize: { xs: '1.25rem', sm: '2.75rem', md: '3.25rem' }, }}>Outcomes</Box>{' '}
         that make you ready before college starts
         </Typography>
 

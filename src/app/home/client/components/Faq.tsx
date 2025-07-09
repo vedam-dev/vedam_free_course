@@ -66,12 +66,12 @@ const Faq = () => {
           We Have Answered them for you
         </Typography>
       </Box>
-      <Box sx={{ width: { sm: '100%', md: '100%' }, my: {xs:5,md:8}, mt: { xs:4,md:8 } }}>
+      <Box sx={{ width: { sm: '100%', md: '100%' }, my: { xs:5,md:8 }, mt: { xs:4,md:8 } }}>
         {Data.map(({ id, question, ans }) => (
           <Box
             key={id}
             sx={{
-              mb: {xs:2,md:4.5},
+              mb: { xs:2,md:4.5 },
               borderRadius: '1.25rem',
               background: 'linear-gradient(90deg, #FF7829 0%, #8A18FF 100%)',
               padding: '2px',

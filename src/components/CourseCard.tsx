@@ -302,7 +302,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
         )}
 
         <Box sx={{ display: 'flex', gap: 0.5, mb: 3 }}>
-          <StarIcon sx={{ fontSize: { xs: 15, md: 20 }, color: '#666', mt:{xs:"0px",md:"4px"} }} />
+          <StarIcon sx={{ fontSize: { xs: 15, md: 20 }, color: '#666', mt:{ xs:'0px',md:'4px' } }} />
 
           <Typography
             variant="body2"
@@ -311,7 +311,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
               fontFamily: 'Outfit, sans-serif',
               fontSize: { xs: '12px', md: '18px' },
               fontStyle: 'normal',
-              fontWeight: {xs:300,md:400},
+              fontWeight: { xs:300,md:400 },
               lineHeight: { xs: '18px', md: '28px' },
               display: 'inline-block',
               textAlign: 'left',
