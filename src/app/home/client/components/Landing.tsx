@@ -237,7 +237,6 @@ const Landing: React.FC = () => {
             sx={{
               flex: { xs: 1, lg: 0.8 },
               textAlign: { xs: 'center', md: 'center', lg: 'left' },
-              // maxWidth: { lg: "500px" },
             }}
           >
             <Typography
