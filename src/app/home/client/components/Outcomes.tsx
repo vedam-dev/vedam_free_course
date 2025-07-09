@@ -124,8 +124,8 @@ const Outcomes = () => {
                     bgcolor: item.bgcolor,
                     borderRadius: '24px',
                     px: { xs: 2.5, md: 3.75 },
-                    pt: { xs: 2.5, md: 3.75 },
-                    pb:0,
+                    py: { xs: 2.5, md: 3.75 },
+            
                     minHeight: { md: 290 },
                     background: `linear-gradient(${item.bgcolor}, ${item.bgcolor}) padding-box,
                                linear-gradient(to top, ${item.bordercolor}, transparent) border-box`,

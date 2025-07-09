@@ -1,11 +1,14 @@
 'use client';
 
 import { PlayCircleFilled } from '@mui/icons-material';
-import { Box, Container, IconButton, Typography } from '@mui/material';
+import { Box, Container, IconButton, Typography,useMediaQuery } from '@mui/material';
+import { Outfit } from 'next/font/google';
 import Image from 'next/image';
 import React from 'react';
+
 const VideoInfo: React.FC = () => {
   const [playing, setPlaying] = React.useState(false);
+   const isMobile = useMediaQuery('(max-width:600px)');
 
   const handlePlayVideo = () => {
     setPlaying(true);
@@ -41,7 +44,8 @@ const VideoInfo: React.FC = () => {
                 marginTop: 2,
                 letterSpacing: '0.5px',
                 fontSize: { xs: '0.85rem', md: '1rem' },
-                fontWeight: 500,
+                fontWeight: 600,
+                fontFamily:'Outfit'
               }}
             >
               BROUGHT TO YOU BY
@@ -52,7 +56,7 @@ const VideoInfo: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexWrap: 'wrap',
-                gap: { xs: 2, md: 4 },
+                gap: { xs: 1, md: 0 },
                 width: '100%',
                 maxWidth: 700,
                 mx: 'auto',
@@ -66,14 +70,14 @@ const VideoInfo: React.FC = () => {
                   justifyContent: 'center',
                   mr: { xs: 0, md: 2 },
                   mb: { xs: 1, md: 0 },
-                  width: { xs: 120, sm: 180, md: 220 },
+                  width: { xs: 120, sm: 180, md:  220 },
                   minWidth: 92,
                   maxWidth: 264,
-                }}
+                }}  
               >
                 <Image
-                  width={264}
-                  height={104}
+                  width={isMobile?115:264}
+                  height={isMobile?45:104}
                   src="/home/videoInfo/VedamLogo.png"
                   alt="Vedam School of Technology Logo"
                   style={{
@@ -90,10 +94,12 @@ const VideoInfo: React.FC = () => {
               <Box
                 sx={{
                   display: {
-                    xs: 'none',
+                    xs: 'block',
                     md: 'block',
                   },
+                lineHeight:'0.5px',
                   mx: { sm: 1, md: 2 },
+                  fill: '#B7B7B7', 
                 }}
               >
                 <Image
@@ -103,7 +109,7 @@ const VideoInfo: React.FC = () => {
                   alt="Divider Line"
                   style={{
                     width: '2px',
-                    height: '72px',
+                    height: isMobile?"58px":'72px',
                     minWidth: '2px',
                     minHeight: '40px',
                   }}
@@ -121,6 +127,7 @@ const VideoInfo: React.FC = () => {
                   background: 'none',
                   overflow: 'visible',
                   minHeight: { xs: 48, sm: 60, md: 72 },
+                  
                 }}
               >
                 <Typography
@@ -128,7 +135,7 @@ const VideoInfo: React.FC = () => {
                   sx={{
                     fontWeight: 700,
                     fontFamily: 'Outfit, sans-serif',
-                    fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+                    fontSize: { xs: '1.5rem', sm: '2.5rem', md: '3rem' },
                     fontStyle: 'normal',
                     lineHeight: 1.1,
                     background:
@@ -165,7 +172,7 @@ const VideoInfo: React.FC = () => {
             >
               Vedam School of Technology is an Advanced Tech College offering
               on-campus 4 year CS & AI program for{' '}
-              <Box component="span" sx={{ color: '#7000E3' }}>
+              <Box component="span" sx={{ color: '#7000E3',fontWeight: 700, }}>
                 12 pass-outs
               </Box>
               .
@@ -238,7 +245,7 @@ const VideoInfo: React.FC = () => {
               <>
                 <Box
                   component="img"
-                  src="/home/thumbnail.jpg"
+                  src="/home/thumbnail2.jpg"
                   alt="Tech Minds Behind Vedam"
                   sx={{
                     position: 'absolute',

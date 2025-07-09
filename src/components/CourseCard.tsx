@@ -81,14 +81,16 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
           <Image
             src={course.image}
             alt={`${course.companyname} instructor`}
-            width={isMobile ? 200 : 300}
-            height={isMobile ? 340 : 460}
+            width={isMobile ? 200 : 320}
+            height={isMobile ? 250 : 340}
             style={{
               alignSelf: 'flex-start',
               position: 'absolute',
-              top: isMobile ? '56px' : '32px',
-              left: isMobile ? -30 : 16,
-              objectFit: 'cover',
+              top: isMobile ? '0px' : '8px',
+              left: isMobile ? -48 : 0,
+             borderRadius: isMobile ?'50% 50% 50% 0%':'0%',
+              // objectFit: 'cover',
+  
             }}
           />
         </Box>
