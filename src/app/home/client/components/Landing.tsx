@@ -75,10 +75,13 @@ const Landing: React.FC = () => {
         marginLeft: "-50vw",
         marginRight: "-50vw",
         width: "100vw",
-        
-        backgroundImage: {xs:"url('/home/GRADIENT-2.png')",md:"url('/home/GRADIENT.png')"},
-        backgroundSize: {xs:"300% auto",md:"150% auto"},
-        backgroundPosition: {xs:"center -425px",md:"center -600px"},
+
+        backgroundImage: {
+          xs: "url('/home/GRADIENT-2.png')",
+          md: "url('/home/GRADIENT.png')",
+        },
+        backgroundSize: { xs: "300% auto", md: "150% auto" },
+        backgroundPosition: { xs: "center -425px", md: "center -600px" },
         backgroundRepeat: "no-repeat",
         py: { xs: 1, md: 4 },
         mb: { md: 10, xl: 0 },
@@ -167,6 +170,7 @@ const Landing: React.FC = () => {
               alignItems: "center",
               flexShrink: 0,
               ml: { xs: 1, sm: 2 },
+              zIndex:30
             }}
           >
             {isLoggedIn ? (
@@ -238,6 +242,7 @@ const Landing: React.FC = () => {
             sx={{
               flex: { xs: 1, lg: 0.8 },
               textAlign: { xs: "center", md: "center", lg: "left" },
+              zIndex:30
             }}
           >
             <Typography
@@ -260,6 +265,7 @@ const Landing: React.FC = () => {
                 fontWeight: 600,
                 lineHeight: { xs: "44px", md: "72px" },
                 mb: 3,
+                
               }}
             >
               Sprint into College
@@ -289,7 +295,7 @@ const Landing: React.FC = () => {
                 display: "flex",
                 flexDirection: { xs: "column", md: "column", lg: "row" },
                 gap: 2,
-                mb: {xs:3,md:4},
+                mb: { xs: 3, md: 4 },
               }}
             >
               <BaseButton
@@ -311,10 +317,12 @@ const Landing: React.FC = () => {
               sx={{
                 display: "grid",
                 gridTemplateColumns: {
-                  xs: "1fr",sm:"repeat(2, minmax(0, 1fr))"},
-                maxWidth:{xs:'100%', md:"44%"},
-                gap: {xs:1,md:2},
-                mb:{xs:0,md:0},
+                  xs: "1fr",
+                  sm: "repeat(2, minmax(0, 1fr))",
+                },
+                maxWidth: { xs: "100%", md: "44%" },
+                gap: { xs: 1, md: 2 },
+                mb: { xs: 0, md: 0 },
               }}
             >
               {temp.map((feature) => (
@@ -325,8 +333,8 @@ const Landing: React.FC = () => {
                     alignItems: "center",
                     gap: 1,
                     whiteSpace: "nowrap",
-                     textAlign:{xs:"center",md:"left"},
-                      mx:{xs:'auto',md:'0'}
+                    textAlign: { xs: "center", md: "left" },
+                    mx: { xs: "auto", md: "0" },
                   }}
                 >
                   <CheckCircleIcon
@@ -336,9 +344,8 @@ const Landing: React.FC = () => {
                     sx={{
                       color: "#02901A",
                       fontWeight: 500,
-                      fontSize: {xs:"14px",md:"20px"},
+                      fontSize: { xs: "14px", md: "20px" },
                       fontFamily: "Outfit, sans-serif",
-                     
                     }}
                   >
                     {feature}
@@ -352,10 +359,10 @@ const Landing: React.FC = () => {
           <Box
             sx={{
               flex: 1.2,
-              position: {xs:"inherit",md:"absolute"},
-              right:{ xs:"0px",md:"40px"},
-              top: {xs:"",md:"120px"},
-              bottom:{xs:"0",md:""},
+              position: { xs: "inherit", md: "absolute" },
+              right: { xs: "0px", md: "40px" },
+              top: { xs: "", md: "120px" },
+              bottom: { xs: "0", md: "" },
               minHeight: { xs: "300px", sm: "400px", md: "500px", lg: "670px" },
               width: { xs: "100%", lg: "100%" },
               maxWidth: { xs: "100%", lg: "771px" },
@@ -366,12 +373,32 @@ const Landing: React.FC = () => {
               backgroundSize: "contain",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
-              // zIndex: 20,
+              zIndex: 20,
 
               // background:'red'
             }}
           />
         </Box>
+        <Box
+          sx={{
+            flex: 1.2,
+            position: { xs: "inherit", md: "absolute" },
+            right: { xs: "0px", md: "-8px" },
+            top: { xs: "", md: "-140px" },
+            bottom: { xs: "0", md: "" },
+            minHeight: { xs: "300px", sm: "400px", md: "500px", lg: "1173px" },
+            width: { xs: "100%", lg: "100%" },
+            maxWidth: { xs: "100%", lg: "900px" },
+            backgroundImage: 'url("/home/circlebackground.png")',
+            opacity: 0.9,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            zIndex: 0,
+
+            // background:'red'
+          }}
+        ></Box>
       </Container>
       <Snackbar
         open={snackbarOpen}
