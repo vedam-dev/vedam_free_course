@@ -19,13 +19,6 @@ const ModalPage = () => {
         open={open}
         onClose={handleClose}
         title="Payment Details"
-              sx={{
-                  width: '775px',
-            height: '338px',
-                  flex- shrink: 0,
-                  border-radius: '40px',
-                  background: '#FFF',
-        }}
       >
         {/* Your custom content here */}
         <Box>
