@@ -8,10 +8,10 @@ import {
   Divider,
   Snackbar,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
 import BaseButton from "@/components/BaseButton";
 import BaseDecoration from "@/components/BaseDecoration";
 import OtpModal from "@/components/otp/OtpModal";
@@ -45,6 +45,7 @@ const Landing: React.FC = () => {
   const [hasMounted, setHasMounted] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const isMobile = useMediaQuery("(max-width:600px)");
   const { showOtpModal, setShowOtpModal, handleVerificationSuccess } =
     useOtpModal();
 
@@ -81,10 +82,10 @@ const Landing: React.FC = () => {
           md: "url('/home/GRADIENT.png')",
         },
         backgroundSize: { xs: "300% auto", md: "150% auto" },
-        backgroundPosition: { xs: "center -425px", md: "center -600px" },
+        backgroundPosition: { xs: "center -425px", md: "center -450px",lg:"center -600px" },
         backgroundRepeat: "no-repeat",
         py: { xs: 1, md: 4 },
-        mb: { md: 10, xl: 0 },
+        mb: { lg: 10, xl: 0 },
       }}
     >
       <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3 } }}>
@@ -170,7 +171,7 @@ const Landing: React.FC = () => {
               alignItems: "center",
               flexShrink: 0,
               ml: { xs: 1, sm: 2 },
-              zIndex:30
+              zIndex: 30,
             }}
           >
             {isLoggedIn ? (
@@ -242,7 +243,7 @@ const Landing: React.FC = () => {
             sx={{
               flex: { xs: 1, lg: 0.8 },
               textAlign: { xs: "center", md: "center", lg: "left" },
-              zIndex:30
+              zIndex: 30,
             }}
           >
             <Typography
@@ -265,7 +266,6 @@ const Landing: React.FC = () => {
                 fontWeight: 600,
                 lineHeight: { xs: "44px", md: "72px" },
                 mb: 3,
-                
               }}
             >
               Sprint into College
@@ -320,7 +320,7 @@ const Landing: React.FC = () => {
                   xs: "1fr",
                   sm: "repeat(2, minmax(0, 1fr))",
                 },
-                maxWidth: { xs: "100%", md: "44%" },
+                maxWidth: { xs: "100%",md:"70%", lg: "44%" },
                 gap: { xs: 1, md: 2 },
                 mb: { xs: 0, md: 0 },
               }}
@@ -333,7 +333,7 @@ const Landing: React.FC = () => {
                     alignItems: "center",
                     gap: 1,
                     whiteSpace: "nowrap",
-                    textAlign: { xs: "center", md: "left" },
+                    textAlign: { xs: "center", lg: "left" },
                     mx: { xs: "auto", md: "0" },
                   }}
                 >
@@ -359,7 +359,7 @@ const Landing: React.FC = () => {
           <Box
             sx={{
               flex: 1.2,
-              position: { xs: "inherit", md: "absolute" },
+              position: { xs: "inherit", lg: "absolute" },
               right: { xs: "0px", md: "40px" },
               top: { xs: "", md: "120px" },
               bottom: { xs: "0", md: "" },
@@ -379,26 +379,32 @@ const Landing: React.FC = () => {
             }}
           />
         </Box>
-        <Box
-          sx={{
-            flex: 1.2,
-            position: { xs: "inherit", md: "absolute" },
-            right: { xs: "0px", md: "-8px" },
-            top: { xs: "", md: "-140px" },
-            bottom: { xs: "0", md: "" },
-            minHeight: { xs: "300px", sm: "400px", md: "500px", lg: "1173px" },
-            width: { xs: "100%", lg: "100%" },
-            maxWidth: { xs: "100%", lg: "900px" },
-            backgroundImage: 'url("/home/circlebackground.png")',
-            opacity: 0.9,
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            zIndex: 0,
-
-            // background:'red'
-          }}
-        ></Box>
+        
+          <Box
+            sx={{
+              display:{xs:"none", lg:'block'},
+              flex: 1.2,
+              position: { xs: "inherit", md: "absolute" },
+              right: { xs: "0px", md: "-8px" },
+              top: { xs: "", md: "-140px" },
+              bottom: { xs: "0", md: "" },
+              minHeight: {
+                xs: "300px",
+                sm: "400px",
+                md: "500px",
+                lg: "1173px",
+              },
+              width: { xs: "100%", lg: "100%" },
+              maxWidth: { xs: "100%", lg: "900px" },
+              backgroundImage: 'url("/home/circlebackground.png")',
+              opacity: 0.9,
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              zIndex: 0,
+            }}
+          ></Box>
+        
       </Container>
       <Snackbar
         open={snackbarOpen}
