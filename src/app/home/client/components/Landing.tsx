@@ -186,7 +186,7 @@ const Landing: React.FC = () => {
                   variant="outlined"
                   onClick={() => setShowOtpModal(true)}
                   sx={{
-                    px: { xs: 2,  md: 7 },
+                    px: { xs: 2, md: 7 },
                     py: { xs: 0.5, sm: 1 },
                     fontSize: { xs: '0.7rem', sm: '0.75rem', md: '1rem' },
                     minWidth: { xs: 'auto', sm: 'auto' },

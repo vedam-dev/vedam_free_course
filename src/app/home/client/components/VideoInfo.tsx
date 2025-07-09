@@ -2,13 +2,12 @@
 
 import { PlayCircleFilled } from '@mui/icons-material';
 import { Box, Container, IconButton, Typography,useMediaQuery } from '@mui/material';
-import { Outfit } from 'next/font/google';
 import Image from 'next/image';
 import React from 'react';
 
 const VideoInfo: React.FC = () => {
   const [playing, setPlaying] = React.useState(false);
-   const isMobile = useMediaQuery('(max-width:600px)');
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   const handlePlayVideo = () => {
     setPlaying(true);
@@ -73,11 +72,11 @@ const VideoInfo: React.FC = () => {
                   width: { xs: 120, sm: 180, md:  220 },
                   minWidth: 92,
                   maxWidth: 264,
-                }}  
+                }}
               >
                 <Image
-                  width={isMobile?115:264}
-                  height={isMobile?45:104}
+                  width={isMobile ? 115 : 264}
+                  height={isMobile ? 45 : 104}
                   src="/home/videoInfo/VedamLogo.png"
                   alt="Vedam School of Technology Logo"
                   style={{
@@ -97,9 +96,9 @@ const VideoInfo: React.FC = () => {
                     xs: 'block',
                     md: 'block',
                   },
-                lineHeight:'0.5px',
+                  lineHeight:'0.5px',
                   mx: { sm: 1, md: 2 },
-                  fill: '#B7B7B7', 
+                  fill: '#B7B7B7',
                 }}
               >
                 <Image
@@ -109,7 +108,7 @@ const VideoInfo: React.FC = () => {
                   alt="Divider Line"
                   style={{
                     width: '2px',
-                    height: isMobile?"58px":'72px',
+                    height: isMobile ? '58px' : '72px',
                     minWidth: '2px',
                     minHeight: '40px',
                   }}
@@ -127,7 +126,7 @@ const VideoInfo: React.FC = () => {
                   background: 'none',
                   overflow: 'visible',
                   minHeight: { xs: 48, sm: 60, md: 72 },
-                  
+
                 }}
               >
                 <Typography

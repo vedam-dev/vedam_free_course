@@ -88,9 +88,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
               position: 'absolute',
               top: isMobile ? '0px' : '8px',
               left: isMobile ? -48 : 0,
-             borderRadius: isMobile ?'50% 50% 50% 0%':'0%',
+              borderRadius: isMobile ? '50% 50% 50% 0%' : '0%',
               // objectFit: 'cover',
-  
+
             }}
           />
         </Box>
