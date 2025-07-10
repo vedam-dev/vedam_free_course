@@ -1,5 +1,5 @@
 'use client';
-import { Box, Button, LinearProgress, Typography } from '@mui/material';
+import { Box, Button, Input, LinearProgress, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { ChangeEvent, FormEvent, useRef, useState } from 'react';
 
@@ -85,6 +85,10 @@ const VimeoUpload: React.FC = () => {
       <Typography variant="h6" gutterBottom>
         Upload Video to Vimeo
       </Typography>
+      <Input
+        placeholder='Input Video File Path'>
+
+      </Input>
       <Button
         variant="contained"
         component="label"
