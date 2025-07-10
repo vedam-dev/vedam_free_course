@@ -4,11 +4,11 @@ FROM node:20-alpine AS builder
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json (or yarn.lock)
-COPY package.json package-lock.json* ./
+# Copy package.json and yarn.lock
+COPY package.json yarn.lock ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies using yarn
+RUN yarn install --frozen-lockfile
 
 # Copy the rest of the application files
 COPY . .
@@ -39,8 +39,8 @@ RUN echo "NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}" > .env.local && \
     echo "NEXT_PUBLIC_ADMIN_PASSWORD=${NEXT_PUBLIC_ADMIN_PASSWORD}" >> .env.local && \
     echo "NEXT_PUBLIC_GDRIVE=${NEXT_PUBLIC_GDRIVE}" >> .env.local
 
-# Build the application
-RUN npm run build
+# Build the application using yarn
+RUN yarn build
 
 # Use a smaller image for the final stage
 FROM node:20-alpine AS runner
@@ -49,7 +49,7 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 
 # Copy necessary files from the builder stage
-COPY --from=builder /app/package.json /app/package-lock.json ./
+COPY --from=builder /app/package.json /app/yarn.lock ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
@@ -62,5 +62,5 @@ RUN touch .env.local && \
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Command to run the application
-CMD ["npm","run","start"]
+# Command to run the application using yarn
+CMD ["yarn", "start"]

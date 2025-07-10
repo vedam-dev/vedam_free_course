@@ -32,7 +32,7 @@ const courseData = [
       'linear-gradient(90deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
     color2:
       'linear-gradient(180deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
-    image: '/home/instructors/subhesh.png',
+    image: '/home/instructors/subhesh2.png',
     companyname: 'GOOGLE',
     level: 'Beginner',
     time: '2',
@@ -44,7 +44,7 @@ const courseData = [
       'linear-gradient(90deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
     color2:
       'linear-gradient(180deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
-    image: '/home/instructors/nishant.png',
+    image: '/home/instructors/nishant2.png',
     companyname: 'MICROSOFT',
     level: 'Beginner',
     time: '2',
@@ -148,7 +148,7 @@ export default function VideoCourses() {
             },
           }}
         >
-          Build for coders who want to{' '}
+          Built for coders who want to{' '}
           <BaseDecoration>start early</BaseDecoration>
         </Typography>
 
@@ -261,7 +261,7 @@ export default function VideoCourses() {
                   textAlign: 'left',
                 }}
               >
-                Less than 4 hour
+                4 hour
               </Typography>
             </Box>
           </Box>
