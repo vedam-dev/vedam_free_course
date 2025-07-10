@@ -1,6 +1,5 @@
 'use client';
 
-import { FormControlLabel, Radio } from '@mui/material';
 import React, {
   ChangeEvent,
   FocusEvent,
@@ -11,7 +10,6 @@ import React, {
 } from 'react';
 
 import './style.css';
-import VimeoUpload from './Vimeo';
 
 const isGDrive = process.env.NEXT_PUBLIC_PUBLIC_GDRIVE;
 
@@ -467,11 +465,6 @@ const UploadPage = () => {
             FLV, WebM
           </div>
         </div>
-        <FormControlLabel value="streamable" control={<Radio />} label="Streamable" />
-        <FormControlLabel value="vimeo" control={<Radio />} label="Vimeo" />
-
-        <VimeoUpload/>
-
 
 
         <button
