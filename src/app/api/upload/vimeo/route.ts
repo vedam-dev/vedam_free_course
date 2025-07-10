@@ -2,7 +2,6 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-import { Download } from '@mui/icons-material';
 import { NextRequest, NextResponse } from 'next/server';
 import { Vimeo } from 'vimeo';
 
@@ -10,7 +9,7 @@ const vimeoClientId = process.env.VIMEO_CLIENT_ID;
 const vimeoClientSecret = process.env.VIMEO_CLIENT_SECRET;
 const vimeoAccessToken = process.env.VIMEO_ACCESS_TOKEN;
 
-console.log('vimeoClientId:', vimeoClientId, 'vimeoClientSecret:', vimeoClientSecret, 'vimeoAccessToken:', vimeoAccessToken);
+
 if(!vimeoClientId || !vimeoClientSecret || !vimeoAccessToken) {
   throw new Error('Missing Vimeo environment variables');
 }
@@ -53,14 +52,13 @@ export async function POST(request: NextRequest) {
           },
         },
         function (uri: string) {
-          fs.unlinkSync(tempFilePath); // Clean up temp file
+          fs.unlinkSync(tempFilePath);
           const videoId = uri.split('/').pop();
           const videoUrl = `https://vimeo.com/${videoId}`;
           console.log('Upload successful:', videoUrl);
           resolve(NextResponse.json({ url: videoUrl }));
         },
         function (bytesUploaded: number, bytesTotal: number) {
-          // Optionally log progress
           const percent = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
           console.log(`Uploading: ${percent}%`);
         },
