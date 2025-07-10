@@ -85,7 +85,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
               alignSelf: 'flex-start',
               position: 'absolute',
               top: { xs: 0, md: 32, lg: 8 },
-              left: isMobile ? -48 : 0,
+              left: isMobile ? -5 : 0,
               borderRadius: isMobile ? '50% 50% 50% 0%' : '0%',
               width: isMobile ? 200 : 320,
               height: isMobile ? 250 : 340,
