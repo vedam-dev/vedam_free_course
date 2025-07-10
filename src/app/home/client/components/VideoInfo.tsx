@@ -44,7 +44,8 @@ const VideoInfo: React.FC = () => {
                 letterSpacing: '0.5px',
                 fontSize: { xs: '0.85rem', md: '1rem' },
                 fontWeight: 600,
-                fontFamily:'Outfit'
+                fontFamily:'Outfit',
+                mr:2.5
               }}
             >
               BROUGHT TO YOU BY
