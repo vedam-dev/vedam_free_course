@@ -16,7 +16,7 @@ if(!vimeoClientId || !vimeoClientSecret || !vimeoAccessToken) {
 
 const vimeoUploadClient = new Vimeo(vimeoClientId, vimeoClientSecret, vimeoAccessToken);
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<Response> {
   try {
     // Parse the incoming form data
     const formData = await request.formData();
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Upload to Vimeo
-    return await new Promise((resolve) => {
+    return await new Promise<Response>((resolve) => {
       vimeoUploadClient.upload(
         tempFilePath,
         {
@@ -65,12 +65,20 @@ export async function POST(request: NextRequest) {
         function (error: unknown) {
           fs.unlinkSync(tempFilePath);
           console.error('Vimeo upload error:', error);
-          resolve(NextResponse.json({ error: (error as Error).message }, { status: 500 }));
+          resolve(
+            NextResponse.json(
+              { error: (error as Error).message },
+              { status: 500 }
+            )
+          );
         }
       );
     });
   } catch(error: unknown) {
     console.error('API route error:', error);
-    return NextResponse.json({ error: (error as Error).message || 'Unknown error' }, { status: 500 });
+    return NextResponse.json(
+      { error: (error as Error).message || 'Unknown error' },
+      { status: 500 }
+    );
   }
 }
