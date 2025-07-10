@@ -25,7 +25,6 @@ type Course = {
 interface CourseCardProps {
   course: Course;
   onClick(): void;
-
 }
 const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -51,19 +50,19 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
           zIndex: 0,
         }}
       >
-        <Image
+        <Box
+          component="img"
           src="/home/eclipse.png"
           alt="Eclipse background"
-          width={isMobile ? 500 : 600}
-          height={isMobile ? 600 : 700}
-          style={{
-            position:'absolute',
-            left:isMobile ? -350 : -100,
-            bottom:isMobile ? 0 : 60,
-            top:isMobile ? -50 : 0,
-            transform: isMobile ? 'rotate(90deg)' : 'rotate(0deg)',
+          sx={{
+            position: 'absolute',
+            left: { xs: -350, md: -100 },
+            bottom: { xs: 0, md: 60 },
+            top: { xs: -50, md: 30, lg: 0 },
+            transform: { xs: 'rotate(90deg)', md: 'rotate(0deg)' },
             opacity: 1,
-
+            width: { xs: 500, md: 600 },
+            height: { xs: 600, md: 700 },
           }}
         />
       </Box>
@@ -78,17 +77,18 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
         }}
       >
         <Box>
-          <Image
+          <Box
+            component="img"
             src={course.image}
             alt={`${course.companyname} instructor`}
-            width={isMobile ? 200 : 300}
-            height={isMobile ? 340 : 460}
-            style={{
+            sx={{
               alignSelf: 'flex-start',
               position: 'absolute',
-              top: isMobile ? '56px' : '32px',
-              left: isMobile ? -30 : 16,
-              objectFit: 'cover',
+              top: { xs: 0, md: 32, lg: 8 },
+              left: isMobile ? -5 : 0,
+              borderRadius: isMobile ? '50% 50% 50% 0%' : '0%',
+              width: isMobile ? 200 : 320,
+              height: isMobile ? 250 : 340,
             }}
           />
         </Box>
@@ -104,7 +104,6 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
             alignItems: 'center',
             textAlign: 'center',
             zIndex: 2,
-
           }}
         >
           <Box sx={{ mb: -1 }}>
@@ -126,7 +125,6 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
               justifyContent: 'center',
               gap: 2,
               mb: 1,
-
             }}
           >
             <Box
@@ -162,29 +160,32 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
           <Typography
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              fontSize: { xs: '28px', md: '72px' },
+              fontSize: { xs: '28px', md: '56px' },
               fontWeight: 700,
               lineHeight: { xs: '32px', md: '58px' },
               color: '#fff',
-              textShadow: { xs:[
-                '-2px  0    0 #000',
-                ' 0   -2px  0 #000',
-                ' 0    2px  0 #000',
-                '-2px -2px  0 #000',
-                ' 2px -2px  0 #000',
-                '-2px 2px   0 #000',
-                ' 2px 2px   0 #000',
-                '0px  5px  0px #000',
-              ].join(','),md:[
-                '-2px  0    0 #000',
-                ' 0   -2px  0 #000',
-                ' 0    2px  0 #000',
-                '-2px -2px  0 #000',
-                ' 2px -2px  0 #000',
-                '-2px 2px   0 #000',
-                ' 2px 2px   0 #000',
-                '0px  8px  0px #000',
-              ].join(',') },
+              textShadow: {
+                xs: [
+                  '-2px  0    0 #000',
+                  ' 0   -2px  0 #000',
+                  ' 0    2px  0 #000',
+                  '-2px -2px  0 #000',
+                  ' 2px -2px  0 #000',
+                  '-2px 2px   0 #000',
+                  ' 2px 2px   0 #000',
+                  '0px  5px  0px #000',
+                ].join(','),
+                md: [
+                  '-2px  0    0 #000',
+                  ' 0   -2px  0 #000',
+                  ' 0    2px  0 #000',
+                  '-2px -2px  0 #000',
+                  ' 2px -2px  0 #000',
+                  '-2px 2px   0 #000',
+                  ' 2px 2px   0 #000',
+                  '0px  6px  0px #000',
+                ].join(','),
+              },
               mb: { sm: 0.5, md: 1 },
             }}
           >
@@ -216,7 +217,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          zIndex:'3'
+          zIndex: '3',
         }}
       >
         <Typography
@@ -225,7 +226,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
             textAlign: 'left',
             color: '#000',
             fontFamily: 'Outfit, sans-serif',
-            fontSize: { xs: '22px', md: '30px' },
+            fontSize: { xs: '22px', lg: '30px' },
             fontStyle: 'normal',
             fontWeight: 600,
             lineHeight: { xs: '28px', md: '36px' },
@@ -246,9 +247,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
               sx={{
                 color: '#000',
                 fontFamily: 'Outfit, sans-serif',
-                fontSize: { xs: '12px', md: '16px' },
+                fontSize: { xs: '12px', md: '20px' },
                 fontStyle: 'normal',
-                fontWeight: 400,
+                fontWeight: 500,
                 lineHeight: { xs: '18px', md: '36px' },
                 display: 'inline-block',
                 verticalAlign: 'text-top',
@@ -259,16 +260,18 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
           </Box>
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <AccessTimeIcon sx={{ fontSize: { xs: 15, md: 20 }, color: '#666' }} />
+            <AccessTimeIcon
+              sx={{ fontSize: { xs: 15, md: 20 }, color: '#666' }}
+            />
 
             <Typography
               variant="body2"
               sx={{
                 color: '#000',
                 fontFamily: 'Outfit, sans-serif',
-                fontSize: { xs: '12px', md: '16px' },
+                fontSize: { xs: '12px', md: '20px' },
                 fontStyle: 'normal',
-                fontWeight: 400,
+                fontWeight: 500,
                 lineHeight: { xs: '18px', md: '36px' },
                 display: 'inline-block',
                 verticalAlign: 'text-top',
@@ -281,16 +284,18 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
 
         {course.viewed === 'true' && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 1 }}>
-            <VisibilityIcon sx={{ fontSize: { xs: 15, md: 20 }, color: '#666' }} />
+            <VisibilityIcon
+              sx={{ fontSize: { xs: 15, md: 20 }, color: '#666' }}
+            />
 
             <Typography
               variant="body2"
               sx={{
                 color: '#000',
                 fontFamily: 'Outfit, sans-serif',
-                fontSize: { xs: '12px', md: '16px' },
+                fontSize: { xs: '12px', md: '20px' },
                 fontStyle: 'normal',
-                fontWeight: 400,
+                fontWeight: 500,
                 lineHeight: { xs: '18px', md: '36px' },
                 display: 'inline-block',
                 verticalAlign: 'text-top',
@@ -301,18 +306,24 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
           </Box>
         )}
 
-        <Box sx={{ display: 'flex', gap: 0.5, mb: 3, alignItems: 'center' }}>
-          <StarIcon sx={{ fontSize: { xs: 15, md: 20 }, color: '#666' }} />
+        <Box sx={{ display: 'flex', gap: 0.5, mb: 3 }}>
+          <StarIcon
+            sx={{
+              fontSize: { xs: 15, md: 20 },
+              color: '#666',
+              mt: { xs: '0px', md: '4px' },
+            }}
+          />
 
           <Typography
             variant="body2"
             sx={{
               color: '#171717',
               fontFamily: 'Outfit, sans-serif',
-              fontSize: { xs: '10px', md: '12px' },
+              fontSize: { xs: '12px', md: '18px' },
               fontStyle: 'normal',
-              fontWeight: 300,
-              lineHeight: { xs: '18px', md: '36px' },
+              fontWeight: { xs: 300, md: 400 },
+              lineHeight: { xs: '18px', md: '28px' },
               display: 'inline-block',
               textAlign: 'left',
             }}
@@ -331,7 +342,12 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
           <BaseButton
             variant="contained"
             fullWidth
-            sx={{ fontSize: '16px', lineHeight: { xs: '14px', md: '28px' }, textWrap: 'nowrap', order: { xs: 1, sm: 2 } }}
+            sx={{
+              fontSize: '16px',
+              lineHeight: { xs: '14px', md: '28px' },
+              textWrap: 'nowrap',
+              order: { xs: 1, sm: 2 },
+            }}
             onClick={onClick}
           >
             Start Free
