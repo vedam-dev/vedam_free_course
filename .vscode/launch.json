@@ -1,6 +1,7 @@
 {
   "version": "0.2.0",
   "configurations": [
+    
     {
       "name": "Next.js: debug server-side",
       "type": "node-terminal",
@@ -8,11 +9,12 @@
       "command": "npm run dev"
     },
     {
-      "name": "Next.js: debug client-side",
-      "type": "chrome",
-      "request": "launch",
-      "url": "http://localhost:3000"
-    },
+          "name": "Next.js: debug client-side",
+          "type": "chrome",
+          "request": "launch",
+          "url": "http://localhost:3000",
+          "runtimeExecutable": "/path/to/your/chrome"
+        },
     {
       "name": "Next.js: debug client-side (Firefox)",
       "type": "firefox",

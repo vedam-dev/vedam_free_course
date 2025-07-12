@@ -8,14 +8,16 @@ import React, {
   useRef,
   useState,
 } from 'react';
+
 import './style.css';
 
-const isGDrive = Boolean(process.env.NEXT_PUBLIC_GDRIVE);
+const isGDrive = process.env.NEXT_PUBLIC_PUBLIC_GDRIVE;
 
 const UploadPage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState<string>('');
   const [topic, setTopic] = useState<string>('');
+  const [path, setPath] = useState('');
   const [shortcode, setShortcode] = useState<string>('');
   const [gdriveLink, setGdriveLink] = useState<string>('');
   const [status, setStatus] = useState<string>('');
@@ -160,7 +162,7 @@ const UploadPage = () => {
     formData.append('topic', topic);
 
     try {
-      setUploadProgress('Uploading to Streamable...');
+      setUploadProgress('Uploading ...');
 
       const res = await fetch('/api/upload', {
         method: 'POST',
@@ -203,7 +205,7 @@ const UploadPage = () => {
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement>,
-    type: 'title' | 'topic'
+    type: 'title' | 'topic' | 'path'
   ) => {
     switch (type) {
       case 'title':
@@ -212,12 +214,16 @@ const UploadPage = () => {
       case 'topic':
         setTopic(e.target.value);
         break;
+      case 'path':
+        setPath(e.target.value);
+        break;
     }
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if(e.target.files?.[0]) {
       const file = e.target.files[0];
+      console.log(file);
       setStatus(`Selected: ${file.name} (${formatFileSize(file.size)})`);
     }
   };
@@ -245,7 +251,7 @@ const UploadPage = () => {
     }
   };
 
-  if(isGDrive) {
+  if(isGDrive === 'google') {
 
     if(!isAuthenticated) {
       return (
@@ -427,10 +433,24 @@ const UploadPage = () => {
             />
           </label>
         </div>
+        <div className="form-group">
+          <label className="form-label">
+            Input Video File Path to Upload on Vimeo {' '}
+            <input
+              type="text"
+              value={path}
+              onChange={(e) => handleInputChange(e, 'path')}
+              placeholder="Enter complete Video File Path"
+              className="form-input"
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+            />
+          </label>
+        </div>
 
         <div className="form-group">
           <label className="form-label">
-            Video File{' '}
+            Choose Video File to Upload on Streamable{' '}
             <input
               type="file"
               accept="video/*"
@@ -445,6 +465,7 @@ const UploadPage = () => {
             FLV, WebM
           </div>
         </div>
+
 
         <button
           type="submit"

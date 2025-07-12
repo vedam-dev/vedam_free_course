@@ -16,7 +16,7 @@ const BaseDecoration: React.FC<HighlightTextProps> = ({ children }) => {
         '&::after': {
           content: '""',
           position: 'absolute',
-          bottom: 0,
+          bottom: '-8px',
           left: 0,
           right: 0,
           height: '20px',
