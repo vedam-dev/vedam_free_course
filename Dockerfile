@@ -1,19 +1,32 @@
-# Use the official Node.js image with Alpine as the base image
-FROM node:20-alpine AS builder
+# Stage 1: Dependencies - Install dependencies only
+FROM node:20-alpine AS deps
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Copy package.json and yarn.lock
+# Copy package files
 COPY package.json yarn.lock ./
 
-# Install dependencies using yarn
-RUN yarn install --frozen-lockfile
+# Install dependencies with frozen lockfile for reproducible builds
+RUN yarn install --frozen-lockfile --production=false
 
-# Copy the rest of the application files
+# Stage 2: Builder - Build the application
+FROM node:20-alpine AS builder
+
+# Set the working directory
+WORKDIR /app
+
+# Copy dependencies from deps stage
+COPY --from=deps /app/node_modules ./node_modules
+
+# Copy package files
+COPY package.json yarn.lock ./
+
+# Copy source code
 COPY . .
 
 # Create .env file from build args (for build-time variables)
+# These can be passed via --build-arg or from environment variables
 ARG SUPABASE_URL
 ARG SUPABASE_ANON_KEY
 ARG GA4_MEASUREMENT_ID
@@ -26,41 +39,62 @@ ARG MONGODB_URI
 ARG NEXT_PUBLIC_ADMIN_USERNAME
 ARG NEXT_PUBLIC_ADMIN_PASSWORD
 ARG NEXT_PUBLIC_GDRIVE
-RUN echo "NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}" > .env.local && \
-    echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}" >> .env.local && \
-    echo "NEXT_PUBLIC_GA4_MEASUREMENT_ID=${GA4_MEASUREMENT_ID}" >> .env.local && \
-    echo "NEXT_PUBLIC_MSG91_AUTH_KEY=${MSG91_AUTH_KEY}" >> .env.local && \
-    echo "NEXT_PUBLIC_MSG91_WIDGET_ID=${MSG91_WIDGET_ID}" >> .env.local && \
-    echo "NEXT_PUBLIC_STREAMABLE_USERNAME=${STREAMABLE_USERNAME}" >> .env.local && \
-    echo "NEXT_PUBLIC_STREAMABLE_PASSWORD=${STREAMABLE_PASSWORD}" >> .env.local && \
-    echo "NEXT_PUBLIC_MONGODB_URI=${MONGODB_URI}" >> .env.local && \
-    echo "GA4_API_SECRET=${GA4_API_SECRET}" >> .env.local && \
-    echo "NEXT_PUBLIC_ADMIN_USERNAME=${NEXT_PUBLIC_ADMIN_USERNAME}" >> .env.local && \
-    echo "NEXT_PUBLIC_ADMIN_PASSWORD=${NEXT_PUBLIC_ADMIN_PASSWORD}" >> .env.local && \
-    echo "NEXT_PUBLIC_GDRIVE=${NEXT_PUBLIC_GDRIVE}" >> .env.local
 
-# Build the application using yarn
+# Create .env.local with fallback values if build args are not provided
+RUN echo "NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL:-}" > .env.local && \
+    echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-}" >> .env.local && \
+    echo "NEXT_PUBLIC_GA4_MEASUREMENT_ID=${GA4_MEASUREMENT_ID:-}" >> .env.local && \
+    echo "NEXT_PUBLIC_MSG91_AUTH_KEY=${MSG91_AUTH_KEY:-}" >> .env.local && \
+    echo "NEXT_PUBLIC_MSG91_WIDGET_ID=${MSG91_WIDGET_ID:-}" >> .env.local && \
+    echo "NEXT_PUBLIC_STREAMABLE_USERNAME=${STREAMABLE_USERNAME:-}" >> .env.local && \
+    echo "NEXT_PUBLIC_STREAMABLE_PASSWORD=${STREAMABLE_PASSWORD:-}" >> .env.local && \
+    echo "NEXT_PUBLIC_MONGODB_URI=${MONGODB_URI:-}" >> .env.local && \
+    echo "GA4_API_SECRET=${GA4_API_SECRET:-}" >> .env.local && \
+    echo "NEXT_PUBLIC_ADMIN_USERNAME=${NEXT_PUBLIC_ADMIN_USERNAME:-}" >> .env.local && \
+    echo "NEXT_PUBLIC_ADMIN_PASSWORD=${NEXT_PUBLIC_ADMIN_PASSWORD:-}" >> .env.local && \
+    echo "NEXT_PUBLIC_GDRIVE=${NEXT_PUBLIC_GDRIVE:-}" >> .env.local
+
+# Build the application
 RUN yarn build
 
-# Use a smaller image for the final stage
+# Stage 3: Production - Create minimal production image
 FROM node:20-alpine AS runner
+
+# Install curl for health checks
+RUN apk add --no-cache curl
+
+# Create a non-root user for security
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
 # Set the working directory
 WORKDIR /app
 
-# Copy necessary files from the builder stage
-COPY --from=builder /app/package.json /app/yarn.lock ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
+# Copy package files
+COPY package.json yarn.lock ./
 
-# Create runtime environment variables (these will be injected by Northflank)
-# This creates the file structure but leaves it empty - values will come from deployment environment
-RUN touch .env.local && \
-    chmod +r .env.local
+# Install only production dependencies
+RUN yarn install --frozen-lockfile --production=true && \
+    yarn cache clean
+
+# Copy built application from builder stage
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.env.local ./.env.local
+
+# Switch to non-root user
+USER nextjs
 
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Command to run the application using yarn
+# Set environment variable for Next.js
+ENV NODE_ENV=production
+ENV PORT=3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000 || exit 1
+
+# Command to run the application
 CMD ["yarn", "start"]
