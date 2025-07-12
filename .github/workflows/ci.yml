@@ -1,76 +1,76 @@
-  name: CI - Lint and Build Next.js
+name: Build and Deploy Vedam Free Course (Production)
 
-  on:
-    push:
-      branches:
-        - dev
+on:
+  push:
+    branches:
+      - master  # Changed from 'dev' to 'master'
 
-    pull_request:
-      branches:
-        - '*' 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-    workflow_dispatch:
+    permissions:
+      contents: read
+      id-token: write
 
-  jobs:
-    ci:
-      if: |
-        github.event_name == 'push' ||
-        (
-          github.event_name == 'pull_request' &&
-          (
-            startsWith(github.head_ref, 'feature/') ||
-            startsWith(github.head_ref, 'bugfix/') ||
-            startsWith(github.head_ref, 'hotfix/')
-          )
-        )
-      runs-on: ubuntu-latest
-      environment: vedam-free-course
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-        - name: Detect package manager
-          id: detect-package-manager
-          run: |
-            if [ -f "yarn.lock" ]; then
-              echo "manager=yarn" >> $GITHUB_OUTPUT
-              echo "command=install" >> $GITHUB_OUTPUT
-              echo "runner=yarn" >> $GITHUB_OUTPUT
-            else
-              echo "manager=npm" >> $GITHUB_OUTPUT
-              echo "command=ci" >> $GITHUB_OUTPUT
-              echo "runner=npx --no-install" >> $GITHUB_OUTPUT
-            fi
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'  # Matches your admin-portal setup
 
-        - name: Setup Node.js
-          uses: actions/setup-node@v4
-          with:
-            node-version: "20"
-            cache: ${{ steps.detect-package-manager.outputs.manager }}
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
-        - name: Create .env file from GitHub Secrets
-          run: |
-            echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env.local
-            echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env.local
-            echo "GA4_MEASUREMENT_ID=${{ secrets.GA4_MEASUREMENT_ID }}" >> .env.local
-            echo "GA4_API_SECRET=${{ secrets.GA4_API_SECRET }}" >> .env.local 
-            echo "STREAMABLE_USERNAME=${{ secrets.STREAMABLE_USERNAME }}" >> .env.local 
-            echo "STREAMABLE_PASSWORD=${{ secrets.STREAMABLE_PASSWORD }}" >> .env.local 
-            echo "MSG91_AUTH_KEY=${{ secrets.MSG91_AUTH_KEY }}" >> .env.local 
-            echo "MSG91_WIDGET_ID=${{ secrets.MSG91_WIDGET_ID }}" >> .env.local 
-            echo "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" >> .env.local 
-            echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.local 
+      - name: Prepare GitHub token
+        run: echo "${{ secrets.MY_GITHUB_TOKEN }}" > github_token.txt
 
-        - name: Confirm .env.local contents (safe for public values only)
-          run: cat .env.local
+      - name: Build Docker image
+        run: |
+          DOCKER_BUILDKIT=1 docker build \
+            --secret id=github_token,src=github_token.txt \
+            -t vedam-free-course:prod .  # Changed to :prod tag for master
 
+      - name: Save Docker image
+        run: docker save vedam-free-course:prod -o vedam-free-course-prod.tar
 
-        - name: Install dependencies
-          run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf "%s" "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.REMOTE_IP }} $(ssh-keyscan -H ${{ secrets.REMOTE_IP }} 2>/dev/null)" >> ~/.ssh/known_hosts
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-        - name: Run Lint
-          run: ${{ steps.detect-package-manager.outputs.runner }} next lint
+      - name: Transfer image (bulletproof method)
+        run: |
+          cat vedam-free-course-prod.tar | ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -T root@${{ secrets.REMOTE_IP }} \
+            "mkdir -p /opt/vedam-free-course && cat > /tmp/vedam-free-course-prod.tar && chmod 644 /tmp/vedam-free-course-prod.tar"
 
-        - name: Build project
-          run: ${{ steps.detect-package-manager.outputs.runner }} next build
+      - name: Deploy to production
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa root@${{ secrets.REMOTE_IP }} << 'EOF'
+            # Cleanup existing deployment
+            docker rm -f vedam-free-course-prod || true
+            docker rmi vedam-free-course:prod || true
+            
+            # Load and deploy new image
+            docker load -i /tmp/vedam-free-course-prod.tar
+            docker run -d \
+              -p 127.0.0.1:3002:3000 \  # Same port as your working config
+              --name vedam-free-course-prod \  # Added -prod suffix
+              --restart unless-stopped \
+              -v /opt/vedam-free-course:/app/data \  # Example volume mount
+              vedam-free-course:prod
+            
+            # Post-deploy cleanup
+            rm -f /tmp/vedam-free-course-prod.tar
+            docker system prune -a --force
+          EOF
