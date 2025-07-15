@@ -308,13 +308,6 @@ export default function AnalyticsPage() {
           >
             Refresh
           </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={() => setIsAuthenticated(false)}
-          >
-            Logout
-          </Button>
         </Box>
       </Box>
 

@@ -9,7 +9,6 @@ import {
   Snackbar,
   Typography,
 } from '@mui/material';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -41,7 +40,6 @@ function stringToColor(str: string) {
 }
 
 const Landing: React.FC = () => {
-  const router = useRouter();
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const username = useSelector((state: RootState) => state.user.username);
   const [hasMounted, setHasMounted] = useState(false);
@@ -177,20 +175,6 @@ const Landing: React.FC = () => {
           >
             {isLoggedIn ? (
               <>
-                <BaseButton
-                  variant="outlined"
-                  onClick={() => router.push('/analytics')}
-                  sx={{
-                    px: { xs: 2, md: 4 },
-                    py: { xs: 0.5, sm: 1 },
-                    fontSize: { xs: '0.7rem', sm: '0.75rem', md: '0.9rem' },
-                    minWidth: { xs: 'auto', sm: 'auto' },
-                    whiteSpace: 'nowrap',
-                    background: 'white',
-                  }}
-                >
-                  Analytics
-                </BaseButton>
                 <Avatar
                   sx={{
                     bgcolor: stringToColor(username || 'U'),
