@@ -9,6 +9,7 @@ import {
   Snackbar,
   Typography,
 } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -40,6 +41,7 @@ function stringToColor(str: string) {
 }
 
 const Landing: React.FC = () => {
+  const router = useRouter();
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const username = useSelector((state: RootState) => state.user.username);
   const [hasMounted, setHasMounted] = useState(false);
@@ -174,17 +176,33 @@ const Landing: React.FC = () => {
             }}
           >
             {isLoggedIn ? (
-              <Avatar
-                sx={{
-                  bgcolor: stringToColor(username || 'U'),
-                  width: { xs: '28px', md: '40px' },
-                  height: { xs: '28px', md: '40px' },
-                  fontWeight: 700,
-                  fontSize: { xs: 15, md: 22 },
-                }}
-              >
-                {(username || 'U').charAt(0).toUpperCase()}
-              </Avatar>
+              <>
+                <BaseButton
+                  variant="outlined"
+                  onClick={() => router.push('/analytics')}
+                  sx={{
+                    px: { xs: 2, md: 4 },
+                    py: { xs: 0.5, sm: 1 },
+                    fontSize: { xs: '0.7rem', sm: '0.75rem', md: '0.9rem' },
+                    minWidth: { xs: 'auto', sm: 'auto' },
+                    whiteSpace: 'nowrap',
+                    background: 'white',
+                  }}
+                >
+                  Analytics
+                </BaseButton>
+                <Avatar
+                  sx={{
+                    bgcolor: stringToColor(username || 'U'),
+                    width: { xs: '28px', md: '40px' },
+                    height: { xs: '28px', md: '40px' },
+                    fontWeight: 700,
+                    fontSize: { xs: 15, md: 22 },
+                  }}
+                >
+                  {(username || 'U').charAt(0).toUpperCase()}
+                </Avatar>
+              </>
             ) : (
               <>
                 <BaseButton
