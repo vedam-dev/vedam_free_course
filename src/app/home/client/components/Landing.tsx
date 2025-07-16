@@ -174,17 +174,19 @@ const Landing: React.FC = () => {
             }}
           >
             {isLoggedIn ? (
-              <Avatar
-                sx={{
-                  bgcolor: stringToColor(username || 'U'),
-                  width: { xs: '28px', md: '40px' },
-                  height: { xs: '28px', md: '40px' },
-                  fontWeight: 700,
-                  fontSize: { xs: 15, md: 22 },
-                }}
-              >
-                {(username || 'U').charAt(0).toUpperCase()}
-              </Avatar>
+              <>
+                <Avatar
+                  sx={{
+                    bgcolor: stringToColor(username || 'U'),
+                    width: { xs: '28px', md: '40px' },
+                    height: { xs: '28px', md: '40px' },
+                    fontWeight: 700,
+                    fontSize: { xs: 15, md: 22 },
+                  }}
+                >
+                  {(username || 'U').charAt(0).toUpperCase()}
+                </Avatar>
+              </>
             ) : (
               <>
                 <BaseButton
