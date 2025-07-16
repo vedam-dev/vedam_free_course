@@ -48,7 +48,6 @@ interface UTMAnalytics {
 }
 
 export default function AnalyticsPage() {
-  // const theme = useTheme();
   const router = useRouter();
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const [analytics, setAnalytics] = useState<UTMAnalytics | null>(null);
