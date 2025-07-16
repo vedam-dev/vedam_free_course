@@ -22,6 +22,8 @@ import { useSelector } from 'react-redux';
 
 import { RootState } from '@/lib/store';
 
+import UTMFilters from './UTMFilters';
+
 
 ChartJS.register(
   CategoryScale,
@@ -294,6 +296,7 @@ export default function AnalyticsPage() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
+      <UTMFilters />
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Typography variant="h3" gutterBottom>
           UTM Analytics Dashboard
