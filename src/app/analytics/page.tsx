@@ -73,9 +73,6 @@ export default function AnalyticsPage() {
 
   const [filters, setfilters] = useState<Filters>({ source: '', medium:'', startDate:null, endDate:null });
 
-  // console.log('analytics', analytics);
-  // console.log('FILTERS', filters);
-
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -129,7 +126,7 @@ export default function AnalyticsPage() {
   ): UTMAnalytics => {
     if(!data) return data;
 
-    // Filter usersData based on filters
+
     let filteredUsers = [...data.usersData];
 
     if(filters.source) {
@@ -159,14 +156,14 @@ export default function AnalyticsPage() {
       });
     }
 
-    // Recalculate all metrics from filteredUsers
+
     const totalVisitors = filteredUsers.length;
     const totalVerifiedUsers = filteredUsers.filter(user => user.isUserVerified).length;
     const totalConversionRate = totalVisitors > 0
       ? (totalVerifiedUsers / totalVisitors) * 100
       : 0;
 
-    // Calculate top sources
+
     const sourceCountMap: Record<string, number> = {};
     filteredUsers.forEach(user => {
       const source = user.userSource || 'Direct';
@@ -176,7 +173,7 @@ export default function AnalyticsPage() {
       .map(([source, count]) => ({ source, count }))
       .sort((a, b) => b.count - a.count);
 
-    // Calculate top campaigns
+
     const campaignCountMap: Record<string, number> = {};
     filteredUsers.forEach(user => {
       const campaign = user.userCampaign || 'No Campaign';
@@ -186,7 +183,7 @@ export default function AnalyticsPage() {
       .map(([campaign, count]) => ({ campaign, count }))
       .sort((a, b) => b.count - a.count);
 
-    // Calculate top mediums
+
     const mediumCountMap: Record<string, number> = {};
     filteredUsers.forEach(user => {
       const medium = user.userMedium || 'None';
@@ -196,7 +193,7 @@ export default function AnalyticsPage() {
       .map(([medium, count]) => ({ medium, count }))
       .sort((a, b) => b.count - a.count);
 
-    // Calculate daily visitors
+
     const dailyVisitorsMap: Record<string, number> = {};
     filteredUsers.forEach(user => {
       const dateStr = new Date(user.userRecordedAt).toISOString().split('T')[0];
@@ -206,7 +203,7 @@ export default function AnalyticsPage() {
       .map(([date, count]) => ({ date, count }))
       .sort((a, b) => a.date.localeCompare(b.date));
 
-    // Calculate verification trend
+
     const verificationTrendMap: Record<string, { verified: number; total: number }> = {};
     filteredUsers.forEach(user => {
       const dateStr = new Date(user.userRecordedAt).toISOString().split('T')[0];
@@ -255,7 +252,7 @@ export default function AnalyticsPage() {
 
 
 
-  // Show authentication form if not authenticated
+
   if(!isAuthenticated) {
     return (
       <Container maxWidth="sm" sx={{ py: 8 }}>

@@ -46,7 +46,7 @@ const UTMFilters = ({ analytics, setFilter }: AnalyticsProp): JSX.Element => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Clone date to avoid mutation issues
+
     const selectedDate = new Date(value);
     selectedDate.setHours(0, 0, 0, 0);
 
