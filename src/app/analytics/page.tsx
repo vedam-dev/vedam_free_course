@@ -40,8 +40,8 @@ ChartJS.register(
 
 export interface UTMAnalytics {
   totalVisitors: number;
-  verifiedUsers: number;
-  conversionRate: number;
+  totalVerifiedUsers: number;
+  totalConversionRate: number;
   topSources: { source: string; count: number }[];
   topCampaigns: { campaign: string; count: number }[];
   topMediums: { medium: string; count: number }[];
@@ -292,7 +292,7 @@ export default function AnalyticsPage() {
         fill: false,
       },
       {
-        label: 'Total Visitors',
+        label: 'Visitors',
         data: analytics.verificationTrend.map(item => item.total),
         borderColor: 'rgb(239, 68, 68)',
         backgroundColor: 'rgba(239, 68, 68, 0.2)',
@@ -328,12 +328,12 @@ export default function AnalyticsPage() {
             {analytics.totalVisitors.toLocaleString()}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Total Visitors
+            Visitors
           </Typography>
         </Card>
         <Card sx={{ p: 3, textAlign: 'center' }}>
           <Typography variant="h4" color="success.main">
-            {analytics.verifiedUsers.toLocaleString()}
+            {analytics.totalVerifiedUsers.toLocaleString()}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Verified Users
@@ -341,7 +341,7 @@ export default function AnalyticsPage() {
         </Card>
         <Card sx={{ p: 3, textAlign: 'center' }}>
           <Typography variant="h4" color="warning.main">
-            {analytics.conversionRate.toFixed(1)}%
+            {analytics.totalConversionRate.toFixed(1)}%
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Conversion Rate
