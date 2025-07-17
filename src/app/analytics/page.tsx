@@ -63,11 +63,7 @@ export default function AnalyticsPage() {
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
 
-  console.log('isLoggedIn', isLoggedIn);
   console.log('analytics', analytics);
-  console.log('isAuthenticated', isAuthenticated);
-  console.log('authError', authError);
-  console.log('error', error);
 
 
 
