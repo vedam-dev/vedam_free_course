@@ -16,7 +16,9 @@ import {
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import React, { useState } from 'react';
+import React, { JSX, useState } from 'react';
+
+import { UTMAnalytics } from './page';
 
 type Filters = {
   source?: string;
@@ -25,7 +27,12 @@ type Filters = {
   endDate?: Date | null;
 };
 
-const UTMFilters = () => {
+
+type AnalyticsProp = {
+  analytics: UTMAnalytics;
+}
+
+const UTMFilters  = ({ analytics }: AnalyticsProp):JSX.Element => {
   const [filters, setFilters] = useState<Filters>({});
 
   // const theme = useTheme();
@@ -91,9 +98,10 @@ const UTMFilters = () => {
               label="Source"
               onChange={handleSelectChange('source')}
             >
-              <MenuItem value="google">Google</MenuItem>
-              <MenuItem value="facebook">Facebook</MenuItem>
-              <MenuItem value="twitter">Twitter</MenuItem>
+              {
+                analytics.topSources.map((item, idx) =>
+                  (<MenuItem key={idx * 10} value={item.source}>{item.source}</MenuItem>))
+              }
             </Select>
           </FormControl>
 
@@ -105,9 +113,10 @@ const UTMFilters = () => {
               label="Medium"
               onChange={handleSelectChange('medium')}
             >
-              <MenuItem value="cpc">CPC</MenuItem>
-              <MenuItem value="email">Email</MenuItem>
-              <MenuItem value="organic">Organic</MenuItem>
+              {
+                analytics.topMediums.map((item, idx) =>
+                  (<MenuItem key={idx * 10} value={item.medium}>{item.medium}</MenuItem>))
+              }
             </Select>
           </FormControl>
         </Box>

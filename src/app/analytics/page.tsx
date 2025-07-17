@@ -38,7 +38,7 @@ ChartJS.register(
   Filler
 );
 
-interface UTMAnalytics {
+export interface UTMAnalytics {
   totalVisitors: number;
   verifiedUsers: number;
   conversionRate: number;
@@ -62,6 +62,14 @@ export default function AnalyticsPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
+
+  console.log('isLoggedIn', isLoggedIn);
+  console.log('analytics', analytics);
+  console.log('isAuthenticated', isAuthenticated);
+  console.log('authError', authError);
+  console.log('error', error);
+
+
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -296,7 +304,7 @@ export default function AnalyticsPage() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <UTMFilters />
+      <UTMFilters analytics={analytics}/>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Typography variant="h3" gutterBottom>
           UTM Analytics Dashboard
