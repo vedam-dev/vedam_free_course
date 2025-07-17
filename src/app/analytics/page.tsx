@@ -73,8 +73,8 @@ export default function AnalyticsPage() {
 
   const [filters, setfilters] = useState<Filters>({ source: '', medium:'', startDate:null, endDate:null });
 
-  console.log('analytics', analytics);
-  console.log('FILTERS', filters);
+  // console.log('analytics', analytics);
+  // console.log('FILTERS', filters);
 
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -239,7 +239,7 @@ export default function AnalyticsPage() {
     };
   };
 
-  // Replace the filteredAnalytics calculation with:
+
   const filteredAnalytics = analytics
     ? filterAndRecalculateAnalytics(analytics, filters)
     : null;
