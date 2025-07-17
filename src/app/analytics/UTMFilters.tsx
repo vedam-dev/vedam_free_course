@@ -13,11 +13,11 @@ import {
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import React, { JSX, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 
 import { UTMAnalytics } from './page';
 
-type Filters = {
+export type Filters = {
   source?: string;
   medium?: string;
   startDate: Date | null;
@@ -62,7 +62,11 @@ const UTMFilters = ({ analytics, setFilter }: AnalyticsProp): JSX.Element => {
   const endDate = filters.endDate;
   const isEndDateDisabled = !startDate;
   const filterObject = filters;
-  setFilter(filterObject);
+
+  useEffect(() => {
+    setFilter(filterObject);
+  }, [filterObject, filters, setFilter]);
+
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
