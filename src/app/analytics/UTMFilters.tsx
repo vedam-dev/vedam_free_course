@@ -39,19 +39,26 @@ const UTMFilters = ({ analytics, setFilter }: AnalyticsProp): JSX.Element => {
 
   const handleDateChange = (type: 'startDate' | 'endDate', value: Date | null) => {
     if(!value) {
-      setFilters((prev) => ({ ...prev, [type]: null }));
+      setFilters(prev => ({ ...prev, [type]: null }));
       return;
     }
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
+    // Clone date to avoid mutation issues
     const selectedDate = new Date(value);
     selectedDate.setHours(0, 0, 0, 0);
 
     if(selectedDate > today) return;
-    if(type === 'endDate' && filters.startDate && selectedDate < filters.startDate) return;
 
-    setFilters((prev) => ({ ...prev, [type]: selectedDate }));
+    if(type === 'endDate' && filters.startDate) {
+      const start = new Date(filters.startDate);
+      start.setHours(0, 0, 0, 0);
+      if(selectedDate < start) return;
+    }
+
+    setFilters(prev => ({ ...prev, [type]: selectedDate }));
   };
 
   const handleSelectChange = (key: 'source' | 'medium') => (event: SelectChangeEvent<string>) => {
