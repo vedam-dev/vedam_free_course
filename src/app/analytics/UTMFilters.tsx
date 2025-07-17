@@ -8,10 +8,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
-  // TextField,
   Typography,
-  // useMediaQuery,
-  // useTheme,
 } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -23,20 +20,22 @@ import { UTMAnalytics } from './page';
 type Filters = {
   source?: string;
   medium?: string;
-  startDate?: Date | null;
-  endDate?: Date | null;
+  startDate: Date | null;
+  endDate: Date | null;
 };
-
 
 type AnalyticsProp = {
   analytics: UTMAnalytics;
-}
+ setFilter: (filters: Filters) => void;
+};
 
-const UTMFilters  = ({ analytics }: AnalyticsProp):JSX.Element => {
-  const [filters, setFilters] = useState<Filters>({});
-
-  // const theme = useTheme();
-  // const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+const UTMFilters = ({ analytics, setFilter }: AnalyticsProp): JSX.Element => {
+  const [filters, setFilters] = useState<Filters>({
+    source: '',
+    medium: '',
+    startDate: null,
+    endDate: null,
+  });
 
   const handleDateChange = (type: 'startDate' | 'endDate', value: Date | null) => {
     if(!value) {
@@ -62,6 +61,8 @@ const UTMFilters  = ({ analytics }: AnalyticsProp):JSX.Element => {
   const startDate = filters.startDate;
   const endDate = filters.endDate;
   const isEndDateDisabled = !startDate;
+  const filterObject = filters;
+  setFilter(filterObject);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -98,10 +99,11 @@ const UTMFilters  = ({ analytics }: AnalyticsProp):JSX.Element => {
               label="Source"
               onChange={handleSelectChange('source')}
             >
-              {
-                analytics.topSources.map((item, idx) =>
-                  (<MenuItem key={idx * 10} value={item.source}>{item.source}</MenuItem>))
-              }
+              {analytics.topSources.map((item, idx) => (
+                <MenuItem key={idx * 10} value={item.source}>
+                  {item.source}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
 
@@ -113,10 +115,11 @@ const UTMFilters  = ({ analytics }: AnalyticsProp):JSX.Element => {
               label="Medium"
               onChange={handleSelectChange('medium')}
             >
-              {
-                analytics.topMediums.map((item, idx) =>
-                  (<MenuItem key={idx * 10} value={item.medium}>{item.medium}</MenuItem>))
-              }
+              {analytics.topMediums.map((item, idx) => (
+                <MenuItem key={idx * 10} value={item.medium}>
+                  {item.medium}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Box>

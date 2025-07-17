@@ -63,8 +63,10 @@ export default function AnalyticsPage() {
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
 
-  console.log('analytics', analytics);
+  const [filters, setfilters] = useState({});
 
+  console.log('analytics', analytics);
+  console.log(filters);
 
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -300,7 +302,7 @@ export default function AnalyticsPage() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <UTMFilters analytics={analytics}/>
+      <UTMFilters analytics={analytics} setFilter={setfilters } />
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Typography variant="h3" gutterBottom>
           UTM Analytics Dashboard
