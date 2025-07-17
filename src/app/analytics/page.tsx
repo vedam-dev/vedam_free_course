@@ -47,6 +47,14 @@ export interface UTMAnalytics {
   topMediums: { medium: string; count: number }[];
   dailyVisitors: { date: string; count: number }[];
   verificationTrend: { date: string; verified: number; total: number }[];
+  usersData: Array<{
+    userSource: string,
+    userMedium: string,
+    userCampaign: string,
+    userId: number,
+    userRecordedAt:string,
+    isUserVerified:boolean,
+  }>;
 }
 
 export default function AnalyticsPage() {
@@ -63,7 +71,7 @@ export default function AnalyticsPage() {
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
 
-  const [filters, setfilters] = useState({});
+  const [filters, setfilters] = useState<Filters>({ source: '', medium:'', startDate:null, endDate:null });
 
   console.log('analytics', analytics);
   console.log(filters);
