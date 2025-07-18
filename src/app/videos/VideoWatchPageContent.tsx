@@ -545,6 +545,23 @@ const VideoWatchPage = () => {
             </Accordion>
           );
         })}
+        <Box
+          component="img"
+          sx={{
+            mt:2,
+            height: 233,
+            borderRadius: 2,
+            width: '100%',
+            maxHeight: '125px',
+            cursor: 'pointer',
+            '&:hover': {
+              opacity: 0.9, // Optional: Add hover effect
+            }
+          }}
+          alt="banner"
+          src="/banner 800200.jpg"
+          onClick={() => window.open('https://vedam.org', '_blank')}
+        />
       </Box>
     </Box>
   );
