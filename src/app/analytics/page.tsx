@@ -22,6 +22,8 @@ import { useSelector } from 'react-redux';
 
 import { RootState } from '@/lib/store';
 
+import UTMFilters, { Filters } from './UTMFilters';
+
 
 ChartJS.register(
   CategoryScale,
@@ -36,19 +38,26 @@ ChartJS.register(
   Filler
 );
 
-interface UTMAnalytics {
+export interface UTMAnalytics {
   totalVisitors: number;
-  verifiedUsers: number;
-  conversionRate: number;
+  totalVerifiedUsers: number;
+  totalConversionRate: number;
   topSources: { source: string; count: number }[];
   topCampaigns: { campaign: string; count: number }[];
   topMediums: { medium: string; count: number }[];
   dailyVisitors: { date: string; count: number }[];
   verificationTrend: { date: string; verified: number; total: number }[];
+  usersData: Array<{
+    userSource: string,
+    userMedium: string,
+    userCampaign: string,
+    userId: number,
+    userRecordedAt:string,
+    isUserVerified:boolean,
+  }>;
 }
 
 export default function AnalyticsPage() {
-  // const theme = useTheme();
   const router = useRouter();
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const [analytics, setAnalytics] = useState<UTMAnalytics | null>(null);
@@ -61,6 +70,9 @@ export default function AnalyticsPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
+
+  const [filters, setfilters] = useState<Filters>({ source: '', medium:'', startDate:null, endDate:null });
+
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -106,7 +118,141 @@ export default function AnalyticsPage() {
     }
   };
 
-  // Show authentication form if not authenticated
+
+  // filtering logic
+  const filterAndRecalculateAnalytics = (
+    data: UTMAnalytics,
+    filters: Filters
+  ): UTMAnalytics => {
+    if(!data) return data;
+
+
+    let filteredUsers = [...data.usersData];
+
+    if(filters.source) {
+      filteredUsers = filteredUsers.filter(user =>
+        user.userSource?.toLowerCase().includes(filters.source!.toLowerCase())
+      );
+    }
+
+    if(filters.medium) {
+      filteredUsers = filteredUsers.filter(user =>
+        user.userMedium?.toLowerCase().includes(filters.medium!.toLowerCase())
+      );
+    }
+
+    if(filters.startDate || filters.endDate) {
+      const start = filters.startDate ? new Date(filters.startDate) : null;
+      const end = filters.endDate ? new Date(filters.endDate) : null;
+
+      if(start) start.setHours(0, 0, 0, 0);
+      if(end) end.setHours(23, 59, 59, 999);
+
+      filteredUsers = filteredUsers.filter(user => {
+        const userDate = new Date(user.userRecordedAt);
+        if(start && userDate < start) return false;
+        if(end && userDate > end) return false;
+        return true;
+      });
+    }
+
+
+    const totalVisitors = filteredUsers.length;
+    const totalVerifiedUsers = filteredUsers.filter(user => user.isUserVerified).length;
+    const totalConversionRate = totalVisitors > 0
+      ? (totalVerifiedUsers / totalVisitors) * 100
+      : 0;
+
+
+    const sourceCountMap: Record<string, number> = {};
+    filteredUsers.forEach(user => {
+      const source = user.userSource || 'Direct';
+      sourceCountMap[source] = (sourceCountMap[source] || 0) + 1;
+    });
+    const topSources = Object.entries(sourceCountMap)
+      .map(([source, count]) => ({ source, count }))
+      .sort((a, b) => b.count - a.count);
+
+
+    const campaignCountMap: Record<string, number> = {};
+    filteredUsers.forEach(user => {
+      const campaign = user.userCampaign || 'No Campaign';
+      campaignCountMap[campaign] = (campaignCountMap[campaign] || 0) + 1;
+    });
+    const topCampaigns = Object.entries(campaignCountMap)
+      .map(([campaign, count]) => ({ campaign, count }))
+      .sort((a, b) => b.count - a.count);
+
+
+    const mediumCountMap: Record<string, number> = {};
+    filteredUsers.forEach(user => {
+      const medium = user.userMedium || 'None';
+      mediumCountMap[medium] = (mediumCountMap[medium] || 0) + 1;
+    });
+    const topMediums = Object.entries(mediumCountMap)
+      .map(([medium, count]) => ({ medium, count }))
+      .sort((a, b) => b.count - a.count);
+
+
+    const dailyVisitorsMap: Record<string, number> = {};
+    filteredUsers.forEach(user => {
+      const dateStr = new Date(user.userRecordedAt).toISOString().split('T')[0];
+      dailyVisitorsMap[dateStr] = (dailyVisitorsMap[dateStr] || 0) + 1;
+    });
+    const dailyVisitors = Object.entries(dailyVisitorsMap)
+      .map(([date, count]) => ({ date, count }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+
+    const verificationTrendMap: Record<string, { verified: number; total: number }> = {};
+    filteredUsers.forEach(user => {
+      const dateStr = new Date(user.userRecordedAt).toISOString().split('T')[0];
+      if(!verificationTrendMap[dateStr]) {
+        verificationTrendMap[dateStr] = { verified: 0, total: 0 };
+      }
+      verificationTrendMap[dateStr].total++;
+      if(user.isUserVerified) {
+        verificationTrendMap[dateStr].verified++;
+      }
+    });
+    const verificationTrend = Object.entries(verificationTrendMap)
+      .map(([date, counts]) => ({
+        date,
+        verified: counts.verified,
+        total: counts.total
+      }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    return {
+      totalVisitors,
+      totalVerifiedUsers,
+      totalConversionRate,
+      topSources,
+      topCampaigns,
+      topMediums,
+      dailyVisitors,
+      verificationTrend,
+      usersData: filteredUsers
+    };
+  };
+
+
+  const filteredAnalytics = analytics
+    ? filterAndRecalculateAnalytics(analytics, filters)
+    : null;
+
+
+
+
+
+
+
+
+
+
+
+
+
   if(!isAuthenticated) {
     return (
       <Container maxWidth="sm" sx={{ py: 8 }}>
@@ -208,83 +354,62 @@ export default function AnalyticsPage() {
   }
 
   const sourceChartData = {
-    labels: analytics.topSources.map(item => item.source || 'Direct'),
-    datasets: [
-      {
-        label: 'Visitors by Source',
-        data: analytics.topSources.map(item => item.count),
-        backgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#4BC0C0',
-          '#9966FF',
-          '#FF9F40',
-        ],
-        borderWidth: 1,
-      },
-    ],
+    labels: filteredAnalytics?.topSources.map(item => item.source || 'Direct') || [],
+    datasets: [{
+      label: 'Visitors by Source',
+      data: filteredAnalytics?.topSources.map(item => item.count) || [],
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'],
+      borderWidth: 1,
+    }],
   };
 
   const campaignChartData = {
-    labels: analytics.topCampaigns.map(item => item.campaign || 'No Campaign'),
-    datasets: [
-      {
-        label: 'Visitors by Campaign',
-        data: analytics.topCampaigns.map(item => item.count),
-        backgroundColor: 'rgba(54, 162, 235, 0.8)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      },
-    ],
+    labels: filteredAnalytics?.topCampaigns.map(item => item.campaign || 'No Campaign') || [],
+    datasets: [{
+      label: 'Visitors by Campaign',
+      data: filteredAnalytics?.topCampaigns.map(item => item.count) || [],
+      backgroundColor: 'rgba(54, 162, 235, 0.8)',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 1,
+    }],
   };
 
   const mediumChartData = {
-    labels: analytics.topMediums.map(item => item.medium || 'None'),
-    datasets: [
-      {
-        label: 'Visitors by Medium',
-        data: analytics.topMediums.map(item => item.count),
-        backgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#4BC0C0',
-          '#9966FF',
-        ],
-        borderWidth: 1,
-      },
-    ],
+    labels: filteredAnalytics?.topMediums.map(item => item.medium || 'None') || [],
+    datasets: [{
+      label: 'Visitors by Medium',
+      data: filteredAnalytics?.topMediums.map(item => item.count) || [],
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+      borderWidth: 1,
+    }],
   };
 
   const dailyVisitorsData = {
-    labels: analytics.dailyVisitors.map(item => item.date),
-    datasets: [
-      {
-        label: 'Daily Visitors',
-        data: analytics.dailyVisitors.map(item => item.count),
-        borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        tension: 0.1,
-        fill: true,
-      },
-    ],
+    labels: filteredAnalytics?.dailyVisitors.map(item => item.date) || [],
+    datasets: [{
+      label: 'Daily Visitors',
+      data: filteredAnalytics?.dailyVisitors.map(item => item.count) || [],
+      borderColor: 'rgb(75, 192, 192)',
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      tension: 0.1,
+      fill: true,
+    }],
   };
 
   const verificationTrendData = {
-    labels: analytics.verificationTrend.map(item => item.date),
+    labels: filteredAnalytics?.verificationTrend.map(item => item.date) || [],
     datasets: [
       {
         label: 'Verified Users',
-        data: analytics.verificationTrend.map(item => item.verified),
+        data: filteredAnalytics?.verificationTrend.map(item => item.verified) || [],
         borderColor: 'rgb(34, 197, 94)',
         backgroundColor: 'rgba(34, 197, 94, 0.2)',
         tension: 0.1,
         fill: false,
       },
       {
-        label: 'Total Visitors',
-        data: analytics.verificationTrend.map(item => item.total),
+        label: 'Visitors',
+        data: filteredAnalytics?.verificationTrend.map(item => item.total) || [],
         borderColor: 'rgb(239, 68, 68)',
         backgroundColor: 'rgba(239, 68, 68, 0.2)',
         tension: 0.1,
@@ -292,9 +417,9 @@ export default function AnalyticsPage() {
       },
     ],
   };
-
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
+      <UTMFilters analytics={analytics} setFilter={setfilters } />
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Typography variant="h3" gutterBottom>
           UTM Analytics Dashboard
@@ -315,34 +440,34 @@ export default function AnalyticsPage() {
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 3, mb: 4 }}>
         <Card sx={{ p: 3, textAlign: 'center' }}>
           <Typography variant="h4" color="primary">
-            {analytics.totalVisitors.toLocaleString()}
+            {filteredAnalytics?.totalVisitors.toLocaleString() || 0}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Total Visitors
+      Visitors
           </Typography>
         </Card>
         <Card sx={{ p: 3, textAlign: 'center' }}>
           <Typography variant="h4" color="success.main">
-            {analytics.verifiedUsers.toLocaleString()}
+            {filteredAnalytics?.totalVerifiedUsers.toLocaleString() || 0}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Verified Users
+      Verified Users
           </Typography>
         </Card>
         <Card sx={{ p: 3, textAlign: 'center' }}>
           <Typography variant="h4" color="warning.main">
-            {analytics.conversionRate.toFixed(1)}%
+            {filteredAnalytics?.totalConversionRate.toFixed(1) || '0.0'}%
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Conversion Rate
+      Conversion Rate
           </Typography>
         </Card>
         <Card sx={{ p: 3, textAlign: 'center' }}>
           <Typography variant="h4" color="info.main">
-            {analytics.topSources.length}
+            {filteredAnalytics?.topSources.length || 0}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Traffic Sources
+      Traffic Sources
           </Typography>
         </Card>
       </Box>

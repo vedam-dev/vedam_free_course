@@ -9,7 +9,7 @@ export async function GET() {
       .from('utm-data')
       .select('*')
       .order('created_at', { ascending: true });
-
+    console.log('UTMDATA', utmData);
     if(utmError) {
       console.error('Supabase UTM data error:', utmError);
       return NextResponse.json(
@@ -21,8 +21,8 @@ export async function GET() {
     if(!utmData || utmData.length === 0) {
       return NextResponse.json({
         totalVisitors: 0,
-        verifiedUsers: 0,
-        conversionRate: 0,
+        totalVerifiedUsers: 0,
+        totalConversionRate: 0,
         topSources: [],
         topCampaigns: [],
         topMediums: [],
@@ -33,8 +33,8 @@ export async function GET() {
 
     // Calculate basic metrics
     const totalVisitors = utmData.length;
-    const verifiedUsers = utmData.filter(item => item.isVerified).length;
-    const conversionRate = totalVisitors > 0 ? (verifiedUsers / totalVisitors) * 100 : 0;
+    const totalVerifiedUsers = utmData.filter(item => item.isVerified).length;
+    const totalConversionRate = totalVisitors > 0 ? (totalVerifiedUsers / totalVisitors) * 100 : 0;
 
     // Process source data
     const sourceCounts: { [key: string]: number } = {};
@@ -106,15 +106,47 @@ export async function GET() {
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
       .slice(-30); // Last 30 days
 
+
+    // usersData
+    type UserData = {
+      userId: number,
+      isUserVerified: boolean,
+      userSource: string | null,
+      userMedium: string | null,
+      userCampaign: string | null,
+      userRecordedAt: string,
+    }
+    const usersData: UserData[] = [];
+    // IIFE
+    (function exctractUsersData() {
+      utmData?.map(item => {
+        const { id, isVerified, source, medium, campaign, created_at } = item;
+        const userData: UserData = {
+          userId: id,
+          isUserVerified: isVerified,
+          userSource: source,
+          userMedium: medium,
+          userCampaign: campaign,
+          userRecordedAt: created_at,
+        };
+        usersData.push(userData);
+      });
+    }());
+
+
+
+
+
     return NextResponse.json({
       totalVisitors,
-      verifiedUsers,
-      conversionRate,
+      totalVerifiedUsers,
+      totalConversionRate,
       topSources,
       topCampaigns,
       topMediums,
       dailyVisitors,
       verificationTrend,
+      usersData
     });
   } catch(error) {
     console.error('Analytics API error:', error);
