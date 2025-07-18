@@ -15,6 +15,7 @@ import {
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
+import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -545,21 +546,19 @@ const VideoWatchPage = () => {
             </Accordion>
           );
         })}
-        <Box
-          component="img"
-          sx={{
-            mt:2,
-            height: 233,
-            borderRadius: 2,
+        <Image
+          src="/banner.jpg"
+          alt="banner-image"
+          width={ 1000}
+          height={1000}
+          style={{
             width: '100%',
+            height: '130px',
+            borderRadius: '16px',
+            marginTop: '16px',
             maxHeight: '125px',
             cursor: 'pointer',
-            '&:hover': {
-              opacity: 0.9, // Optional: Add hover effect
-            }
           }}
-          alt="banner"
-          src="/banner 800200.jpg"
           onClick={() => window.open('https://vedam.org', '_blank')}
         />
       </Box>
