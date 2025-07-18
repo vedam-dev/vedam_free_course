@@ -559,7 +559,7 @@ const VideoWatchPage = () => {
             maxHeight: '125px',
             cursor: 'pointer',
           }}
-          onClick={() => window.open('https://vedam.org', '_blank')}
+          onClick={() => window.open('https://vedam.org/?utm_source=Codesprint&utm_medium=Banner1&utm_campaign=Banner1_campusimage', '_blank')}
         />
       </Box>
     </Box>
