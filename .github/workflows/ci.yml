@@ -1,21 +1,28 @@
-name: Build and Deploy Vedam Free Course (Production)
+  name: CI - Lint and Build Next.js
 
 on:
   push:
     branches:
       - dev
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  jobs:
+    ci:
+      if: |
+        github.event_name == 'push' ||
+        (
+          github.event_name == 'pull_request' &&
+          (
+            startsWith(github.head_ref, 'feature/') ||
+            startsWith(github.head_ref, 'bugfix/') ||
+            startsWith(github.head_ref, 'hotfix/')
+          )
+        )
+      runs-on: ubuntu-latest
+      environment: vedam-free-course
 
-    permissions:
-      contents: read
-      id-token: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
