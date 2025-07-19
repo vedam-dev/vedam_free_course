@@ -144,7 +144,7 @@ export default function VideoCourses() {
             textAlign: { xs: 'center', md: 'left' },
             marginBottom: {
               xs: '24px',
-              md: '48px',
+              md: '48px'
             },
           }}
         >
