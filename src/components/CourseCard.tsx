@@ -81,8 +81,6 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
             component="img"
             src={course.image}
             alt={`${course.companyname} instructor`}
-            width={isMobile ? 200 : 300}
-            height={isMobile ? 340 : 460}
             sx={{
               alignSelf: 'flex-start',
               position: 'absolute',
@@ -106,7 +104,6 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
             alignItems: 'center',
             textAlign: 'center',
             zIndex: 2,
-
           }}
         >
           <Box sx={{ mb: -1 }}>
@@ -128,7 +125,6 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
               justifyContent: 'center',
               gap: 2,
               mb: 1,
-
             }}
           >
             <Box

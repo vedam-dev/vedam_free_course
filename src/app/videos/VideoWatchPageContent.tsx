@@ -15,6 +15,7 @@ import {
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
+import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -545,6 +546,21 @@ const VideoWatchPage = () => {
             </Accordion>
           );
         })}
+        <Image
+          src="/banner.jpg"
+          alt="banner-image"
+          width={ 1000}
+          height={1000}
+          style={{
+            width: '100%',
+            height: '130px',
+            borderRadius: '16px',
+            marginTop: '16px',
+            maxHeight: '125px',
+            cursor: 'pointer',
+          }}
+          onClick={() => window.open('https://vedam.org/?utm_source=Codesprint&utm_medium=Banner1&utm_campaign=Banner1_campusimage', '_blank')}
+        />
       </Box>
     </Box>
   );
