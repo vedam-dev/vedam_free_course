@@ -27,9 +27,9 @@ COPY . .
 
 # Create .env file from build args (for build-time variables)
 # These can be passed via --build-arg or from environment variables
-ARG SUPABASE_URL
-ARG SUPABASE_ANON_KEY
-ARG GA4_MEASUREMENT_ID
+ARG NEXT_PUBLIC_SUPABASE_URL
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+ARG NEXT_PUBLIC_GA4_MEASUREMENT_ID
 ARG GA4_API_SECRET
 ARG NEXT_PUBLIC_MSG91_AUTH_KEY
 ARG NEXT_PUBLIC_STREAMABLE_USERNAME
@@ -56,6 +56,7 @@ RUN echo "NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}" >> .env.local &&
 
 # Build the application
 RUN yarn build
+
 
 # Stage 3: Production - Create minimal production image
 FROM node:20-alpine AS runner
