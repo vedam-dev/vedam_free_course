@@ -405,17 +405,16 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
                 placeholder="Enter your email"
               />
               <FormControl fullWidth
-                sx={{ 
-                  mb: 2,
-                  '& .MuiOutlinedInput-root': {
-                    backgroundColor: 'white',
-                    borderRadius: '12px',
-                    height: '56px',
-                  },
-                  '& .MuiInputLabel-root': {
-                    color: '#6C10BC',
-                    fontWeight: 500,
-                  },
+                sx={{ mb: 2,
+                      '& .MuiOutlinedInput-root': {
+                        backgroundColor: 'white',
+                        borderRadius: '12px',
+                        height: '56px',
+                      },
+                      '& .MuiInputLabel-root': {
+                        color: '#6C10BC',
+                        fontWeight: 500,
+                      },
                 }}
               >
                 <InputLabel>Year of Passing</InputLabel>
