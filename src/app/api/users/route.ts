@@ -34,14 +34,14 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, mobile } = body;
+    const { name, email, mobile, passout_year } = body;
 
     const cookieStore = await cookies();
     const visitorToken = cookieStore.get('visitor_token')?.value;
 
-    if(!name || !email || !mobile || !visitorToken) {
+    if(!name || !email || !mobile || !passout_year || !visitorToken) {
       return NextResponse.json(
-        { error: 'Name, email, mobile, and visitor_token are required' },
+        { error: 'Name, email, mobile, year of passing, and visitor_token are required' },
         { status: 400 }
       );
     }
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     // Step 2: Insert new user
     const { data: userData, error: userError } = await supabase
       .from('users')
-      .insert([{ name, email, mobile }])
+      .insert([{ name, email, mobile, passout_year }])
       .select();
 
     if(userError) {
