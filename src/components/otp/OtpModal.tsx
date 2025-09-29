@@ -404,9 +404,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
                 helperText={touched.email && errors.email ? 'Please enter a valid email' : ''}
                 placeholder="Enter your email"
               />
-
-              <FormControl 
-                fullWidth 
+              <FormControl fullWidth
                 sx={{ 
                   mb: 2,
                   '& .MuiOutlinedInput-root': {
