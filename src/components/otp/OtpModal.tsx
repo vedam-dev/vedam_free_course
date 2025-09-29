@@ -405,7 +405,8 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
                 placeholder="Enter your email"
               />
               <FormControl fullWidth
-                sx={{ mb: 2,
+                sx={{
+                  mb: 2,
                   '& .MuiOutlinedInput-root': {
                     borderRadius: '12px',
                     backgroundColor: '#ffffff',
