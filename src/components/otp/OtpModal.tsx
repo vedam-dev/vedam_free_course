@@ -45,6 +45,7 @@ interface OtpModalProps {
     name: string
     email: string
     passout_year: string
+    stream: string
     phone: string
   }) => void
 }
@@ -58,6 +59,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [passout_year, setpassout_year] = useState('2025');
+  const [stream, setStream] = useState('PCM');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [touched, setTouched] = useState({
     fullName: false,
@@ -129,6 +131,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     name: string
     email: string
     passout_year: string
+    stream: string
     phone: string
   }) => {
     try {
@@ -210,6 +213,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
             email: email,
             passout_year: passout_year,
             phone: phoneNumber,
+            stream: stream,
           });
 
           // Try multiple ways to extract userId from the response
@@ -274,6 +278,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
             name: fullName,
             email: email,
             passout_year: passout_year,
+            stream: stream,
             phone: phoneNumber,
           });
 
@@ -321,6 +326,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     setFullName('');
     setEmail('');
     setpassout_year('2025');
+    setStream('PCM');
     setPhoneNumber('');
     setError(null);
     setSuccess(null);
@@ -428,7 +434,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
                   },
                 }}
               >
-                <InputLabel>Year of Passing</InputLabel>
+                <InputLabel>Year of 12th Passing</InputLabel>
                 <Select
                   value={passout_year}
                   label="Year of Passing"
@@ -437,7 +443,43 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
                   <MenuItem value="2025">2025</MenuItem>
                   <MenuItem value="2024">2024</MenuItem>
                   <MenuItem value="2023">2023</MenuItem>
-                  <MenuItem value="2022">2022</MenuItem>
+                  <MenuItem value={"<=2022"}>{"<=2022"}</MenuItem>
+                </Select>
+              </FormControl>
+
+                <FormControl fullWidth
+                sx={{
+                  mb: 2,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '12px',
+                    backgroundColor: '#ffffff',
+                    '& fieldset': {
+                      borderColor: '#e0e0e0',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#FFA41A',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#FFA41A',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: '#666666',
+                    '&.Mui-focused': {
+                      color: '#FFA41A',
+                    },
+                  },
+                }}
+              >
+                <InputLabel>Stream</InputLabel>
+                <Select
+                  value={stream}
+                  label="Stream"
+                  onChange={(e) => setStream(e.target.value)}
+                >
+                  <MenuItem value="PCM">PCM</MenuItem>
+                  <MenuItem value="PCB">PCB</MenuItem>
+                  <MenuItem value="Others">Others</MenuItem>
                 </Select>
               </FormControl>
 
