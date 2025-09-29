@@ -57,7 +57,6 @@ RUN echo "NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}" >> .env.local &&
 # Build the application
 RUN yarn build
 
-
 # Stage 3: Production - Create minimal production image
 FROM node:20-alpine AS runner
 
