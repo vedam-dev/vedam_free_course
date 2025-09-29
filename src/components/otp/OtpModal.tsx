@@ -8,9 +8,13 @@ import {
   CircularProgress,
   Divider,
   Fade,
+  FormControl,
   IconButton,
   InputAdornment,
+  InputLabel,
+  MenuItem,
   Modal,
+  Select,
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -40,6 +44,7 @@ interface OtpModalProps {
   onVerificationSuccess: (userData: {
     name: string
     email: string
+    yearOfPassing: string
     phone: string
   }) => void
 }
@@ -52,6 +57,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
   const [success, setSuccess] = useState<string | null>(null);
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
+  const [yearOfPassing, setYearOfPassing] = useState('2025');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [touched, setTouched] = useState({
     fullName: false,
@@ -122,6 +128,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
   const saveUserToDatabase = async (userData: {
     name: string
     email: string
+    yearOfPassing: string
     phone: string
   }) => {
     try {
@@ -133,6 +140,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
         body: JSON.stringify({
           name: userData.name,
           email: userData.email,
+          yearOfPassing: userData.yearOfPassing,
           mobile: userData.phone,
         }),
       });
@@ -200,6 +208,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
           const dbResult = await saveUserToDatabase({
             name: fullName,
             email: email,
+            yearOfPassing: yearOfPassing,
             phone: phoneNumber,
           });
 
@@ -264,6 +273,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
           onVerificationSuccess({
             name: fullName,
             email: email,
+            yearOfPassing: yearOfPassing,
             phone: phoneNumber,
           });
 
@@ -310,6 +320,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     setOtp('');
     setFullName('');
     setEmail('');
+    setYearOfPassing('2025');
     setPhoneNumber('');
     setError(null);
     setSuccess(null);
@@ -393,6 +404,34 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
                 helperText={touched.email && errors.email ? 'Please enter a valid email' : ''}
                 placeholder="Enter your email"
               />
+
+              <FormControl 
+                fullWidth 
+                sx={{ 
+                  mb: 2,
+                  '& .MuiOutlinedInput-root': {
+                    backgroundColor: 'white',
+                    borderRadius: '12px',
+                    height: '56px',
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: '#6C10BC',
+                    fontWeight: 500,
+                  },
+                }}
+              >
+                <InputLabel>Year of Passing</InputLabel>
+                <Select
+                  value={yearOfPassing}
+                  label="Year of Passing"
+                  onChange={(e) => setYearOfPassing(e.target.value)}
+                >
+                  <MenuItem value="2024">2024</MenuItem>
+                  <MenuItem value="2025">2025</MenuItem>
+                  <MenuItem value="2026">2026</MenuItem>
+                  <MenuItem value="2027">2027</MenuItem>
+                </Select>
+              </FormControl>
 
               <StyledInput
                 label="Mobile No."
