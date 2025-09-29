@@ -145,6 +145,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
           email: userData.email,
           passout_year: userData.passout_year,
           mobile: userData.phone,
+          stream: userData.stream,
         }),
       });
 
