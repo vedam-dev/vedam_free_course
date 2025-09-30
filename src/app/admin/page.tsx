@@ -37,7 +37,6 @@ interface RootState {
 export default function AdminPage() {
   const router = useRouter();
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
-  
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
