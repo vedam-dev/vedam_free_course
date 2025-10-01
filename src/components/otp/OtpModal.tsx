@@ -441,6 +441,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
                   value={passout_year}
                   label="Year of Passing"
                   onChange={(e) => setpassout_year(e.target.value)}
+
                 >
                   <MenuItem value="2027">2027</MenuItem>
                   <MenuItem value="2026">2026</MenuItem>
