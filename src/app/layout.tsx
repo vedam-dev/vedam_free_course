@@ -1,12 +1,10 @@
 'use client';
 import { Geist, Geist_Mono, Outfit } from 'next/font/google';
 import { Provider } from 'react-redux';
-import FloatingButton from '@/components/FloatingButton';
-
-
 import './globals.css';
 
 import ClientGaurd from '@/components/ClientGuard';
+import FloatingButton from '@/components/FloatingButton';
 import Footer from '@/components/Footer';
 
 import UTMCaptureClient from '../components/UTMCaptureClient';
