@@ -7,12 +7,14 @@ import Landing from './components/Landing';
 import Outcomes from './components/Outcomes';
 import VideoCourses from './components/VideoCourses';
 import VideoInfo from './components/VideoInfo';
+import AboutUs from './components/AboutUs';
 
 
 const HomePage = () => {
   return (
     <>
       <Landing />
+      <AboutUs/>
       <VideoInfo/>
       <VideoCourses/>
       <Certificate/>

@@ -1,11 +1,12 @@
-import { Box } from '@mui/material';
+import { Box, SxProps, Theme } from '@mui/material';
 import React, { ReactNode } from 'react';
 
 interface HighlightTextProps {
   children: ReactNode;
+  sx?: SxProps<Theme>;
 }
 
-const BaseDecoration: React.FC<HighlightTextProps> = ({ children }) => {
+const BaseDecoration: React.FC<HighlightTextProps> = ({ children, sx }) => {
   return (
     <Box
       component="span"
@@ -25,6 +26,7 @@ const BaseDecoration: React.FC<HighlightTextProps> = ({ children }) => {
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
         },
+        ...sx, // Merge custom sx props
       }}
     >
       {children}
