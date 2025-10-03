@@ -30,6 +30,7 @@ const FOOTER_LINKS: FooterColumn[] = [
       { label: 'Terms of use', href: 'https://vedam.org/terms-of-use' },
       { label: 'Privacy Policy', href: 'https://vedam.org/privacy-policy' },
       { label: 'Refund Policy', href: 'https://vedam.org/refund-policy' },
+      { label : 'Visit our website', href: 'https://vedam.org/' }
     ],
   },
   {
