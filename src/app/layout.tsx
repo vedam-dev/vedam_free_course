@@ -1,11 +1,10 @@
 'use client';
 import { Geist, Geist_Mono, Outfit } from 'next/font/google';
 import { Provider } from 'react-redux';
-
-
 import './globals.css';
 
 import ClientGaurd from '@/components/ClientGuard';
+import FloatingButton from '@/components/FloatingButton';
 import Footer from '@/components/Footer';
 
 import UTMCaptureClient from '../components/UTMCaptureClient';
@@ -40,6 +39,7 @@ export default function RootLayout({
           <UTMCaptureClient>
             <ClientGaurd>
               {children}
+              <FloatingButton />
             </ClientGaurd>
             <Footer />
           </UTMCaptureClient>
