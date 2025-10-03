@@ -7,7 +7,6 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
-
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -51,7 +50,7 @@ const Landing: React.FC = () => {
       return;
     } else {
       const element = document.getElementById('VideoCourses');
-      if (element) {
+      if(element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
