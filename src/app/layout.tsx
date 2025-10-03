@@ -1,6 +1,7 @@
 'use client';
 import { Geist, Geist_Mono, Outfit } from 'next/font/google';
 import { Provider } from 'react-redux';
+import FloatingButton from '@/components/FloatingButton';
 
 
 import './globals.css';
@@ -40,6 +41,7 @@ export default function RootLayout({
           <UTMCaptureClient>
             <ClientGaurd>
               {children}
+              <FloatingButton />
             </ClientGaurd>
             <Footer />
           </UTMCaptureClient>
