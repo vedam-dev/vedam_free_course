@@ -14,7 +14,7 @@ export default function ClientGuard({ children }: Readonly<ClientGuardProps>) {
     if(pathname === '/') return;
     const userId = localStorage.getItem('userId');
     if(!userId) {
-      // router.push('/');
+      router.push('/');
     }
   }, [router, pathname]);
 
