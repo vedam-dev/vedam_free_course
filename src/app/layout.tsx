@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Outfit } from 'next/font/google';
 import { Provider } from 'react-redux';
 import './globals.css';
 
+import BannerPopupModal from '@/components/BannerPopupModal';
 import ClientGaurd from '@/components/ClientGuard';
 import FloatingButton from '@/components/FloatingButton';
 import Footer from '@/components/Footer';
@@ -40,6 +41,7 @@ export default function RootLayout({
             <ClientGaurd>
               {children}
               <FloatingButton />
+              <BannerPopupModal/>
             </ClientGaurd>
             <Footer />
           </UTMCaptureClient>

@@ -48,7 +48,7 @@ const FloatingButton = () => {
             boxShadow: '0px 0px 8px rgba(255, 255, 255, 0.25)',
           },
         }}
-        href="https://apply.vedam.org/"
+        href="https://vedam.org"
         target="_blank"
         rel="noopener noreferrer"
         endIcon={<OpenInNewIcon sx={{
@@ -60,7 +60,7 @@ const FloatingButton = () => {
           }
         }} />}
       >
-        Apply for VSAT 2026
+        Apply to VSAT 2026
       </Button>
     </Box>
   );
