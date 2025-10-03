@@ -1,14 +1,13 @@
 'use client';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {
-  Alert,
   Avatar,
   Box,
   Container,
   Divider,
-  Snackbar,
   Typography,
 } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -40,11 +39,10 @@ function stringToColor(str: string) {
 }
 
 const Landing: React.FC = () => {
+  const router = useRouter();
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const username = useSelector((state: RootState) => state.user.username);
   const [hasMounted, setHasMounted] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
   const { showOtpModal, setShowOtpModal, handleVerificationSuccess } =
     useOtpModal();
 
@@ -53,10 +51,7 @@ const Landing: React.FC = () => {
       setShowOtpModal(true);
       return;
     } else {
-      setSnackbarMessage(
-        `Welcome back, ${username}!, You are already Logged In`
-      );
-      setSnackbarOpen(true);
+      router.push('/videos');
     }
   };
 
@@ -308,7 +303,7 @@ const Landing: React.FC = () => {
                   background: 'white',
                 }}
               >
-                Register for Codesprint
+                {isLoggedIn ? 'Start Now' : 'Register for Codesprint'}
               </BaseButton>
               {/* <BaseButton variant="contained" size="large">
                 Register for later
@@ -408,20 +403,6 @@ const Landing: React.FC = () => {
         ></Box>
 
       </Container>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={() => setSnackbarOpen(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={() => setSnackbarOpen(false)}
-          severity={isLoggedIn ? 'success' : 'info'}
-          sx={{ width: '100%' }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
       <OtpModal
         open={showOtpModal}
         onClose={() => setShowOtpModal(false)}
