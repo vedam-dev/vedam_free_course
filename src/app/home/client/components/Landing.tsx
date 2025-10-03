@@ -1,17 +1,15 @@
 'use client';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {
-  Alert,
   Avatar,
   Box,
   Container,
   Divider,
-  Snackbar,
   Typography,
 } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
 
 import BaseButton from '@/components/BaseButton';
 import BaseDecoration from '@/components/BaseDecoration';
@@ -45,8 +43,6 @@ const Landing: React.FC = () => {
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const username = useSelector((state: RootState) => state.user.username);
   const [hasMounted, setHasMounted] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
   const { showOtpModal, setShowOtpModal, handleVerificationSuccess } =
     useOtpModal();
 
@@ -407,20 +403,6 @@ const Landing: React.FC = () => {
         ></Box>
 
       </Container>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={() => setSnackbarOpen(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={() => setSnackbarOpen(false)}
-          severity={isLoggedIn ? 'success' : 'info'}
-          sx={{ width: '100%' }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
       <OtpModal
         open={showOtpModal}
         onClose={() => setShowOtpModal(false)}
