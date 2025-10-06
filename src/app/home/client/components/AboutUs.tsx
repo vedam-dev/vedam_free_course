@@ -7,13 +7,8 @@ import BaseDecoration from '@/components/BaseDecoration';
 const AboutUs: React.FC = () => {
   return (
     <Box
-      component="section"
       sx={{
         position: 'relative',
-        left: '50%',
-        right: '50%',
-        marginLeft: '-50vw',
-        marginRight: '-50vw',
         width: '100vw',
         backgroundImage: 'url("/assets/Background.png")',
         backgroundSize: '100% auto',
