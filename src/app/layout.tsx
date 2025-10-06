@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Outfit } from 'next/font/google';
 import { Provider } from 'react-redux';
 import './globals.css';
 
+import BannerPopupModal from '@/components/BannerPopupModal';
 import ClientGaurd from '@/components/ClientGuard';
 import FloatingButton from '@/components/FloatingButton';
 import Footer from '@/components/Footer';
@@ -34,12 +35,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${outfit.className }`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${outfit.className}`}>
         <Provider store={store}>
           <UTMCaptureClient>
             <ClientGaurd>
               {children}
               <FloatingButton />
+              <BannerPopupModal/>
             </ClientGaurd>
             <Footer />
           </UTMCaptureClient>

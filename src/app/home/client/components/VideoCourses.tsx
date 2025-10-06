@@ -127,7 +127,7 @@ export default function VideoCourses() {
 
   return (
     <Container maxWidth="lg">
-      <Box
+      <Box id='VideoCourses'
         component="section"
         sx={{
           py: { xs: 4, md: 8 },
