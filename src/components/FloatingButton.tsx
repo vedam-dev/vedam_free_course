@@ -60,7 +60,7 @@ const FloatingButton = () => {
           }
         }} />}
       >
-        Apply to VSAT 2026
+        Apply for VSAT 2026
       </Button>
     </Box>
   );

@@ -186,7 +186,7 @@ export default function VideoCourses() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontWeight: 500,
-                  fontSize: { xs: '10px', md: '24px' },
+                  fontSize: { xs: '12px', md: '24px' },
                   lineHeight: { xs: '16px', md: '36px' },
                   color: '#565656',
                   textAlign: 'left',
@@ -198,7 +198,7 @@ export default function VideoCourses() {
                 sx={{
                   fontFamily: 'Outfit, sans‑serif',
                   fontWeight: 600,
-                  fontSize: { xs: '10px', md: '32px' },
+                  fontSize: { xs: '12px', md: '32px' },
                   lineHeight: { xs: '16px', md: '36px' },
                   color: '#1E1E1E',
                   mt: 0.5,
@@ -242,7 +242,7 @@ export default function VideoCourses() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontWeight: 500,
-                  fontSize: { xs: '10px', md: '24px' },
+                  fontSize: { xs: '12px', md: '24px' },
                   llineHeight: { xs: '16px', md: '36px' },
                   color: '#565656',
                   textAlign: 'left',
@@ -254,7 +254,7 @@ export default function VideoCourses() {
                 sx={{
                   fontFamily: 'Outfit, sans‑serif',
                   fontWeight: 600,
-                  fontSize: { xs: '10px', md: '32px' },
+                  fontSize: { xs: '12px', md: '32px' },
                   lineHeight: { xs: '16px', md: '36px' },
                   color: '#1E1E1E',
                   mt: 0.5,
