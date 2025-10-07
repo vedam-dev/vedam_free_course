@@ -30,11 +30,11 @@ const temp = [
 // Helper to get random color
 function stringToColor(str: string) {
   let hash = 0;
-  for(let i = 0; i < str.length; i++) {
+  for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
   let color = '#';
-  for(let i = 0; i < 3; i++) {
+  for (let i = 0; i < 3; i++) {
     const value = (hash >> (i * 8)) & 0xff;
     color += ('00' + value.toString(16)).slice(-2);
   }
@@ -49,12 +49,12 @@ const Landing: React.FC = () => {
     useOtpModal();
 
   const handleJoinCodeSprint = () => {
-    if(!isLoggedIn) {
+    if (!isLoggedIn) {
       setShowOtpModal(true);
       return;
     } else {
       const element = document.getElementById('VideoCourses');
-      if(element) {
+      if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
@@ -64,7 +64,7 @@ const Landing: React.FC = () => {
     setHasMounted(true);
   }, []);
 
-  if(!hasMounted) return null;
+  if (!hasMounted) return null;
   return (
     <Box
       component="section"
@@ -81,7 +81,7 @@ const Landing: React.FC = () => {
           md: "url('/home/GRADIENT.png')",
         },
         backgroundSize: { xs: '300% auto', md: '150% auto' },
-        backgroundPosition: { xs: 'center -425px', md: 'center -450px',lg:'center -600px' },
+        backgroundPosition: { xs: 'center -425px', md: 'center -450px', lg: 'center -600px' },
         backgroundRepeat: 'no-repeat',
         py: { xs: 1, md: 4 },
         mb: { lg: 10, xl: 0 },
@@ -127,7 +127,7 @@ const Landing: React.FC = () => {
                 width: '1px',
                 height: '44px',
                 backgroundColor: '#2C0052',
-                mx:{ xs:0,md:2 },
+                mx: { xs: 0, md: 2 },
                 flexShrink: 0,
               }}
             />
@@ -237,7 +237,7 @@ const Landing: React.FC = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: { xs: 3, md: 4 },
-            mt:10,
+            mt: 2,
           }}
         >
           {/* Left Section */}
@@ -308,7 +308,7 @@ const Landing: React.FC = () => {
                   background: 'white',
                 }}
               >
-                {isLoggedIn ? 'Start Now' : 'Register for Codesprint'}
+                {isLoggedIn ? "I'm Ready to Learn !" : 'Register for Codesprint'}
               </BaseButton>
               {/* <BaseButton variant="contained" size="large">
                 Register for later
@@ -318,11 +318,9 @@ const Landing: React.FC = () => {
             <Box
               sx={{
                 display: 'grid',
-                gridTemplateColumns: {
-                  xs: '1fr',
-                  sm: 'repeat(2, minmax(0, 1fr))',
-                },
-                maxWidth: { xs: '100%',md:'70%', lg: '44%' },
+                gridTemplateColumns:
+                  'repeat(2, minmax(0, 1fr))',
+                maxWidth: { xs: '100%', md: '70%', lg: '44%' },
                 gap: { xs: 1, md: 2 },
                 mb: { xs: 0, md: 0 },
               }}
@@ -335,8 +333,8 @@ const Landing: React.FC = () => {
                     alignItems: 'center',
                     gap: 1,
                     whiteSpace: 'nowrap',
-                    textAlign: { xs: 'center', lg: 'left' },
-                    mx: { xs: 'auto', md: '0' },
+                    textAlign: 'left',
+                    mx: 0,
                   }}
                 >
                   <CheckCircleIcon
@@ -344,7 +342,7 @@ const Landing: React.FC = () => {
                   />
                   <Typography
                     sx={{
-                      color: '#02901A',
+                      color: 'rgba(32, 32, 32)',
                       fontWeight: 500,
                       fontSize: { xs: '14px', md: '20px' },
                       fontFamily: 'Outfit, sans-serif',
@@ -384,7 +382,7 @@ const Landing: React.FC = () => {
 
         <Box
           sx={{
-            display:{ xs:'none', lg:'block' },
+            display: { xs: 'none', lg: 'block' },
             flex: 1.2,
             position: { xs: 'inherit', md: 'absolute' },
             right: { xs: '0px', md: '-8px' },

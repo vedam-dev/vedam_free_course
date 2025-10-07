@@ -16,7 +16,7 @@ const AboutUs: React.FC = () => {
     >
       <Box sx={{ p: '20px 15px 26px 15px' }}>
         {/* Header Section */}
-        <Box sx={{ textAlign: 'center'}}>
+        <Box sx={{ textAlign: 'center' }}>
           <Typography
             sx={{
               fontFamily: 'Outfit, sans-serif',
@@ -44,20 +44,12 @@ const AboutUs: React.FC = () => {
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
+                pb:'4px'
               }}
             >
-              Vedam School of{' '}
+              Vedam School of Technology
+
             </Box>
-            <BaseDecoration
-              sx={{
-                background: 'linear-gradient(90deg, #8A18FF 0%, #F5790D 100%)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              Technology
-            </BaseDecoration>
           </Box>
           <Typography
             sx={{
@@ -77,14 +69,14 @@ const AboutUs: React.FC = () => {
             {/* Image 1 */}
             <Box sx={{ position: 'relative' }}>
               <img
-                src="/assets/Image01_Mobile.png"
+                src="/assets/Image01_mb.png"
                 alt="About Us"
-                style={{ maxWidth: '100%', height: 'auto', objectFit:'fill' }}
+                style={{ maxWidth: '100%', height: 'auto'}}
               />
               <Box
                 sx={{
                   position: 'absolute',
-                  bottom: '16px',
+                  bottom: '20px',
                   left: '16px',
                   right: '16px',
                   borderRadius: '26px',
@@ -151,7 +143,7 @@ const AboutUs: React.FC = () => {
                     mt: '17px',
                   }}
                 >
-                  Curriculum designed and taught by expert from MAANG companies
+                  Curriculum designed and taught by expert from MAANG companies.
                 </Typography>
               </Box>
             </Box>
@@ -234,7 +226,7 @@ const AboutUs: React.FC = () => {
                     mt: '17px',
                   }}
                 >
-                  Students learn core coding concepts from day 1
+                  Students learn core coding concepts from day 1.
                 </Typography>
               </Box>
             </Box>
@@ -399,7 +391,7 @@ const AboutUs: React.FC = () => {
                     mt: '17px',
                   }}
                 >
-                  Students with 97%le in JEE have chosen Vedam
+                  Students with 97%ile in JEE have chosen Vedam.
                 </Typography>
               </Box>
             </Box>

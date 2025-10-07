@@ -18,16 +18,16 @@ const AboutUs: React.FC = () => {
     >
       <Container maxWidth="lg">
         {/* Header Section */}
-        <Box sx={{ textAlign: 'center', pt:'55px' }}>
+        <Box sx={{ textAlign: 'center', pt: '55px' }}>
           <Typography
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              fontSize:'44px',
+              fontSize: '44px',
               fontWeight: 500,
               color: '#1E1E1E',
             }}
           >
-                        Introducing
+            Introducing
           </Typography>
           <Typography
             sx={{
@@ -46,7 +46,7 @@ const AboutUs: React.FC = () => {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-                            Vedam School of{' '}
+              Vedam School of{' '}
             </Box>
             <BaseDecoration
               sx={{
@@ -56,18 +56,18 @@ const AboutUs: React.FC = () => {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-                            Technology
+              Technology
             </BaseDecoration>
           </Typography>
           <Typography
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              fontSize: '32px' ,
+              fontSize: '32px',
               fontWeight: 500,
               color: '#000',
             }}
           >
-                        4 Year Undergrad Program in CS & AI
+            4 Year Undergrad Program in CS & AI
           </Typography>
         </Box>
         <Box>
@@ -81,14 +81,14 @@ const AboutUs: React.FC = () => {
             </Box>
             <Box>
               <img
-                src="/assets/Image02.png"
+                src="/assets/Image06.png"
                 alt="About Us"
                 style={{ maxWidth: '100%', height: 'auto' }}
               />
             </Box>
             <Box>
               <img
-                src="/assets/Image03.png"
+                src="/assets/Image02.png"
                 alt="About Us"
                 style={{ maxWidth: '100%', height: 'auto' }}
               />
@@ -139,7 +139,7 @@ const AboutUs: React.FC = () => {
 
                   }}
                 >
-                                    Top Content
+                  Top Content
                 </Typography>
 
                 {/* Right Line */}
@@ -157,16 +157,16 @@ const AboutUs: React.FC = () => {
               <Typography
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontSize: '28px',
+                  fontSize: '26px',
                   fontWeight: 500,
-                  lineHeight:'42px',
+                  lineHeight: '36px',
                   color: '#1E1E1E',
                   textAlign: 'center',
                   px: '23px',
-                  mt: '26px',
+                  mt: '10px',
                 }}
               >
-                                Curriculum designed and taught by expert from MAANG companies
+                Curriculum designed and taught by expert from MAANG companies.
               </Typography>
 
             </Box>
@@ -206,7 +206,7 @@ const AboutUs: React.FC = () => {
                     fontWeight: 600,
                     letterSpacing: '2.6px',
                     lineHeight: '36px',
-                    px:'21px',
+                    px: '21px',
                     textTransform: 'uppercase',
                     color: '#8A18FF',
                     textAlign: 'center',
@@ -214,7 +214,7 @@ const AboutUs: React.FC = () => {
 
                   }}
                 >
-                                    CODE FROM DAY 1
+                  CODE FROM DAY 1
                 </Typography>
 
                 {/* Right Line */}
@@ -232,16 +232,16 @@ const AboutUs: React.FC = () => {
               <Typography
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontSize: '28px',
+                  fontSize: '26px',
                   fontWeight: 500,
-                  lineHeight:'42px',
+                  lineHeight: '36px',
                   color: '#1E1E1E',
                   textAlign: 'center',
                   px: '23px',
-                  mt: '26px',
+                  mt: '10px',
                 }}
               >
-                                Students learn core coding concepts from day 1.
+                Students learn core coding concepts from day 1.
               </Typography>
             </Box>
           </Box>
@@ -263,7 +263,7 @@ const AboutUs: React.FC = () => {
             </Box>
             <Box>
               <img
-                src="/assets/Image06.png"
+                src="/assets/Image03.png"
                 alt="About Us"
                 style={{ maxWidth: '100%', height: 'auto' }}
               />
@@ -276,7 +276,7 @@ const AboutUs: React.FC = () => {
                 border: '2px solid #FFE9AE',
                 background: 'linear-gradient(0deg, #FFE9AE 1.44%, #FFF 73.08%)',
                 width: '408px',
-                p:'26px 23px',
+                p: '26px 23px',
                 flexShrink: 0,
               }}
             >
@@ -306,7 +306,7 @@ const AboutUs: React.FC = () => {
                     fontWeight: 600,
                     letterSpacing: '2.6px',
                     lineHeight: '27px',
-                    px:'21px',
+                    px: '21px',
                     textTransform: 'uppercase',
                     color: '#8A18FF',
                     textAlign: 'center',
@@ -314,7 +314,7 @@ const AboutUs: React.FC = () => {
 
                   }}
                 >
-                                    6-MONTHS PAID INTERNSHIP
+                  6-MONTHS PAID INTERNSHIP
                 </Typography>
 
                 {/* Right Line */}
@@ -332,17 +332,17 @@ const AboutUs: React.FC = () => {
               <Typography
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontSize: '28px',
+                  fontSize: '26px',
                   fontWeight: 500,
+                  lineHeight: '36px',
                   color: '#1E1E1E',
                   textAlign: 'center',
-                  lineHeight: '42px',
                   px: '23px',
-                  mt: '26px',
-                  pb:'8px',
+                  mt: '20px',
+                  pb:'20px',
                 }}
               >
-                                Gain real-world experience while earning.
+                Gain real-world experience while earning.
               </Typography>
 
             </Box>
@@ -381,17 +381,17 @@ const AboutUs: React.FC = () => {
                     fontSize: '20px',
                     fontWeight: 600,
                     letterSpacing: '2.6px',
-                    lineHeight:'27px',
+                    lineHeight: '27px',
                     textTransform: 'uppercase',
-                    px:'23px',
+                    px: '23px',
                     color: '#8A18FF',
                     textAlign: 'center',
                     maxWidth: '200px',
 
                   }}
                 >
-                                    TRUSTED BY
-                                    TOP-RANKERS
+                  TRUSTED BY
+                  TOP-RANKERS
                 </Typography>
 
                 {/* Right Line */}
@@ -409,17 +409,17 @@ const AboutUs: React.FC = () => {
               <Typography
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontSize: '28px',
+                  fontSize: '26px',
                   fontWeight: 500,
+                  lineHeight: '36px',
                   color: '#1E1E1E',
                   textAlign: 'center',
-                  lineHeight: '42px',
                   px: '23px',
-                  mt: '26px',
-                  pb:'8px',
+                  mt: '20px',
+                  pb:'20px',
                 }}
               >
-                                Students with 97%le in JEE have chosen Vedam
+                Students with 97%ile in JEE have chosen Vedam.
               </Typography>
             </Box>
           </Box>
