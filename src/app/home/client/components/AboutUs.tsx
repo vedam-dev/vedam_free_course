@@ -129,8 +129,9 @@ const AboutUs: React.FC = () => {
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '20px',
                     fontWeight: 600,
-                    letterSpacing: '2px',
+                    letterSpacing: '2.6px',
                     textTransform: 'uppercase',
+                    lineHeight: '36px',
                     px: '42px',
                     color: '#8A18FF',
                     textAlign: 'center',
@@ -157,8 +158,9 @@ const AboutUs: React.FC = () => {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontSize: '28px',
-                  fontWeight: 400,
-                  color: '#000',
+                  fontWeight: 500,
+                  lineHeight:'42px',
+                  color: '#1E1E1E',
                   textAlign: 'center',
                   px: '23px',
                   mt: '26px',
@@ -202,12 +204,13 @@ const AboutUs: React.FC = () => {
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '20px',
                     fontWeight: 600,
-                    letterSpacing: '2px',
+                    letterSpacing: '2.6px',
+                    lineHeight: '36px',
                     px:'21px',
                     textTransform: 'uppercase',
                     color: '#8A18FF',
                     textAlign: 'center',
-                    maxWidth: '210px',
+                    maxWidth: '220px',
 
                   }}
                 >
@@ -230,8 +233,9 @@ const AboutUs: React.FC = () => {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontSize: '28px',
-                  fontWeight: 400,
-                  color: '#000',
+                  fontWeight: 500,
+                  lineHeight:'42px',
+                  color: '#1E1E1E',
                   textAlign: 'center',
                   px: '23px',
                   mt: '26px',
@@ -300,7 +304,8 @@ const AboutUs: React.FC = () => {
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '20px',
                     fontWeight: 600,
-                    letterSpacing: '2px',
+                    letterSpacing: '2.6px',
+                    lineHeight: '27px',
                     px:'21px',
                     textTransform: 'uppercase',
                     color: '#8A18FF',
@@ -328,11 +333,13 @@ const AboutUs: React.FC = () => {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontSize: '28px',
-                  fontWeight: 400,
-                  color: '#000',
+                  fontWeight: 500,
+                  color: '#1E1E1E',
                   textAlign: 'center',
+                  lineHeight: '42px',
                   px: '23px',
                   mt: '26px',
+                  pb:'8px',
                 }}
               >
                                 Gain real-world experience while earning.
@@ -373,7 +380,8 @@ const AboutUs: React.FC = () => {
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '20px',
                     fontWeight: 600,
-                    letterSpacing: '2px',
+                    letterSpacing: '2.6px',
+                    lineHeight:'27px',
                     textTransform: 'uppercase',
                     px:'23px',
                     color: '#8A18FF',
@@ -402,11 +410,13 @@ const AboutUs: React.FC = () => {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontSize: '28px',
-                  fontWeight: 400,
-                  color: '#000',
+                  fontWeight: 500,
+                  color: '#1E1E1E',
                   textAlign: 'center',
+                  lineHeight: '42px',
                   px: '23px',
                   mt: '26px',
+                  pb:'8px',
                 }}
               >
                                 Students with 97%le in JEE have chosen Vedam

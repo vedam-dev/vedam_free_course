@@ -14,9 +14,9 @@ const AboutUs: React.FC = () => {
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <Box sx={{ p: '15px 20px'}}>
+      <Box sx={{ p: '20px 15px 26px 15px' }}>
         {/* Header Section */}
-        <Box sx={{ textAlign: 'center', pt:'20px' }}>
+        <Box sx={{ textAlign: 'center'}}>
           <Typography
             sx={{
               fontFamily: 'Outfit, sans-serif',
@@ -71,15 +71,15 @@ const AboutUs: React.FC = () => {
             4 Year Undergrad Program in CS & AI
           </Typography>
         </Box>
-        
+
         <Box>
-          <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', gap: '26px'}}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', gap: '26px' }}>
             {/* Image 1 */}
             <Box sx={{ position: 'relative' }}>
               <img
                 src="/assets/Image01_Mobile.png"
                 alt="About Us"
-                style={{ maxWidth: '100%', height: 'auto', display: 'block' }}
+                style={{ maxWidth: '100%', height: 'auto', objectFit:'fill' }}
               />
               <Box
                 sx={{
@@ -163,7 +163,7 @@ const AboutUs: React.FC = () => {
                 alt="About Us"
                 style={{ maxWidth: '100%', height: 'auto', display: 'block' }}
               />
-              
+
               <Box
                 sx={{
                   position: 'absolute',
