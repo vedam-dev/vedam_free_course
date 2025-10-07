@@ -22,7 +22,7 @@ const AboutUs: React.FC = () => {
           <Typography
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              fontSize: { xs: '18px', md: '44px' },
+              fontSize:'44px',
               fontWeight: 500,
               color: '#1E1E1E',
             }}
@@ -100,9 +100,9 @@ const AboutUs: React.FC = () => {
                 borderRadius: '26px',
                 border: '2px solid #FFE9AE',
                 background: 'linear-gradient(0deg, #FFE9AE 1.44%, #FFF 73.08%)',
-                width: '454px',
-                height: '238px',
+                width: '408px',
                 flexShrink: 0,
+                p: '32px 23px'
               }}
             >
               <Box
@@ -110,9 +110,7 @@ const AboutUs: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '42px',
                   width: '100%',
-                  mt: '40px'
                 }}
               >
                 {/* Left Line */}
@@ -120,7 +118,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     flex: 1,
                     maxWidth: '70px',
-                    height: '1.5px',
+                    height: '1px',
                     backgroundColor: '#9D75F1', // purple line
                   }}
                 />
@@ -133,6 +131,7 @@ const AboutUs: React.FC = () => {
                     fontWeight: 600,
                     letterSpacing: '2px',
                     textTransform: 'uppercase',
+                    px: '42px',
                     color: '#9D75F1',
                     textAlign: 'center',
                     maxWidth: '200px',
@@ -147,7 +146,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     flex: 1,
                     maxWidth: '70px',
-                    height: '1.5px',
+                    height: '1px',
                     backgroundColor: '#9D75F1',
                   }}
                 />
@@ -174,8 +173,8 @@ const AboutUs: React.FC = () => {
                 borderRadius: '26px',
                 border: '2px solid #ECD5FF',
                 background: 'linear-gradient(0deg, #ECD5FF 1.44%, #FFF 73.08%)',
-                width: '454px',
-                height: '238px',
+                width: '408px',
+                p: '32px 23px',
                 flexShrink: 0,
               }}
             >
@@ -184,9 +183,7 @@ const AboutUs: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '42px',
                   width: '100%',
-                  mt: '40px'
                 }}
               >
                 {/* Left Line */}
@@ -194,7 +191,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     flex: 1,
                     maxWidth: '70px',
-                    height: '1.5px',
+                    height: '1px',
                     backgroundColor: '#9D75F1', // purple line
                   }}
                 />
@@ -206,6 +203,7 @@ const AboutUs: React.FC = () => {
                     fontSize: '20px',
                     fontWeight: 600,
                     letterSpacing: '2px',
+                    px:'21px',
                     textTransform: 'uppercase',
                     color: '#9D75F1',
                     textAlign: 'center',
@@ -221,7 +219,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     flex: 1,
                     maxWidth: '70px',
-                    height: '1.5px',
+                    height: '1px',
                     backgroundColor: '#9D75F1',
                   }}
                 />
@@ -273,8 +271,8 @@ const AboutUs: React.FC = () => {
                 borderRadius: '26px',
                 border: '2px solid #FFE9AE',
                 background: 'linear-gradient(0deg, #FFE9AE 1.44%, #FFF 73.08%)',
-                width: '454px',
-                height: '238px',
+                width: '408px',
+                p:'26px 23px',
                 flexShrink: 0,
               }}
             >
@@ -283,9 +281,7 @@ const AboutUs: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '42px',
                   width: '100%',
-                  mt: '40px'
                 }}
               >
                 {/* Left Line */}
@@ -293,7 +289,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     flex: 1,
                     maxWidth: '70px',
-                    height: '1.5px',
+                    height: '1px',
                     backgroundColor: '#9D75F1', // purple line
                   }}
                 />
@@ -305,10 +301,11 @@ const AboutUs: React.FC = () => {
                     fontSize: '20px',
                     fontWeight: 600,
                     letterSpacing: '2px',
+                    px:'21px',
                     textTransform: 'uppercase',
                     color: '#9D75F1',
                     textAlign: 'center',
-                    maxWidth: '200px',
+                    maxWidth: '210px',
 
                   }}
                 >
@@ -320,7 +317,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     flex: 1,
                     maxWidth: '70px',
-                    height: '1.5px',
+                    height: '1px',
                     backgroundColor: '#9D75F1',
                   }}
                 />
@@ -347,8 +344,8 @@ const AboutUs: React.FC = () => {
                 borderRadius: '26px',
                 border: '2px solid #ECD5FF',
                 background: 'linear-gradient(0deg, #ECD5FF 1.44%, #FFF 73.08%)',
-                width: '454px',
-                height: '238px',
+                width: '408px',
+                p: '26px 23px',
                 flexShrink: 0,
               }}
             >
@@ -357,9 +354,7 @@ const AboutUs: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '42px',
                   width: '100%',
-                  mt: '40px'
                 }}
               >
                 {/* Left Line */}
@@ -367,7 +362,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     flex: 1,
                     maxWidth: '70px',
-                    height: '1.5px',
+                    height: '1px',
                     backgroundColor: '#9D75F1', // purple line
                   }}
                 />
@@ -380,6 +375,7 @@ const AboutUs: React.FC = () => {
                     fontWeight: 600,
                     letterSpacing: '2px',
                     textTransform: 'uppercase',
+                    px:'23px',
                     color: '#9D75F1',
                     textAlign: 'center',
                     maxWidth: '200px',
@@ -395,7 +391,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     flex: 1,
                     maxWidth: '70px',
-                    height: '1.5px',
+                    height: '1px',
                     backgroundColor: '#9D75F1',
                   }}
                 />

@@ -122,7 +122,7 @@ const AboutUs: React.FC = () => {
                       fontWeight: 500,
                       letterSpacing: '2px',
                       textTransform: 'uppercase',
-                      color: '#9D75F1',
+                      color: '#8A18FF',
                       textAlign: 'center',
                       whiteSpace: 'nowrap',
                     }}
@@ -205,7 +205,7 @@ const AboutUs: React.FC = () => {
                       fontWeight: 500,
                       letterSpacing: '2px',
                       textTransform: 'uppercase',
-                      color: '#9D75F1',
+                      color: '#8A18FF',
                       textAlign: 'center',
                       whiteSpace: 'nowrap',
                     }}
@@ -288,7 +288,7 @@ const AboutUs: React.FC = () => {
                       fontWeight: 500,
                       letterSpacing: '2px',
                       textTransform: 'uppercase',
-                      color: '#9D75F1',
+                      color: '#8A18FF',
                       textAlign: 'center',
                       maxWidth: '150px',
                     }}
@@ -371,7 +371,7 @@ const AboutUs: React.FC = () => {
                       letterSpacing: '2px',
                       textTransform: 'uppercase',
                       maxWidth: '150px',
-                      color: '#9D75F1',
+                      color: '#8A18FF',
                       textAlign: 'center',
                     }}
                   >
