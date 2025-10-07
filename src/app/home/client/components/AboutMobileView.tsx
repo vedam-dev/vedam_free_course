@@ -2,8 +2,6 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 
-import BaseDecoration from '@/components/BaseDecoration';
-
 const AboutUs: React.FC = () => {
   return (
     <Box
@@ -71,7 +69,7 @@ const AboutUs: React.FC = () => {
               <img
                 src="/assets/Image01_mb.png"
                 alt="About Us"
-                style={{ maxWidth: '100%', height: 'auto'}}
+                style={{ maxWidth: '100%', height: 'auto' }}
               />
               <Box
                 sx={{
