@@ -1,7 +1,3 @@
-
-
-
-
 'use client';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {
@@ -30,11 +26,11 @@ const temp = [
 // Helper to get random color
 function stringToColor(str: string) {
   let hash = 0;
-  for (let i = 0; i < str.length; i++) {
+  for(let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
   let color = '#';
-  for (let i = 0; i < 3; i++) {
+  for(let i = 0; i < 3; i++) {
     const value = (hash >> (i * 8)) & 0xff;
     color += ('00' + value.toString(16)).slice(-2);
   }
@@ -49,12 +45,12 @@ const Landing: React.FC = () => {
     useOtpModal();
 
   const handleJoinCodeSprint = () => {
-    if (!isLoggedIn) {
+    if(!isLoggedIn) {
       setShowOtpModal(true);
       return;
     } else {
       const element = document.getElementById('VideoCourses');
-      if (element) {
+      if(element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
@@ -64,7 +60,7 @@ const Landing: React.FC = () => {
     setHasMounted(true);
   }, []);
 
-  if (!hasMounted) return null;
+  if(!hasMounted) return null;
   return (
     <Box
       component="section"
@@ -75,7 +71,6 @@ const Landing: React.FC = () => {
         marginLeft: '-50vw',
         marginRight: '-50vw',
         width: '100vw',
-
         backgroundImage: {
           xs: "url('/home/GRADIENT-2.png')",
           md: "url('/home/GRADIENT.png')",
