@@ -10,7 +10,6 @@ import {
   Box,
   Container,
   Divider,
-  Snackbar,
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -47,8 +46,6 @@ const Landing: React.FC = () => {
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const username = useSelector((state: RootState) => state.user.username);
   const [hasMounted, setHasMounted] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
   const { showOtpModal, setShowOtpModal, handleVerificationSuccess } =
     useOtpModal();
 
@@ -57,10 +54,10 @@ const Landing: React.FC = () => {
       setShowOtpModal(true);
       return;
     } else {
-      setSnackbarMessage(
-        `Welcome back, ${username}!, You are already Logged In`
-      );
-      setSnackbarOpen(true);
+      const element = document.getElementById('VideoCourses');
+      if(element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -79,13 +76,12 @@ const Landing: React.FC = () => {
         marginLeft: '-50vw',
         marginRight: '-50vw',
         width: '100vw',
-
         backgroundImage: {
           xs: "url('/home/GRADIENT-2.png')",
           md: "url('/home/GRADIENT.png')",
         },
         backgroundSize: { xs: '300% auto', md: '150% auto' },
-        backgroundPosition: { xs: 'center -425px', md: 'center -450px',lg:'center -600px' },
+        backgroundPosition: { xs: 'center -425px', md: 'center -450px', lg: 'center -600px' },
         backgroundRepeat: 'no-repeat',
         py: { xs: 1, md: 4 },
         mb: { lg: 10, xl: 0 },
@@ -131,7 +127,7 @@ const Landing: React.FC = () => {
                 width: '1px',
                 height: '44px',
                 backgroundColor: '#2C0052',
-                mx:{ xs:0,md:2 },
+                mx: { xs: 0, md: 2 },
                 flexShrink: 0,
               }}
             />
@@ -241,7 +237,7 @@ const Landing: React.FC = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: { xs: 3, md: 4 },
-            mt:10,
+            mt: 2,
           }}
         >
           {/* Left Section */}
@@ -312,7 +308,7 @@ const Landing: React.FC = () => {
                   background: 'white',
                 }}
               >
-                Register for Codesprint
+                {isLoggedIn ? "I'm Ready to Learn !" : 'Register for Codesprint'}
               </BaseButton>
               {/* <BaseButton variant="contained" size="large">
                 Register for later
@@ -322,11 +318,9 @@ const Landing: React.FC = () => {
             <Box
               sx={{
                 display: 'grid',
-                gridTemplateColumns: {
-                  xs: '1fr',
-                  sm: 'repeat(2, minmax(0, 1fr))',
-                },
-                maxWidth: { xs: '100%',md:'70%', lg: '44%' },
+                gridTemplateColumns:
+                  'repeat(2, minmax(0, 1fr))',
+                maxWidth: { xs: '100%', md: '70%', lg: '44%' },
                 gap: { xs: 1, md: 2 },
                 mb: { xs: 0, md: 0 },
               }}
@@ -339,8 +333,8 @@ const Landing: React.FC = () => {
                     alignItems: 'center',
                     gap: 1,
                     whiteSpace: 'nowrap',
-                    textAlign: { xs: 'center', lg: 'left' },
-                    mx: { xs: 'auto', md: '0' },
+                    textAlign: 'left',
+                    mx: 0,
                   }}
                 >
                   <CheckCircleIcon
@@ -348,7 +342,7 @@ const Landing: React.FC = () => {
                   />
                   <Typography
                     sx={{
-                      color: '#02901A',
+                      color: 'rgba(32, 32, 32)',
                       fontWeight: 500,
                       fontSize: { xs: '14px', md: '20px' },
                       fontFamily: 'Outfit, sans-serif',
@@ -388,7 +382,7 @@ const Landing: React.FC = () => {
 
         <Box
           sx={{
-            display:{ xs:'none', lg:'block' },
+            display: { xs: 'none', lg: 'block' },
             flex: 1.2,
             position: { xs: 'inherit', md: 'absolute' },
             right: { xs: '0px', md: '-8px' },
