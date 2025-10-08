@@ -3,15 +3,15 @@ import { Suspense } from 'react';
 
 import Loading from '@/components/Loading';
 
-import AboutUs from '../home/client/components/AboutUs';
-
+import ResponsiveAboutSection from './ResponsiveAboutSection';
 import VideoWatchPageContent from './VideoWatchPageContent';
+
 
 export default function VideosPage() {
   return (
     <Suspense fallback={<Loading />}>
       <VideoWatchPageContent />
-      <AboutUs/>
+      <ResponsiveAboutSection/>
     </Suspense>
   );
 }
