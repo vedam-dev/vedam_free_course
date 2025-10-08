@@ -18,11 +18,11 @@ const HomePage = () => {
   return (
     <>
       <Landing />
-      {isMobile ? <AboutMobileView /> : <AboutUs />}
       <VideoInfo />
       <VideoCourses />
       <Certificate />
       <Outcomes />
+      {isMobile ? <AboutMobileView /> : <AboutUs />}
       <Faq />
     </>
   );
