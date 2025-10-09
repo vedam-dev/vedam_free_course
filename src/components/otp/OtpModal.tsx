@@ -58,7 +58,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
   const [success, setSuccess] = useState<string | null>(null);
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
-  const [passout_year, setpassout_year] = useState('2027');
+  const [passout_year, setpassout_year] = useState('2026');
   const [stream, setStream] = useState('PCM');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [touched, setTouched] = useState({
@@ -326,7 +326,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     setOtp('');
     setFullName('');
     setEmail('');
-    setpassout_year('2027');
+    setpassout_year('2026');
     setStream('PCM');
     setPhoneNumber('');
     setError(null);
