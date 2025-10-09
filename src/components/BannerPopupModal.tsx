@@ -34,7 +34,7 @@ const BannerPopup: React.FC<BannerPopupProps> = ({
       const timer = setTimeout(() => {
         setOpen(true);
         localStorage.setItem('bannerLastShown', Date.now().toString());
-      }, 2000);
+      }, intervalMs);
 
       return () => clearTimeout(timer);
     }

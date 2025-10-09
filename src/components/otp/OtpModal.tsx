@@ -58,7 +58,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
   const [success, setSuccess] = useState<string | null>(null);
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
-  const [passout_year, setpassout_year] = useState('2025');
+  const [passout_year, setpassout_year] = useState('2026');
   const [stream, setStream] = useState('PCM');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [touched, setTouched] = useState({
@@ -326,7 +326,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     setOtp('');
     setFullName('');
     setEmail('');
-    setpassout_year('2025');
+    setpassout_year('2026');
     setStream('PCM');
     setPhoneNumber('');
     setError(null);
@@ -441,10 +441,11 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
                   label="Year of Passing"
                   onChange={(e) => setpassout_year(e.target.value)}
                 >
+                  <MenuItem value="2027">2027</MenuItem>
+                  <MenuItem value="2026">2026</MenuItem>
                   <MenuItem value="2025">2025</MenuItem>
                   <MenuItem value="2024">2024</MenuItem>
-                  <MenuItem value="2023">2023</MenuItem>
-                  <MenuItem value="2022">{'<=2022'}</MenuItem>
+                  <MenuItem value="2023">{'<=2023'}</MenuItem>
                 </Select>
               </FormControl>
 
