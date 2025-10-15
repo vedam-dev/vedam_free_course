@@ -48,6 +48,7 @@ const Faq = () => {
             fontWeight: '600',
             fontSize: { xs: '32px', md: '48px' },
             color: '#2B2B2B',
+            mt:{ xs:4,md:8 }
           }}
         >
           Got Some
