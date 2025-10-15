@@ -50,14 +50,19 @@ const AboutUs: React.FC = () => {
             </Box>
             <BaseDecoration
               sx={{
-                background: 'linear-gradient( #F5790D 100%)',
-                backgroundClip: 'text',
+                background: 'linear-gradient(90deg, #F5790D 0%, #F5790D 100%)',
                 WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
+                display: 'inline-block',
+                WebkitTextStroke: '0.3px transparent',
+                willChange: 'transform',
+                transform: 'translateZ(0)',
               }}
             >
               Technology
             </BaseDecoration>
+
           </Typography>
           <Typography
             sx={{
@@ -339,7 +344,7 @@ const AboutUs: React.FC = () => {
                   textAlign: 'center',
                   px: '23px',
                   mt: '20px',
-                  pb:'20px',
+                  pb: '20px',
                 }}
               >
                 Gain real-world experience while earning.
@@ -416,7 +421,7 @@ const AboutUs: React.FC = () => {
                   textAlign: 'center',
                   px: '23px',
                   mt: '20px',
-                  pb:'20px',
+                  pb: '20px',
                 }}
               >
                 Students with 97%ile in JEE have chosen Vedam.
