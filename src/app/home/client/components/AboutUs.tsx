@@ -33,7 +33,7 @@ const AboutUs: React.FC = () => {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontSize: '56px',
-              fontWeight: 700,
+              fontWeight: 600,
               mb: '29px',
             }}
           >
