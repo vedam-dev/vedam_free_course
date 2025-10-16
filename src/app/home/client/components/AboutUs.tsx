@@ -133,7 +133,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '20px',
-                    fontWeight: 600,
+                    fontWeight: 500,
                     letterSpacing: '2.6px',
                     textTransform: 'uppercase',
                     lineHeight: '36px',
@@ -162,7 +162,7 @@ const AboutUs: React.FC = () => {
               <Typography
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontSize: '26px',
+                  fontSize: '28px',
                   fontWeight: 500,
                   lineHeight: '36px',
                   color: '#1E1E1E',
@@ -208,7 +208,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '20px',
-                    fontWeight: 600,
+                    fontWeight: 500,
                     letterSpacing: '2.6px',
                     lineHeight: '36px',
                     px: '21px',
@@ -237,7 +237,7 @@ const AboutUs: React.FC = () => {
               <Typography
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontSize: '26px',
+                  fontSize: '28px',
                   fontWeight: 500,
                   lineHeight: '36px',
                   color: '#1E1E1E',
@@ -308,7 +308,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '20px',
-                    fontWeight: 600,
+                    fontWeight: 500,
                     letterSpacing: '2.6px',
                     lineHeight: '27px',
                     px: '21px',
@@ -337,7 +337,7 @@ const AboutUs: React.FC = () => {
               <Typography
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontSize: '26px',
+                  fontSize: '28px',
                   fontWeight: 500,
                   lineHeight: '36px',
                   color: '#1E1E1E',
@@ -384,7 +384,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '20px',
-                    fontWeight: 600,
+                    fontWeight: 500,
                     letterSpacing: '2.6px',
                     lineHeight: '27px',
                     textTransform: 'uppercase',
@@ -414,7 +414,7 @@ const AboutUs: React.FC = () => {
               <Typography
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontSize: '26px',
+                  fontSize: '28px',
                   fontWeight: 500,
                   lineHeight: '36px',
                   color: '#1E1E1E',
