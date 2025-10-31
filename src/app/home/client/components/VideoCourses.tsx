@@ -57,11 +57,11 @@ const courseData = [
     color2:
       'linear-gradient(180deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
     image: '/home/instructors/instructor.png',
-    companyname: 'ADOBE',
-    level: 'Advanced',
-    time: '2',
+    companyname: 'CARS24',
+    level: 'Beginner',
+    time: '4',
     viewed: 'true',
-    usedby: 'Adobe, Google, and Netflix',
+    usedby: 'Google, Microsoft, and Adobe',
   },
   {
     color:
@@ -261,7 +261,7 @@ export default function VideoCourses() {
                   textAlign: 'left',
                 }}
               >
-                4 hour
+                8 hour
               </Typography>
             </Box>
           </Box>
