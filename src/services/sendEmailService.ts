@@ -1,27 +1,34 @@
 import { createTransport } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 
-export const sendEmailService = async (
-  to: string,
-  subject: string,
-  html: string
-) => {
+export interface EmailOptions {
+  to: string;
+  subject: string;
+  html: string;
+  attachments?: Array<{
+    filename: string;
+    content: Buffer;
+    contentType: string;
+  }>;
+}
+
+export const sendEmailService = async (options: EmailOptions) => {
   try {
     // Validate required environment variables
-    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+    if(!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
       throw new Error('SMTP configuration is incomplete');
     }
 
     const transportOptions: SMTPTransport.Options = {
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: false, // Use TLS
+      secure: false,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
       tls: {
-        rejectUnauthorized: false // For development, remove in production if you have proper certificates
+        rejectUnauthorized: false
       }
     };
 
@@ -35,23 +42,23 @@ export const sendEmailService = async (
 
     const mailOptions = {
       from: process.env.EMAIL_FROM || `"Mentorship Platform" <${process.env.SMTP_USER}>`,
-      to,
-      subject,
-      html,
+      to: options.to,
+      subject: options.subject,
+      html: options.html,
+      attachments: options.attachments
     };
 
-    console.log('Sending email to:', to);
-    console.log('Subject:', subject);
-    
+    console.log('Sending email to:', options.to);
+    console.log('Subject:', options.subject);
+
     const result = await transporter.sendMail(mailOptions);
     console.log('Email sent successfully! Message ID:', result.messageId);
-    
+
     return result;
-  } catch (error: unknown) {
+  } catch(error: unknown) {
     console.error('❌ Email service error:');
-    if (error instanceof Error) {
+    if(error instanceof Error) {
       console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
     }
     console.error('Full error:', error);
     throw error;
