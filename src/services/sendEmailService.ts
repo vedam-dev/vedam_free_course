@@ -1,37 +1,59 @@
 import { createTransport } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 
-import myOAuth2Client from './myOAuth2Client';
 export const sendEmailService = async (
   to: string,
   subject: string,
   html: string
 ) => {
   try {
-    myOAuth2Client.setCredentials({
-      refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
-    });
-    const accessToken = await myOAuth2Client.getAccessToken();
+    // Validate required environment variables
+    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      throw new Error('SMTP configuration is incomplete');
+    }
 
     const transportOptions: SMTPTransport.Options = {
-      service: 'gmail',
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: false, // Use TLS
       auth: {
-        type: 'OAuth2',
-        user: process.env.GOOGLE_USER,
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-        accessToken: accessToken.token ?? undefined,
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
       },
+      tls: {
+        rejectUnauthorized: false // For development, remove in production if you have proper certificates
+      }
     };
-    const smtpTransport = createTransport(transportOptions);
+
+    console.log('Creating SMTP transporter...');
+    const transporter = createTransport(transportOptions);
+
+    // Verify connection
+    console.log('Verifying SMTP connection...');
+    await transporter.verify();
+    console.log('SMTP connection verified successfully');
+
     const mailOptions = {
-      from: `"GmailNodeMailer" <${process.env.GOOGLE_EMAIL ?? ''}>`,
+      from: process.env.EMAIL_FROM || `"Mentorship Platform" <${process.env.SMTP_USER}>`,
       to,
       subject,
       html,
     };
-    await smtpTransport.sendMail(mailOptions);
-  } catch(error: unknown) {
-    console.error(error);
+
+    console.log('Sending email to:', to);
+    console.log('Subject:', subject);
+    
+    const result = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully! Message ID:', result.messageId);
+    
+    return result;
+  } catch (error: unknown) {
+    console.error('❌ Email service error:');
+    if (error instanceof Error) {
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
+    console.error('Full error:', error);
+    throw error;
   }
 };
