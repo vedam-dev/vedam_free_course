@@ -57,7 +57,7 @@ const courseData = [
     color2:
       'linear-gradient(180deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
     image: '/home/instructors/instructor.png',
-    companyname: 'ADOBE',
+    companyname: 'Cars24',
     level: 'Advanced',
     time: '2',
     viewed: 'true',
