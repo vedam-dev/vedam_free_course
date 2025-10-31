@@ -205,7 +205,7 @@ export default function VideoCourses() {
                   textAlign: 'left',
                 }}
               >
-                2 Industry-Led Modules
+                3 Industry-Led Modules
               </Typography>
             </Box>
           </Box>
