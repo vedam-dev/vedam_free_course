@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 
-import { generateCertificatePDF } from '@/lib/certificateGenerator'; // Adjust path as needed
+import { generateCertificateImage } from '@/lib/certificateGenerator';
 
 import EmailForm from './Form';
 
@@ -45,7 +45,7 @@ const Page = () => {
     try {
       // Generate PDF on client side
       console.log('Generating PDF...');
-      const pdfBase64 = await generateCertificatePDF({
+      const jpgBase64 = await generateCertificateImage({
         studentName,
         subjectName,
         studentEmail
@@ -61,7 +61,7 @@ const Page = () => {
           studentName,
           subjectName,
           studentEmail,
-          pdfBase64
+          jpgBase64
         }),
       });
 

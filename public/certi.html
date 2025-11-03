@@ -3,161 +3,141 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Certificate Mockup</title>
+  <title>Certificate of Completion</title>
 
-  <!-- Fonts -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-      --accent:#4b1869;    /* deep purple for headline */
-      --muted:#7a7a7a;     /* grey for subtext */
-      --name:#4d2180;      /* purple for recipient name */
+    :root {
+      --accent: #4b1869;
+      --muted: #7a7a7a;
+      --name: #4d2180;
       --page-bg: #f3f5f7;
       --card-width: 1100px;
       --card-height: 800px;
     }
 
-    html,body{
-      height:100%;
-      margin:0;
-      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Inter", sans-serif;
       background: var(--page-bg);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
     }
 
-    /* certificate card using the first image as frame/background */
     .certificate {
       width: var(--card-width);
-      max-width:calc(100% - 48px);
       height: var(--card-height);
-      position:relative;
-      border-radius:28px;
-      overflow:hidden;
+      position: relative;
+      border-radius: 28px;
+      overflow: hidden;
       box-shadow: 0 10px 40px rgba(20,20,30,0.25);
-      background-image: url('./certiBg.jpg');
-      background-repeat:no-repeat;
+      background-image: url('certiBg.jpg');
+      background-repeat: no-repeat;
       background-position: center;
-      /* scale the background so the frame corners align nicely — adjust if required */
       background-size: cover;
-      display:flex;
-      align-items:flex-start;
-      justify-content:flex-start;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
       padding: 56px 72px;
-      box-sizing:border-box;
+      box-sizing: border-box;
     }
 
-    /* Content area sits over the white center space of the frame */
     .content {
-      width:100%;
-      height:100%;
-      /* we rely on the frame's white center; however keep a little padding to avoid overlap */
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-start;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
     }
 
-    .top-row {
-      display:flex;
-      align-items:center;
-      gap:18px;
-      margin-bottom: 36px;
-    }
-
-    /* Big title */
     h1.c-title {
       margin: 120px 0px;
       font-family: "Poppins", sans-serif;
-      font-weight:700;
-      font-size:52px;
+      font-weight: 700;
+      font-size: 52px;
       color: black;
       line-height: 1.02;
-      letter-spacing: -0.6px;
     }
 
     .subtitle {
-      margin-top: 12px;
       color: var(--muted);
-      font-size:22px;
-      font-weight:400;
+      font-size: 22px;
+      font-weight: 400;
     }
 
     .recipient {
-      margin-top:28px;
+      margin-top: 28px;
       font-family: "Poppins", sans-serif;
-      font-size:36px;
-      line-height:1;
+      font-size: 36px;
       color: var(--name);
-      font-weight:700;
+      font-weight: 700;
     }
 
     .meta {
-      margin-top:20px;
-      color:var(--muted);
-      font-size:22px;
-      display:flex;
-      gap:8px;
-      align-items:center;
-      font-weight:400;
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 22px;
+      font-weight: 400;
     }
 
-    /* small emphasized part inside the meta text */
     .meta strong {
       color: #2b2b2b;
-      font-weight:700;
+      font-weight: 700;
     }
 
-    /* highlighted course brand word */
     .course-brand {
       font-family: "Poppins", sans-serif;
-      font-weight:700;
+      font-weight: 700;
       background: linear-gradient(90deg,#6a2bd6,#f07a2b);
       -webkit-background-clip: text;
-      background-clip: text;
       color: transparent;
-      font-size:22px;
-      margin-left:6px;
+      font-size: 22px;
+      margin-left: 6px;
     }
 
-    /* bottom-left signature block: this matches the signature already baked in the frame image
-       but we place name+title for crisp text */
     .signature-block {
-      position:absolute;
-      left:72px;
-      bottom:64px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      align-items:flex-start;
+      position: absolute;
+      left: 72px;
+      bottom: 64px;
     }
 
     .signature-block .sig-name {
       font-family: "Poppins", sans-serif;
-      font-weight:700;
-      font-size:18px;
-      color:#0f1724;
+      font-weight: 700;
+      font-size: 18px;
+      color: #0f1724;
     }
 
     .signature-block .sig-title {
-      font-size:14px;
-      color:var(--muted);
+      font-size: 14px;
+      color: var(--muted);
     }
 
-    /* layout helpers: center-left area for the main text */
-    .main {
-      width: 80%;
-      padding-left: 18px;
-      padding-top: 24px;
+    button#downloadBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #4b1869;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
     }
 
-
+    button#downloadBtn:hover {
+      background: #5e1f89;
+    }
   </style>
 </head>
 <body>
-  <div class="certificate" role="img" aria-label="Certificate frame background">
+ <div class="certificate" role="img" aria-label="Certificate frame background">
     <div class="content">
       <!-- left main block containing the textual certificate content -->
       <div class="main">
@@ -176,5 +156,52 @@
       </div>
     </div>
   </div>
+
+  <button id="downloadBtn">Download JPG</button>
+
+  <script>
+    async function downloadCertificateAsJPG() {
+      const certificate = document.getElementById("certificate");
+      const rect = certificate.getBoundingClientRect();
+
+      const canvas = document.createElement("canvas");
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, rect.width, rect.height);
+
+      // Use SVG serialization to draw HTML
+      const data = `
+        <svg xmlns='http://www.w3.org/2000/svg' width='${rect.width}' height='${rect.height}'>
+          <foreignObject width='100%' height='100%'>
+            ${new XMLSerializer().serializeToString(certificate)}
+          </foreignObject>
+        </svg>`;
+
+      const svgBlob = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(svgBlob);
+      const img = new Image();
+
+      img.onload = () => {
+        ctx.drawImage(img, 0, 0);
+        URL.revokeObjectURL(url);
+        const link = document.createElement("a");
+        link.download = "certificate.jpg";
+        link.href = canvas.toDataURL("image/jpeg", 1.0);
+        link.click();
+      };
+      img.onerror = (err) => {
+        console.error("Error rendering certificate:", err);
+        alert("Error while generating image. Check background image path or try Chrome.");
+      };
+
+      img.src = url;
+    }
+
+    document.getElementById("downloadBtn").addEventListener("click", downloadCertificateAsJPG);
+  </script>
 </body>
 </html>
+
+
