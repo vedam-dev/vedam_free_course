@@ -1,6 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 
+import { generateCertificatePDF } from '@/lib/certificateGenerator'; // Adjust path as needed
+
 import EmailForm from './Form';
 
 const Page = () => {
@@ -41,10 +43,26 @@ const Page = () => {
   }) => {
     setAlert(null);
     try {
+      // Generate PDF on client side
+      console.log('Generating PDF...');
+      const pdfBase64 = await generateCertificatePDF({
+        studentName,
+        subjectName,
+        studentEmail
+      });
+
+      console.log('Sending certificate to API...');
+
+      // Send to API with PDF data
       const res = await fetch('/api/send-certificate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ studentName, subjectName, studentEmail }),
+        body: JSON.stringify({
+          studentName,
+          subjectName,
+          studentEmail,
+          pdfBase64
+        }),
       });
 
       if(res.ok) {
@@ -60,7 +78,7 @@ const Page = () => {
       console.error('Certificate submission error:', error);
       setAlert({
         type: 'error',
-        message: 'Network error. Please check your connection and try again.'
+        message: error instanceof Error ? error.message : 'Failed to generate certificate. Please try again.'
       });
     }
   };
