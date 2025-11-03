@@ -115,4 +115,6 @@ docker run -p 3000:3000 --env-file .env vedam-course
 
 This project is licensed under the MIT License.
 
+Release - 3 Nov 2025 4:30 PM
+
 
