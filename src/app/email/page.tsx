@@ -1,15 +1,15 @@
 'use client';
 import React, { useState } from 'react';
 
-import CustomButton from './CustomButton';
-import Form from './Form';
+import { generateCertificateImage } from '@/lib/certificateGenerator';
+
+import EmailForm from './Form';
 
 const Page = () => {
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
-  const handleSubmit = async (
-    { to, subject, message }: { to: string; subject: string; message: string }
-  ) => {
+  const handleSubmitEmail =
+  async ({ to, subject, message }: { to: string; subject: string; message: string }) => {
     setAlert(null);
     try {
       const res = await fetch('/api/send-email', {
@@ -17,34 +17,97 @@ const Page = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ to, subject, message }),
       });
+
       if(res.ok) {
         setAlert({ type: 'success', message: 'Email sent successfully!' });
       } else {
         const data = await res.json();
         setAlert({
           type: 'error',
-          message: data.error ?? 'Failed to send email.'
+          message: data.error ?? 'Failed to send email. Please try again.'
         });
       }
-    } catch{
-      setAlert({ type: 'error', message: 'Failed to send email.' });
+    } catch(error) {
+      console.error('Email submission error:', error);
+      setAlert({
+        type: 'error',
+        message: 'Network error. Please check your connection and try again.'
+      });
+    }
+  };
+
+  const handleSendCertificate = async ({ studentName, subjectName, studentEmail }: {
+    studentName: string;
+    subjectName: string;
+    studentEmail: string;
+  }) => {
+    setAlert(null);
+    try {
+      // Generate PDF on client side
+      console.log('Generating PDF...');
+      const jpgBase64 = await generateCertificateImage({
+        studentName,
+        subjectName,
+        studentEmail
+      });
+
+      console.log('Sending certificate to API...');
+
+      // Send to API with PDF data
+      const res = await fetch('/api/send-certificate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          studentName,
+          subjectName,
+          studentEmail,
+          jpgBase64
+        }),
+      });
+
+      if(res.ok) {
+        setAlert({ type: 'success', message: 'Certificate sent successfully!' });
+      } else {
+        const data = await res.json();
+        setAlert({
+          type: 'error',
+          message: data.error ?? 'Failed to send certificate. Please try again.'
+        });
+      }
+    } catch(error) {
+      console.error('Certificate submission error:', error);
+      setAlert({
+        type: 'error',
+        message: error instanceof Error ? error.message : 'Failed to generate certificate. Please try again.'
+      });
     }
   };
 
   return (
-    <div>
-      <CustomButton label="Sign in with Google" />
+    <div style={{ minHeight: '100vh', background: '#f8f9fa', padding: '20px' }}>
       {alert && (
         <div
           style={{
-            color: alert.type === 'success' ? 'green' : 'red',
-            margin: '1em 0',
+            position: 'fixed',
+            top: 20,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 1000,
+            padding: '12px 24px',
+            borderRadius: '8px',
+            color: 'white',
+            backgroundColor: alert.type === 'success' ? '#4CAF50' : '#f44336',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            fontWeight: '500'
           }}
         >
           {alert.message}
         </div>
       )}
-      <Form onSubmit={handleSubmit} />
+      <EmailForm
+        onSubmit={handleSubmitEmail}
+        onSendCertificate={handleSendCertificate}
+      />
     </div>
   );
 };
