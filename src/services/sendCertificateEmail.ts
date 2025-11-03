@@ -1,12 +1,11 @@
-import { CertificateData, generateCertificatePDF } from './generateCertificatePDF';
+import { CertificateData } from './generateCertificatePDF';
 import { sendEmailService } from './sendEmailService';
 
 export const sendCertificateEmail = async (data: CertificateData) => {
   try {
-    console.log('Generating certificate PDF for:', data.studentName);
+    console.log('Sending certificate email for:', data.studentName);
 
-    // Generate PDF
-    const pdfBuffer = await generateCertificatePDF(data);
+    // PDF generation disabled - Puppeteer removed
 
     // Create email content
     const htmlContent = `
@@ -35,7 +34,7 @@ export const sendCertificateEmail = async (data: CertificateData) => {
             <div class="message">
               <p>Dear <strong>${data.studentName}</strong>,</p>
               <p>Congratulations on successfully completing <strong>${data.subjectName}</strong> in our CodeSprint program!</p>
-              <p>Your certificate of completion is attached to this email. This achievement demonstrates your dedication and hard work in mastering the course material.</p>
+              <p>This achievement demonstrates your dedication and hard work in mastering the course material.</p>
               <p>We're proud of your accomplishment and wish you continued success in your coding journey!</p>
             </div>
             <div class="footer">
@@ -48,18 +47,11 @@ export const sendCertificateEmail = async (data: CertificateData) => {
       </html>
     `;
 
-    // Send email with PDF attachment
+    // Send email without PDF attachment (PDF generation disabled - Puppeteer removed)
     await sendEmailService({
       to: data.studentEmail,
       subject: `🎓 Your Certificate of Completion - ${data.subjectName}`,
-      html: htmlContent,
-      attachments: [
-        {
-          filename: `Certificate_${data.studentName.replace(/\s+/g, '_')}_${data.subjectName.replace(/\s+/g, '_')}.pdf`,
-          content: pdfBuffer,
-          contentType: 'application/pdf'
-        }
-      ]
+      html: htmlContent
     });
 
     console.log('Certificate email sent successfully to:', data.studentEmail);

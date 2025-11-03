@@ -8,7 +8,11 @@ import {
   Chip,
   CircularProgress,
   Container,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -63,6 +67,10 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [progressLoading, setProgressLoading] = useState(false);
 
+  // Topic filter state
+  const [topics, setTopics] = useState<string[]>([]);
+  const [selectedTopic, setSelectedTopic] = useState<string>('all');
+
   // Admin authentication state
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -93,10 +101,26 @@ export default function AdminPage() {
     }
     if(isAuthenticated) {
       fetchUsers();
-      fetchCompletedStudents();
-      fetchAllStudentsProgress();
+      fetchTopics();
+      if(selectedTopic === 'all') {
+        fetchCompletedStudents();
+        fetchAllStudentsProgress();
+      } else {
+        fetchTopicProgress(selectedTopic);
+      }
     }
   }, [isLoggedIn, isAuthenticated, router]);
+
+  useEffect(() => {
+    if(isAuthenticated && selectedTopic) {
+      if(selectedTopic === 'all') {
+        fetchCompletedStudents();
+        fetchAllStudentsProgress();
+      } else {
+        fetchTopicProgress(selectedTopic);
+      }
+    }
+  }, [selectedTopic, isAuthenticated]);
 
   const fetchUsers = async () => {
     try {
@@ -125,6 +149,37 @@ export default function AdminPage() {
     }
   };
 
+  const fetchTopics = async () => {
+    try {
+      const response = await fetch('/api/admin/topics');
+      const result = await response.json();
+
+      if(result.data && result.data.topics) {
+        setTopics(result.data.topics);
+      }
+    } catch(error) {
+      console.error('Error fetching topics:', error);
+    }
+  };
+
+  const fetchTopicProgress = async (topic: string) => {
+    try {
+      setProgressLoading(true);
+      const response = await fetch(`/api/admin/topic-progress?topic=${encodeURIComponent(topic)}`);
+      const result = await response.json();
+
+      if(result.data) {
+        setAllStudentsProgress(result.data.students);
+        setCompletionStats(result.data.completionStats);
+        setTotalVideos(result.data.totalVideos);
+      }
+    } catch(error) {
+      console.error('Error fetching topic progress:', error);
+    } finally {
+      setProgressLoading(false);
+    }
+  };
+
   const fetchAllStudentsProgress = async () => {
     try {
       setProgressLoading(true);
@@ -133,12 +188,28 @@ export default function AdminPage() {
 
       if(result.data) {
         setAllStudentsProgress(result.data.students);
+        const completedCount = result.data.students.filter((s: StudentProgress)=>
+          s.completionPercentage === 100).length;
+        const totalStudents = result.data.totalStudents || result.data.students.length || 0;
+        const completionPercentage = totalStudents > 0
+          ? Math.round((completedCount / totalStudents) * 100) : 0;
+
+        setCompletionStats({
+          totalStudents,
+          completedStudents: completedCount,
+          completionPercentage
+        });
+        setTotalVideos(result.data.totalVideos);
       }
     } catch(error) {
       console.error('Error fetching all students progress:', error);
     } finally {
       setProgressLoading(false);
     }
+  };
+
+  const handleTopicChange = (topic: string) => {
+    setSelectedTopic(topic);
   };
 
   if(!isAuthenticated) {
@@ -223,9 +294,30 @@ export default function AdminPage() {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Admin Dashboard
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Typography variant="h4">
+          Admin Dashboard
+        </Typography>
+
+        {/* Topic Filter */}
+        <FormControl sx={{ minWidth: 250 }}>
+          <InputLabel id="topic-filter-label">Filter by Topic</InputLabel>
+          <Select
+            labelId="topic-filter-label"
+            id="topic-filter"
+            value={selectedTopic}
+            label="Filter by Topic"
+            onChange={(e) => handleTopicChange(e.target.value)}
+          >
+            <MenuItem value="all">All Topics</MenuItem>
+            {topics.map((topic) => (
+              <MenuItem key={topic} value={topic}>
+                {topic}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
 
       {/* Statistics Cards */}
       <Box sx={{
@@ -248,7 +340,7 @@ export default function AdminPage() {
             {completionStats.completedStudents}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Completed All Videos
+            {selectedTopic === 'all' ? 'Completed All Videos' : `Completed ${selectedTopic}`}
           </Typography>
         </Card>
         <Card sx={{ p: 2, textAlign: 'center' }}>
@@ -256,7 +348,7 @@ export default function AdminPage() {
             {totalVideos}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Total Videos
+            {selectedTopic === 'all' ? 'Total Videos' : `Videos in ${selectedTopic}`}
           </Typography>
         </Card>
         <Card sx={{ p: 2, textAlign: 'center' }}>
