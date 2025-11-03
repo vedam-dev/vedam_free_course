@@ -1,103 +1,244 @@
 'use client';
-import { Box, Button, Paper, TextField, Typography } from '@mui/material';
+import { Clear, Email, Message, Person, School, Send, Subject } from '@mui/icons-material';
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  InputAdornment,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography
+} from '@mui/material';
 import React, { useState } from 'react';
 
 type EmailFormProps = {
-  onSubmit?: (data: { to: string; subject: string; message: string }) => void;
+  onSubmit?: (data: { to: string; subject: string; message: string }) => Promise<void> | void;
+  onSendCertificate?: (data:
+    { studentName: string; subjectName: string; studentEmail: string }) => Promise<void> | void;
 };
 
-const EmailForm: React.FC<EmailFormProps> = ({ onSubmit }) => {
+const EmailForm: React.FC<EmailFormProps> = ({ onSubmit, onSendCertificate }) => {
   const [to, setTo] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
-  const [errors, setErrors] = useState<{ to?: string; subject?: string; message?: string }>({});
+  const [studentName, setStudentName] = useState('');
+  const [subjectName, setSubjectName] = useState('');
+  const [mode, setMode] = useState<'email' | 'certificate'>('email');
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  const validate = () => {
-    const newErrors: typeof errors = {};
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
     if(!to) {
-      newErrors.to = 'Recipient email is required';
-    } else if(!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(to)) {
-      newErrors.to = 'Invalid email address';
+      newErrors.to = 'Email is required';
+    } else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
+      newErrors.to = 'Enter a valid email address';
     }
-    if(!subject) {
-      newErrors.subject = 'Subject is required';
+
+    if(mode === 'email') {
+      if(!subject.trim()) {
+        newErrors.subject = 'Subject is required';
+      }
+      if(!message.trim()) {
+        newErrors.message = 'Message is required';
+      }
+    } else {
+      if(!studentName.trim()) {
+        newErrors.studentName = 'Student name is required';
+      }
+      if(!subjectName.trim()) {
+        newErrors.subjectName = 'Course name is required';
+      }
     }
-    if(!message) {
-      newErrors.message = 'Message is required';
-    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if(!validate()) return;
+    setSuccess(false);
+
+    if(!validateForm()) return;
+
     setSubmitting(true);
     try {
-      if(onSubmit) {
-        onSubmit({ to, subject, message });
+      if(mode === 'email' && onSubmit) {
+        await onSubmit({ to, subject, message });
+      } else if(mode === 'certificate' && onSendCertificate) {
+        await onSendCertificate({ studentName, subjectName, studentEmail: to });
       }
-      setTo('');
-      setSubject('');
-      setMessage('');
-      setErrors({});
+      setSuccess(true);
+      clearForm();
+      setTimeout(() => setSuccess(false), 5000);
+    } catch(error) {
+      console.error('Submission error:', error);
     } finally {
       setSubmitting(false);
     }
   };
 
+  const clearForm = () => {
+    setTo('');
+    setSubject('');
+    setMessage('');
+    setStudentName('');
+    setSubjectName('');
+    setErrors({});
+  };
+
+  const isFormEmpty = !to || (mode === 'email' ? !subject || !message : !studentName || !subjectName);
+
   return (
-    <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto', mt: 6 }}>
-      <Typography variant="h5" gutterBottom>
-        Send Email
+    <Card sx={{ maxWidth: 500, mx: 'auto', mt: 4, p: 3 }}>
+      <Typography variant="h5" gutterBottom align="center">
+        {mode === 'email' ? 'Send Email' : 'Send Certificate'}
       </Typography>
-      <Box component="form" onSubmit={handleSubmit} noValidate>
+
+      <ToggleButtonGroup
+        value={mode}
+        exclusive
+        onChange={(e, newMode) => newMode && setMode(newMode)}
+        fullWidth
+        sx={{ mb: 2 }}
+      >
+        <ToggleButton value="email">Email</ToggleButton>
+        <ToggleButton value="certificate">Certificate</ToggleButton>
+      </ToggleButtonGroup>
+
+      {success && (
+        <Alert severity="success" sx={{ mb: 2 }}>
+          {mode === 'email' ? 'Email sent!' : 'Certificate sent!'}
+        </Alert>
+      )}
+
+      <Box component="form" onSubmit={handleSubmit}>
         <TextField
-          label="To"
+          label="Email"
           type="email"
           value={to}
           onChange={e => setTo(e.target.value)}
           fullWidth
           margin="normal"
-          required
           error={!!errors.to}
           helperText={errors.to}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Email />
+              </InputAdornment>
+            ),
+          }}
+          placeholder={mode === 'email' ? 'recipient@example.com' : 'student@example.com'}
+          disabled={submitting}
         />
-        <TextField
-          label="Subject"
-          value={subject}
-          onChange={e => setSubject(e.target.value)}
-          fullWidth
-          margin="normal"
-          required
-          error={!!errors.subject}
-          helperText={errors.subject}
-        />
-        <TextField
-          label="Message"
-          value={message}
-          onChange={e => setMessage(e.target.value)}
-          fullWidth
-          margin="normal"
-          required
-          multiline
-          minRows={4}
-          error={!!errors.message}
-          helperText={errors.message}
-        />
-        <Box mt={2} display="flex" justifyContent="flex-end">
+
+        {mode === 'email' ? (
+          <>
+            <TextField
+              label="Subject"
+              value={subject}
+              onChange={e => setSubject(e.target.value)}
+              fullWidth
+              margin="normal"
+              error={!!errors.subject}
+              helperText={errors.subject}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Subject />
+                  </InputAdornment>
+                ),
+              }}
+              disabled={submitting}
+            />
+
+            <TextField
+              label="Message"
+              value={message}
+              onChange={e => setMessage(e.target.value)}
+              fullWidth
+              margin="normal"
+              multiline
+              rows={4}
+              error={!!errors.message}
+              helperText={errors.message}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start" sx={{ alignSelf: 'flex-start', mt: 1 }}>
+                    <Message />
+                  </InputAdornment>
+                ),
+              }}
+              disabled={submitting}
+            />
+          </>
+        ) : (
+          <>
+            <TextField
+              label="Student Name"
+              value={studentName}
+              onChange={e => setStudentName(e.target.value)}
+              fullWidth
+              margin="normal"
+              error={!!errors.studentName}
+              helperText={errors.studentName}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Person />
+                  </InputAdornment>
+                ),
+              }}
+              disabled={submitting}
+            />
+
+            <TextField
+              label="Course Name"
+              value={subjectName}
+              onChange={e => setSubjectName(e.target.value)}
+              fullWidth
+              margin="normal"
+              error={!!errors.subjectName}
+              helperText={errors.subjectName}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <School />
+                  </InputAdornment>
+                ),
+              }}
+              disabled={submitting}
+            />
+          </>
+        )}
+
+        <Box sx={{ display: 'flex', gap: 2, mt: 3, justifyContent: 'space-between' }}>
+          <Button
+            variant="outlined"
+            onClick={clearForm}
+            disabled={submitting || isFormEmpty}
+            startIcon={<Clear />}
+          >
+            Clear
+          </Button>
+
           <Button
             type="submit"
             variant="contained"
-            color="primary"
             disabled={submitting}
+            startIcon={submitting ? <CircularProgress size={16} /> : <Send />}
           >
-            {submitting ? 'Sending...' : 'Send'}
+            {submitting ? 'Sending...' : mode === 'email' ? 'Send Email' : 'Send Certificate'}
           </Button>
         </Box>
       </Box>
-    </Paper>
+    </Card>
   );
 };
 

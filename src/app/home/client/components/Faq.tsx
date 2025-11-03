@@ -30,7 +30,7 @@ const Faq = () => {
     {
       id: '4',
       question: 'How long is the program?',
-      ans: 'Code Sprint is a 4-hours intensive program designed to give you a head start before your college begins.',
+      ans: 'Code Sprint is a 8-hours intensive program designed to give you a head start before your college begins.',
     },
     {
       id: '5',
@@ -48,6 +48,7 @@ const Faq = () => {
             fontWeight: '600',
             fontSize: { xs: '32px', md: '48px' },
             color: '#2B2B2B',
+            mt:{ xs:4,md:8 }
           }}
         >
           Got Some

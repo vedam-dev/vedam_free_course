@@ -33,7 +33,7 @@ const AboutUs: React.FC = () => {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontSize: '56px',
-              fontWeight: 700,
+              fontWeight: 600,
               mb: '29px',
             }}
           >
@@ -50,14 +50,19 @@ const AboutUs: React.FC = () => {
             </Box>
             <BaseDecoration
               sx={{
-                background: 'linear-gradient( #F5790D 100%)',
-                backgroundClip: 'text',
+                background: 'linear-gradient(90deg, #F5790D 0%, #F5790D 100%)',
                 WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
+                display: 'inline-block',
+                WebkitTextStroke: '0.3px transparent',
+                willChange: 'transform',
+                transform: 'translateZ(0)',
               }}
             >
               Technology
             </BaseDecoration>
+
           </Typography>
           <Typography
             sx={{
@@ -128,7 +133,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '20px',
-                    fontWeight: 600,
+                    fontWeight: 500,
                     letterSpacing: '2.6px',
                     textTransform: 'uppercase',
                     lineHeight: '36px',
@@ -157,7 +162,7 @@ const AboutUs: React.FC = () => {
               <Typography
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontSize: '26px',
+                  fontSize: '28px',
                   fontWeight: 500,
                   lineHeight: '36px',
                   color: '#1E1E1E',
@@ -203,7 +208,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '20px',
-                    fontWeight: 600,
+                    fontWeight: 500,
                     letterSpacing: '2.6px',
                     lineHeight: '36px',
                     px: '21px',
@@ -232,7 +237,7 @@ const AboutUs: React.FC = () => {
               <Typography
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontSize: '26px',
+                  fontSize: '28px',
                   fontWeight: 500,
                   lineHeight: '36px',
                   color: '#1E1E1E',
@@ -303,7 +308,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '20px',
-                    fontWeight: 600,
+                    fontWeight: 500,
                     letterSpacing: '2.6px',
                     lineHeight: '27px',
                     px: '21px',
@@ -332,14 +337,14 @@ const AboutUs: React.FC = () => {
               <Typography
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontSize: '26px',
+                  fontSize: '28px',
                   fontWeight: 500,
                   lineHeight: '36px',
                   color: '#1E1E1E',
                   textAlign: 'center',
                   px: '23px',
                   mt: '20px',
-                  pb:'20px',
+                  pb: '20px',
                 }}
               >
                 Gain real-world experience while earning.
@@ -379,7 +384,7 @@ const AboutUs: React.FC = () => {
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '20px',
-                    fontWeight: 600,
+                    fontWeight: 500,
                     letterSpacing: '2.6px',
                     lineHeight: '27px',
                     textTransform: 'uppercase',
@@ -409,14 +414,14 @@ const AboutUs: React.FC = () => {
               <Typography
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontSize: '26px',
+                  fontSize: '28px',
                   fontWeight: 500,
                   lineHeight: '36px',
                   color: '#1E1E1E',
                   textAlign: 'center',
                   px: '23px',
                   mt: '20px',
-                  pb:'20px',
+                  pb: '20px',
                 }}
               >
                 Students with 97%ile in JEE have chosen Vedam.
