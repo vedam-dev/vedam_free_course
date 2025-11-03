@@ -674,7 +674,7 @@ curl -X POST http://localhost:3000/api/send-certificate \
 
 This project is licensed under the MIT License.
 
-Release - 3 Nov 2025 4:30 PM
+Release - 3 Nov 2025 5:20 PM
 
 ---
 
