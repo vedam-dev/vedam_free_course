@@ -24,7 +24,7 @@ export const generateCertificateImage = async (data: CertificateData): Promise<s
     // Replace placeholders with actual data
     htmlContent = htmlContent
       .replace('{{Your Name here}}', data.studentName)
-      .replace('{{Subject Name here }}', data.subjectName);
+      .replace('{{Subject Name here}}', data.subjectName);
 
     console.log('✅ Placeholders replaced successfully');
 
