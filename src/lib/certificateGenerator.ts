@@ -36,7 +36,7 @@ export const generateCertificateImage = async (data: CertificateData): Promise<s
     iframe.style.visibility = 'hidden';
     iframe.style.margin = '0';
     iframe.style.padding = '0';
-
+    
     document.body.appendChild(iframe);
 
     // Add CSS to reset iframe document styles
@@ -53,6 +53,7 @@ export const generateCertificateImage = async (data: CertificateData): Promise<s
           overflow: hidden;
           width: 1100px;
           height: 800px;
+          border-radius: 16px; /* Add border radius here */
         }
       </style>
     `;
@@ -62,14 +63,15 @@ export const generateCertificateImage = async (data: CertificateData): Promise<s
     iframe.contentDocument?.close();
 
     const iframeBody = iframe.contentDocument?.body;
-    if(!iframeBody) {
+    if (!iframeBody) {
       throw new Error('Failed to create iframe content');
     }
 
-    // Ensure iframe body has no margins/padding
+    // Ensure iframe body has no margins/padding and add border radius
     iframeBody.style.margin = '0';
     iframeBody.style.padding = '0';
     iframeBody.style.overflow = 'hidden';
+    iframeBody.style.borderRadius = '16px'; 
 
     console.log('⏳ Loading resources...');
 
