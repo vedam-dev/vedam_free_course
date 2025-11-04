@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { supabase } from '@/lib/supabase';
-import { sendCertificateEmail } from '@/services/sendCertificateEmail';
 
 export async function GET(request: NextRequest) {
   try {
@@ -105,11 +104,23 @@ export async function POST(request: NextRequest) {
       result = data;
     }
 
-    // Check if topic completion should trigger certificate email
+    // Check if topic completion should trigger certificate
     // Only check when marking as complete, not when unmarking
     if(is_complete && result) {
       try {
-        await checkAndSendTopicCompletionCertificate(user_id, content_id);
+        const certificateData = await checkTopicCompletion(user_id, content_id);
+
+        if(certificateData) {
+          // Return response with certificate flag
+          return NextResponse.json(
+            {
+              data: result,
+              certificateRequired: true,
+              certificateData
+            },
+            { status: existing ? 200 : 201 }
+          );
+        }
       } catch(certError) {
         // Log error but don't fail the progress update
         console.error('Error checking topic completion for certificate:', certError);
@@ -130,10 +141,13 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * Check if user has completed all videos in a topic and send certificate if completed
+ * Check if user has completed all videos in a topic
+ * Returns certificate data if topic is completed, null otherwise
  */
-async function checkAndSendTopicCompletionCertificate(
-  userId: string | number, contentId: string | number) {
+async function checkTopicCompletion(
+  userId: string | number,
+  contentId: string | number
+): Promise<{ studentName: string; subjectName: string; studentEmail: string } | null> {
   try {
     // Get the content to find its topic
     const { data: content, error: contentError } = await supabase
@@ -144,7 +158,7 @@ async function checkAndSendTopicCompletionCertificate(
 
     if(contentError || !content || !content.topic) {
       console.log('Content not found or has no topic:', contentId);
-      return;
+      return null;
     }
 
     const topic = content.topic;
@@ -157,7 +171,7 @@ async function checkAndSendTopicCompletionCertificate(
 
     if(videosError || !topicVideos || topicVideos.length === 0) {
       console.log('No videos found for topic:', topic);
-      return;
+      return null;
     }
 
     const topicVideoIds = topicVideos.map(v => v.id);
@@ -173,15 +187,14 @@ async function checkAndSendTopicCompletionCertificate(
 
     if(progressError) {
       console.error('Error fetching progress for topic completion:', progressError);
-      return;
+      return null;
     }
 
     const completedCount = completedProgress?.length || 0;
 
     // Check if user has completed all videos in this topic
     if(completedCount >= totalVideosInTopic) {
-      // Check if certificate already sent for this topic (using certificates_sent table)
-      // If table doesn't exist, we'll gracefully handle it
+      // Check if certificate already sent for this topic
       let certificateAlreadySent = false;
       try {
         const { data: existingCert, error: certCheckError } = await supabase
@@ -192,13 +205,13 @@ async function checkAndSendTopicCompletionCertificate(
           .maybeSingle();
 
         if(certCheckError) {
-          // If table doesn't exist, continue (will send email but won't track duplicates)
+          // If table doesn't exist, continue
           const errorMessage = certCheckError.message || '';
           if(errorMessage.includes('does not exist') || errorMessage.includes('relation') || certCheckError.code === '42P01') {
             console.log('certificates_sent table does not exist, proceeding without duplicate check');
           } else {
             console.error('Error checking existing certificates:', certCheckError);
-            return;
+            return null;
           }
         } else if(existingCert) {
           certificateAlreadySent = true;
@@ -210,7 +223,7 @@ async function checkAndSendTopicCompletionCertificate(
       // If certificate already sent, skip
       if(certificateAlreadySent) {
         console.log(`Certificate already sent for user ${userId} and topic ${topic}`);
-        return;
+        return null;
       }
 
       // Get user details
@@ -222,17 +235,10 @@ async function checkAndSendTopicCompletionCertificate(
 
       if(userError || !user || !user.email) {
         console.error('Error fetching user for certificate:', userError);
-        return;
+        return null;
       }
 
-      // Send certificate email
-      await sendCertificateEmail({
-        studentName: user.name,
-        subjectName: topic,
-        studentEmail: user.email
-      });
-
-      // Record that certificate was sent (if table exists)
+      // Record that certificate will be sent (to prevent duplicates)
       try {
         await supabase
           .from('certificates_sent')
@@ -242,7 +248,7 @@ async function checkAndSendTopicCompletionCertificate(
             sent_at: new Date().toISOString()
           });
       } catch(err: unknown) {
-        // If table doesn't exist, just log (graceful degradation)
+        // If table doesn't exist, just log
         const errorMessage = (err as { message?: string; code?: string }).message || '';
         if(errorMessage.includes('does not exist') || errorMessage.includes('relation') || (err as { code?: string }).code === '42P01') {
           console.log('certificates_sent table does not exist, skipping tracking');
@@ -251,10 +257,19 @@ async function checkAndSendTopicCompletionCertificate(
         }
       }
 
-      console.log(`✅ Certificate email sent to ${user.email} for completing topic: ${topic}`);
+      console.log(`✅ Topic completed! Certificate data ready for user ${user.email}, topic: ${topic}`);
+
+      // Return certificate data for client-side generation
+      return {
+        studentName: user.name,
+        subjectName: topic,
+        studentEmail: user.email
+      };
     }
+
+    return null;
   } catch(error) {
-    console.error('Error in checkAndSendTopicCompletionCertificate:', error);
-    // Don't throw - we don't want to fail the progress update if certificate sending fails
+    console.error('Error in checkTopicCompletion:', error);
+    return null;
   }
 }
