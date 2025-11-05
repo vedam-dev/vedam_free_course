@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
       throw new Error('Invalid or empty image buffer');
     }
 
-    // 4️⃣ Email HTML content
+    // 4️⃣ Email HTML content with attachment
     const htmlContent = `
       <!DOCTYPE html>
       <html>
@@ -56,12 +56,12 @@ export async function POST(req: NextRequest) {
             <h1>🎉 Congratulations, ${studentName}! 🎉</h1>
           </div>
           <div class="content">
-            <div class="congrats">You’ve successfully completed <strong>${subjectName}</strong></div>
+            <div class="congrats">You've successfully completed <strong>${subjectName}</strong></div>
             <div class="message">
               <p>Dear <strong>${studentName}</strong>,</p>
               <p>Congratulations on successfully completing <strong>${subjectName}</strong> in our CodeSprint program!</p>
               <p>Your certificate of completion (JPG image) is attached to this email.</p>
-              <p>We’re proud of your accomplishment and wish you continued success in your coding journey!</p>
+              <p>We're proud of your accomplishment and wish you continued success in your coding journey!</p>
             </div>
             <div class="footer">
               <p>Best regards,<br><strong>The CodeSprint Team</strong></p>
