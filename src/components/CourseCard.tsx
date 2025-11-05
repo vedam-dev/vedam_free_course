@@ -81,7 +81,13 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
             component="img"
             src={course.image}
             alt={`${course.companyname} instructor`}
+<<<<<<< Updated upstream
             sx={{
+=======
+            width={isMobile ? 200 : 300}
+            height={isMobile ? 240 : 460}
+            style={{
+>>>>>>> Stashed changes
               alignSelf: 'flex-start',
               position: 'absolute',
               top: { xs: 0, md: 32, lg: 8 },
