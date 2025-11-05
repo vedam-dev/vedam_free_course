@@ -10,10 +10,8 @@ export const generateCertificateImage = async (data: CertificateData): Promise<s
   try {
     console.log('Starting Image generation for:', data.studentName);
 
-    // Dynamically import html2canvas only on client side
     const html2canvas = (await import('html2canvas')).default;
 
-    // Fetch the HTML template
     const response = await fetch('/certi.html');
     if(!response.ok) {
       throw new Error('Failed to load HTML template');
@@ -21,80 +19,95 @@ export const generateCertificateImage = async (data: CertificateData): Promise<s
 
     let htmlContent = await response.text();
 
-    // Replace placeholders with actual data
     htmlContent = htmlContent
       .replace('{{Your Name here}}', data.studentName)
       .replace('{{Subject Name here}}', data.subjectName);
 
     console.log('✅ Placeholders replaced successfully');
 
-    // Create a temporary container for rendering
-    const container = document.createElement('div');
-    container.innerHTML = htmlContent;
-    container.style.position = 'fixed';
-    document.body.appendChild(container);
+    // Create an iframe with proper styling
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'fixed';
+    iframe.style.left = '-9999px';
+    iframe.style.top = '-9999px';
+    iframe.style.width = '1100px';
+    iframe.style.height = '800px';
+    iframe.style.border = 'none';
+    iframe.style.visibility = 'hidden';
+    iframe.style.margin = '0';
+    iframe.style.padding = '0';
+    document.body.appendChild(iframe);
 
+    // Add CSS to reset iframe document styles
+    const styleReset = `
+      <style>
+        * { 
+          margin: 0; 
+          padding: 0; 
+          box-sizing: border-box; 
+        }
+        body { 
+          margin: 0; 
+          padding: 0; 
+          overflow: hidden;
+          width: 1100px;
+          height: 800px;
+          border-radius: 16px; /* Add border radius here */
+        }
+      </style>
+    `;
+
+    // Write the HTML content to the iframe with style reset
+    iframe.contentDocument?.write(styleReset + htmlContent);
+    iframe.contentDocument?.close();
+
+    const iframeBody = iframe.contentDocument?.body;
+    if(!iframeBody) {
+      throw new Error('Failed to create iframe content');
+    }
+
+    // Ensure iframe body has no margins/padding and add border radius
+    iframeBody.style.margin = '0';
+    iframeBody.style.padding = '0';
+    iframeBody.style.overflow = 'hidden';
+    iframeBody.style.borderRadius = '16px';
     console.log('⏳ Loading resources...');
 
-    // Wait for fonts
-    await document.fonts.ready;
-
-    // Preload the background image
-    await new Promise<void>((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => {
-        console.log('✅ Background image loaded');
-        resolve();
-      };
-      img.onerror = () => {
-        console.error('❌ Failed to load background image');
-        reject(new Error('Background image failed to load'));
-      };
-      img.src = '/certiBg.jpg';
+    // Wait for iframe to load completely
+    await new Promise<void>((resolve) => {
+      iframe.onload = () => resolve();
+      setTimeout(resolve, 1000);
     });
 
-    // Wait for all other images in the document
-    const images = container.querySelectorAll('img');
-    await Promise.all(
-      Array.from(images).map(
-        (img) =>
-          new Promise<void>((resolve) => {
-            if(img.complete) {
-              resolve();
-            } else {
-              img.onload = () => resolve();
-              img.onerror = () => resolve();
-            }
-          })
-      )
-    );
-
-    // Additional stabilization time
-    // await new Promise((resolve) => setTimeout(resolve, 2000));
+    // Additional wait for iframe content to render
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     console.log('🖼️ Generating image...');
 
-    // Generate image using html2canvas
-    const canvas = await html2canvas(container, {
+    const canvas = await html2canvas(iframeBody, {
       scale: 3,
       useCORS: true,
       allowTaint: true,
       backgroundColor: null,
-      logging: false,
+      logging: true, // Enable logging to debug
       imageTimeout: 0,
       width: 1100,
       height: 800,
+      x: 0, // Explicitly set capture position
+      y: 0,
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: 1100,
+      windowHeight: 800
     });
 
-    // Convert canvas to JPEG base64
     const imageBase64 = canvas.toDataURL('image/jpeg', 1.0).split(',')[1];
 
     console.log('✅ Image generated successfully, length:', imageBase64.length);
 
-    // Clean up
-    document.body.removeChild(container);
+    // Clean up iframe
+    document.body.removeChild(iframe);
 
-    // Verify image is not empty
     if(imageBase64.length < 1000) {
       throw new Error('Generated image appears to be empty or corrupted');
     }

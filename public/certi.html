@@ -152,7 +152,7 @@
           <span>For successfully completing
             <strong>{{Subject Name here}}</strong>
             <span class="course-brand">
-              <svg width="140" height="28" xmlns="http://www.w3.org/2000/svg" style="vertical-align: -8.2px;">
+              <svg width="140" height="28" xmlns="http://www.w3.org/2000/svg" style="vertical-align: -8.1px;">
                 <defs>
                   <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                     <stop offset="0%" style="stop-color:#6a2bd6;stop-opacity:1" />
@@ -166,48 +166,5 @@
       </div>
     </div>
   </div>
-
-  <script>
-    async function downloadCertificateAsJPG() {
-      const certificate = document.getElementById("certificate");
-      const rect = certificate.getBoundingClientRect();
-
-      const canvas = document.createElement("canvas");
-      canvas.width = rect.width;
-      canvas.height = rect.height;
-      const ctx = canvas.getContext("2d");
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, rect.width, rect.height);
-
-      // Use SVG serialization to draw HTML
-      const data = `
-        <svg xmlns='http://www.w3.org/2000/svg' width='${rect.width}' height='${rect.height}'>
-          <foreignObject width='100%' height='100%'>
-            ${new XMLSerializer().serializeToString(certificate)}
-          </foreignObject>
-        </svg>`;
-
-      const svgBlob = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
-      const url = URL.createObjectURL(svgBlob);
-      const img = new Image();
-
-      img.onload = () => {
-        ctx.drawImage(img, 0, 0);
-        URL.revokeObjectURL(url);
-        const link = document.createElement("a");
-        link.download = "certificate.jpg";
-        link.href = canvas.toDataURL("image/jpeg", 1.0);
-        link.click();
-      };
-      img.onerror = (err) => {
-        console.error("Error rendering certificate:", err);
-        alert("Error while generating image. Check background image path or try Chrome.");
-      };
-
-      img.src = url;
-    }
-
-    document.getElementById("downloadBtn").addEventListener("click", downloadCertificateAsJPG);
-  </script>
 </body>
 </html>
