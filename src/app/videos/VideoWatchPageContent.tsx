@@ -165,42 +165,6 @@ const VideoWatchPage = () => {
 
   if(isMobile) {
     return (
-<<<<<<< Updated upstream
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '100vh',
-          width: '100%',
-          paddingY: '20px',
-          textAlign: 'center',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white',
-        }}
-      >
-        <Box
-          sx={{
-            background: 'rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(10px)',
-            borderRadius: '20px',
-            padding: '40px 30px',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            width: '80%',
-            maxWidth: '480px',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <Box sx={{ fontSize: '60px', marginBottom: '20px' }}>🖥️</Box>
-          <Typography variant="h2" sx={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '15px', color: 'white' }}>
-            Desktop Required
-          </Typography>
-          <Typography variant="subtitle2" style={{ fontSize: '18px', lineHeight: '1.6', margin: '0', color: 'rgba(255, 255, 255, 0.9)' }}>
-            Open in Desktop to play Video <br /> Login on Desktop
-=======
       <Box sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -243,7 +207,6 @@ const VideoWatchPage = () => {
             color: 'rgba(255, 255, 255, 0.9)'
           }}>
             Open in Desktop to play Video : Login on Desktop
->>>>>>> Stashed changes
           </Typography>
         </Box>
       </Box>
@@ -251,50 +214,11 @@ const VideoWatchPage = () => {
   }
 
   if(Object.keys(groupedVideos).length === 0) {
-<<<<<<< Updated upstream
-    return (
-      <Box sx={{ p: 4 }}>
-        <Box sx={{ display: 'flex', minHeight: '99vh' }}>
-          <Box sx={{ flex: 2, p: 4 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <Skeleton variant="circular" width={40} height={40} sx={{ mr: 1 }} />
-              <Skeleton variant="text" width="60%" height={40} />
-            </Box>
-            <Skeleton variant="rectangular" sx={{ pb: '56.25%', mb: 2, width: '100%', borderRadius: 3 }} />
-            <Skeleton variant="text" sx={{ mb: 1 }} />
-            <Skeleton variant="text" width="80%" sx={{ mb: 1 }} />
-            <Skeleton variant="text" width="90%" />
-            <Skeleton variant="rectangular" sx={{ mt: 3, mb: 2, px: 3, py: 1, borderRadius: 3, boxShadow: 2, display: 'flex', alignItems: 'center', gap: 2, minHeight: 36, minWidth: 260, width: 'auto' }} height={60} />
-          </Box>
-          <Box sx={{ flex: 1, borderLeft: '1px solid #eee', p: 3, background: '#fafafa', height: '85vh', overflow: 'scroll' }}>
-            <Typography component="h3"><Skeleton variant="text" width="70%" /></Typography>
-            {Array.from(new Array(3)).map((_, index) => (
-              <Accordion key={index} defaultExpanded={true} sx={{ mb: 1 }}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography fontWeight={600}><Skeleton variant="text" width="50%" /></Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0 }}>
-                    {Array.from(new Array(4)).map((_, idx) => (
-                      <Box component="li" key={idx} sx={{ mb: 1, p: 1 }}>
-                        <Skeleton variant="text" width="90%" />
-                      </Box>
-                    ))}
-                  </Box>
-                </AccordionDetails>
-              </Accordion>
-            ))}
-          </Box>
-        </Box>
-      </Box>
-    );
-=======
     return <Box style={{ padding: 32 }}>Loading...</Box>;
 
 
 
 
->>>>>>> Stashed changes
   }
 
   return (

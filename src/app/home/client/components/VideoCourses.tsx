@@ -32,11 +32,7 @@ const courseData = [
       'linear-gradient(90deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
     color2:
       'linear-gradient(180deg, #FF995D 0%, #FFD47E 33.46%, #FFEAB0 51.58%, #FFF 66.62%)',
-<<<<<<< Updated upstream
-    image: '/home/instructors/subhesh2.png',
-=======
     image: '/home/instructors/subhesh.png',
->>>>>>> Stashed changes
     companyname: 'GOOGLE',
     level: 'Beginner',
     time: '2',
@@ -48,11 +44,7 @@ const courseData = [
       'linear-gradient(90deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
     color2:
       'linear-gradient(180deg, #B66FFF 0%, #FF83BC 24.35%, #FFB990 40.36%, #FFF 66.62%)',
-<<<<<<< Updated upstream
-    image: '/home/instructors/nishant2.png',
-=======
     image: '/home/instructors/nishant.png',
->>>>>>> Stashed changes
     companyname: 'MICROSOFT',
     level: 'Beginner',
     time: '2',
