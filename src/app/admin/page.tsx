@@ -30,6 +30,8 @@ interface User {
   name: string
   email: string
   mobile: string
+  passout_year?: number | string
+  stream?: string
   created_at: string
 }
 
@@ -380,6 +382,8 @@ export default function AdminPage() {
                   <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Mobile</TableCell>
+                  <TableCell>Year of Passout</TableCell>
+                  <TableCell>Stream</TableCell>
                   <TableCell>Progress</TableCell>
                   <TableCell>Completion %</TableCell>
                   <TableCell>Last Activity</TableCell>
@@ -389,7 +393,7 @@ export default function AdminPage() {
               <TableBody>
                 {allStudentsProgress.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} sx={{ textAlign: 'center', py: 4 }}>
+                    <TableCell colSpan={10} sx={{ textAlign: 'center', py: 4 }}>
                       <Typography variant="body2" color="text.secondary">
                         No students found.
                       </Typography>
@@ -402,6 +406,8 @@ export default function AdminPage() {
                       <TableCell>{student.name}</TableCell>
                       <TableCell>{student.email}</TableCell>
                       <TableCell>{student.mobile}</TableCell>
+                      <TableCell>{student.passout_year || 'N/A'}</TableCell>
+                      <TableCell>{student.stream || 'N/A'}</TableCell>
                       <TableCell>
                         <Chip
                           label={`${student.completedVideos}/${student.totalVideos}`}
@@ -455,6 +461,8 @@ export default function AdminPage() {
                 <TableCell>Name</TableCell>
                 <TableCell>Email</TableCell>
                 <TableCell>Mobile</TableCell>
+                <TableCell>Year of Passout</TableCell>
+                <TableCell>Stream</TableCell>
                 <TableCell>Created At</TableCell>
               </TableRow>
             </TableHead>
@@ -465,6 +473,8 @@ export default function AdminPage() {
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.mobile}</TableCell>
+                  <TableCell>{user.passout_year || 'N/A'}</TableCell>
+                  <TableCell>{user.stream || 'N/A'}</TableCell>
                   <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
                 </TableRow>
               ))}
