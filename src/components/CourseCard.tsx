@@ -81,7 +81,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
             component="img"
             src={course.image}
             alt={`${course.companyname} instructor`}
-           sx={{
+            sx={{
               alignSelf: 'flex-start',
               position: 'absolute',
               top: { xs: 0, md: 32, lg: 8 },
