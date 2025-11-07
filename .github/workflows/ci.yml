@@ -1,76 +1,171 @@
-  name: CI - Lint and Build Next.js
+name: CI - Lint and Build Next.js
 
-  on:
-    push:
-      branches:
-        - master
+on:
+  push:
+    branches:
+      - master
 
-    pull_request:
-      branches:
-        - '*' 
+  pull_request:
+    branches:
+      - "*"
 
-    workflow_dispatch:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    branches:
+      - dev
+      - master
 
-  jobs:
-    ci:
-      if: |
-        github.event_name == 'push' ||
+  workflow_dispatch:
+
+jobs:
+  ci:
+    if: |
+      github.event_name == 'push' ||
+      (
+        github.event_name == 'pull_request' &&
         (
-          github.event_name == 'pull_request' &&
-          (
-            startsWith(github.head_ref, 'feature/') ||
-            startsWith(github.head_ref, 'bugfix/') ||
-            startsWith(github.head_ref, 'hotfix/')
-          )
+          startsWith(github.head_ref, 'feature/') ||
+          startsWith(github.head_ref, 'bugfix/') ||
+          startsWith(github.head_ref, 'hotfix/')
         )
-      runs-on: ubuntu-latest
-      environment: vedam-free-course
+      )
+    runs-on: ubuntu-latest
+    environment: vedam-free-course
 
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-        - name: Detect package manager
-          id: detect-package-manager
-          run: |
-            if [ -f "yarn.lock" ]; then
-              echo "manager=yarn" >> $GITHUB_OUTPUT
-              echo "command=install" >> $GITHUB_OUTPUT
-              echo "runner=yarn" >> $GITHUB_OUTPUT
-            else
-              echo "manager=npm" >> $GITHUB_OUTPUT
-              echo "command=ci" >> $GITHUB_OUTPUT
-              echo "runner=npx --no-install" >> $GITHUB_OUTPUT
+      - name: Detect package manager
+        id: detect-package-manager
+        run: |
+          if [ -f "yarn.lock" ]; then
+            echo "manager=yarn" >> $GITHUB_OUTPUT
+            echo "command=install" >> $GITHUB_OUTPUT
+            echo "runner=yarn" >> $GITHUB_OUTPUT
+          else
+            echo "manager=npm" >> $GITHUB_OUTPUT
+            echo "command=ci" >> $GITHUB_OUTPUT
+            echo "runner=npx --no-install" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: ${{ steps.detect-package-manager.outputs.manager }}
+
+      - name: Create .env file from GitHub Secrets
+        run: |
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env.local
+          echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env.local
+          echo "GA4_MEASUREMENT_ID=${{ secrets.GA4_MEASUREMENT_ID }}" >> .env.local
+          echo "GA4_API_SECRET=${{ secrets.GA4_API_SECRET }}" >> .env.local 
+          echo "STREAMABLE_USERNAME=${{ secrets.STREAMABLE_USERNAME }}" >> .env.local 
+          echo "STREAMABLE_PASSWORD=${{ secrets.STREAMABLE_PASSWORD }}" >> .env.local 
+          echo "MSG91_AUTH_KEY=${{ secrets.MSG91_AUTH_KEY }}" >> .env.local 
+          echo "MSG91_WIDGET_ID=${{ secrets.MSG91_WIDGET_ID }}" >> .env.local 
+          echo "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" >> .env.local 
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.local
+
+      - name: Confirm .env.local contents (safe for public values only)
+        run: cat .env.local
+
+      - name: Install dependencies
+        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+
+      - name: Run Lint
+        run: ${{ steps.detect-package-manager.outputs.runner }} next lint
+
+      - name: Build project
+        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+
+  patch-readme:
+    if: >
+      (github.event_name == 'pull_request_target' ||
+        (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository))
+      && (github.event.pull_request.base.ref == 'dev' || github.event.pull_request.base.ref == 'master')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout base repo (safe/trusted checkout)
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ github.event.pull_request.base.ref }}
+          fetch-depth: 0
+
+      - name: Ensure PR is from same repository (skip forks)
+        id: check-fork
+        run: |
+          if [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]; then
+            echo "PR is from a fork (${{
+              github.event.pull_request.head.repo.full_name
+            }}) — skipping README patch."
+            echo "skip=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "skip=false" >> $GITHUB_OUTPUT
+
+      - name: Fetch PR head into local branch
+        if: steps.check-fork.outputs.skip == 'false'
+        run: |
+          PR_NUM=${{ github.event.pull_request.number }}
+          git fetch origin +refs/pull/${PR_NUM}/head:pr-${PR_NUM}
+          git checkout pr-${PR_NUM}
+
+      - name: Update README timestamps and commit as praz-Vedam
+        if: steps.check-fork.outputs.skip == 'false'
+        run: |
+          # Asia/Kolkata timestamp like "29 Sep 2025 2:28 PM IST"
+          ts=$(TZ="Asia/Kolkata" date +"%d %b %Y %l:%M %p %Z" | sed 's/^ //')
+
+          if [ -f README.md ]; then
+            updated=false
+
+            # Normalize & update "Last Deployment" (handles "Last Deployment", "Last Deployment :")
+            if grep -q -E "^Last Deployment" README.md; then
+              sed -i -E "s/^Last Deployment.*$/Last Deployment : $ts/" README.md
+              updated=true
             fi
 
-        - name: Setup Node.js
-          uses: actions/setup-node@v4
-          with:
-            node-version: "20"
-            cache: ${{ steps.detect-package-manager.outputs.manager }}
+            # Update "Latest Release" if present
+            if grep -q -E "^Latest Release" README.md; then
+              sed -i -E "s/^Latest Release.*$/Latest Release : $ts/" README.md
+              updated=true
+            fi
 
-        - name: Create .env file from GitHub Secrets
-          run: |
-            echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env.local
-            echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env.local
-            echo "GA4_MEASUREMENT_ID=${{ secrets.GA4_MEASUREMENT_ID }}" >> .env.local
-            echo "GA4_API_SECRET=${{ secrets.GA4_API_SECRET }}" >> .env.local 
-            echo "STREAMABLE_USERNAME=${{ secrets.STREAMABLE_USERNAME }}" >> .env.local 
-            echo "STREAMABLE_PASSWORD=${{ secrets.STREAMABLE_PASSWORD }}" >> .env.local 
-            echo "MSG91_AUTH_KEY=${{ secrets.MSG91_AUTH_KEY }}" >> .env.local 
-            echo "MSG91_WIDGET_ID=${{ secrets.MSG91_WIDGET_ID }}" >> .env.local 
-            echo "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" >> .env.local 
-            echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.local 
+            # Update "Release - ..." patterns (e.g. "Release - 29 sep 1:06 PM")
+            if grep -q -E "^Release\s*-" README.md; then
+              sed -i -E "s/^Release\s*-.*$/Release - $ts/" README.md
+              updated=true
+            fi
 
-        - name: Confirm .env.local contents (safe for public values only)
-          run: cat .env.local
+            # If none of the above existed, append Last Deployment at end
+            if [ "$updated" = "false" ]; then
+              echo -e "\nLast Deployment : $ts" >> README.md
+            fi
+          else
+            echo "Last Deployment : $ts" > README.md
+          fi
 
+          git config user.name "praz-Vedam"
+          git config user.email "prasanna.swain@vedam.org"
 
-        - name: Install dependencies
-          run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+          git add README.md
+          git commit -m "chore: update deployment timestamps [skip ci]" || echo "No changes to commit"
 
-        - name: Run Lint
-          run: ${{ steps.detect-package-manager.outputs.runner }} next lint
+      - name: Push commit as praz-vedam (using MY_GITHUB_TOKEN)
+        if: steps.check-fork.outputs.skip == 'false'
+        run: |
+          REPO=${{ github.repository }}
+          PR_HEAD_REF=${{ github.event.pull_request.head.ref }}
+          git push https://x-access-token:${{ secrets.MY_GITHUB_TOKEN }}@github.com/${REPO}.git HEAD:${PR_HEAD_REF} || echo "Push failed (likely protected branch or no permission)"
 
-        - name: Build project
-          run: ${{ steps.detect-package-manager.outputs.runner }} next build
+      - name: Finished patch step
+        if: steps.check-fork.outputs.skip == 'false'
+        run: echo "Patch attempt complete."
