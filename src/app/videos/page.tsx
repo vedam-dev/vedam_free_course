@@ -1,17 +1,22 @@
-// app/videos/page.tsx
+'use client';
+import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 
 import Loading from '@/components/Loading';
 
-import ResponsiveAboutSection from './ResponsiveAboutSection';
-import VideoWatchPageContent from './VideoWatchPageContent';
-
+const VideoWatchPageContent = dynamic(() => import('./VideoWatchPageContent'), {
+  ssr: false,
+  loading: () => <Loading />
+});
+const ResponsiveAboutSection = dynamic(() => import('./ResponsiveAboutSection'), {
+  ssr: false
+});
 
 export default function VideosPage() {
   return (
     <Suspense fallback={<Loading />}>
       <VideoWatchPageContent />
-      <ResponsiveAboutSection/>
+      <ResponsiveAboutSection />
     </Suspense>
   );
 }
