@@ -13,7 +13,7 @@ import {
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import React, { JSX, useEffect, useState } from 'react';
+import React, { JSX, useEffect, useMemo, useState } from 'react';
 
 import { UTMAnalytics } from './page';
 
@@ -36,6 +36,22 @@ const UTMFilters = ({ analytics, setFilter }: AnalyticsProp): JSX.Element => {
     startDate: null,
     endDate: null,
   });
+  const { allSources, allMediums } = useMemo(() => {
+    const sourcesSet = new Set<string>();
+    const mediumsSet = new Set<string>();
+
+    analytics.usersData.forEach(user => {
+      const source = user.userSource || 'Direct';
+      const medium = user.userMedium || 'None';
+      sourcesSet.add(source);
+      mediumsSet.add(medium);
+    });
+
+    return {
+      allSources: Array.from(sourcesSet).sort(),
+      allMediums: Array.from(mediumsSet).sort(),
+    };
+  }, [analytics.usersData]);
 
   const handleDateChange = (type: 'startDate' | 'endDate', value: Date | null) => {
     if(!value) {
@@ -68,12 +84,10 @@ const UTMFilters = ({ analytics, setFilter }: AnalyticsProp): JSX.Element => {
   const startDate = filters.startDate;
   const endDate = filters.endDate;
   const isEndDateDisabled = !startDate;
-  const filterObject = filters;
 
   useEffect(() => {
-    setFilter(filterObject);
-  }, [filterObject, filters, setFilter]);
-
+    setFilter(filters);
+  }, [filters, setFilter]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -110,9 +124,12 @@ const UTMFilters = ({ analytics, setFilter }: AnalyticsProp): JSX.Element => {
               label="Source"
               onChange={handleSelectChange('source')}
             >
-              {analytics.topSources.map((item, idx) => (
-                <MenuItem key={idx * 10} value={item.source}>
-                  {item.source}
+              <MenuItem value="">
+                <em>All Sources</em>
+              </MenuItem>
+              {allSources.map((source, idx) => (
+                <MenuItem key={idx} value={source}>
+                  {source}
                 </MenuItem>
               ))}
             </Select>
@@ -126,9 +143,12 @@ const UTMFilters = ({ analytics, setFilter }: AnalyticsProp): JSX.Element => {
               label="Medium"
               onChange={handleSelectChange('medium')}
             >
-              {analytics.topMediums.map((item, idx) => (
-                <MenuItem key={idx * 10} value={item.medium}>
-                  {item.medium}
+              <MenuItem value="">
+                <em>All Mediums</em>
+              </MenuItem>
+              {allMediums.map((medium, idx) => (
+                <MenuItem key={idx} value={medium}>
+                  {medium}
                 </MenuItem>
               ))}
             </Select>
