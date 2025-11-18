@@ -11,11 +11,17 @@
   <style>
     :root {
       --accent: #4b1869;
-      --muted: #7a7a7a;
+      --muted: #939393;
       --name: #4d2180;
-      --page-bg: #f3f5f7;
+      --page-bg: #000000;
       --card-width: 1100px;
       --card-height: 800px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     html, body {
@@ -26,14 +32,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 0;
     }
 
     .certificate {
       width: var(--card-width);
       height: var(--card-height);
       position: relative;
-      border-radius: 28px;
+      border-radius: 42px;
       overflow: hidden;
       box-shadow: 0 10px 40px rgba(20,20,30,0.25);
       background-image: url('certiBg.jpg');
@@ -43,7 +49,7 @@
       display: flex;
       align-items: flex-start;
       justify-content: flex-start;
-      padding: 56px 72px;
+      padding: 0;
       box-sizing: border-box;
     }
 
@@ -53,36 +59,56 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
+      padding: 56px 115px 64px 115px;
+      position: relative;
+    }
+    .subject-name {
+      font-weight: 700;
+       color: #000000; 
+    
+    }
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
 
     h1.c-title {
-      margin: 120px 0px;
+      margin: 95px 28px 105px -28px;
       font-family: "Poppins", sans-serif;
-      font-weight: 700;
-      font-size: 52px;
-      color: black;
-      line-height: 1.02;
+      font-weight: 900;
+      font-size: 56px;
+      color: #000000;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
     }
 
     .subtitle {
       color: var(--muted);
       font-size: 22px;
       font-weight: 400;
+      margin-bottom: 14px;
+      line-height: 1.4;
     }
 
     .recipient {
-      margin-top: 28px;
       font-family: "Poppins", sans-serif;
-      font-size: 36px;
+      font-size: 38px;
       color: var(--name);
       font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
     }
 
     .meta {
-      margin-top: 20px;
       color: var(--muted);
       font-size: 22px;
       font-weight: 400;
+      line-height: 1.5;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
     .meta strong {
@@ -90,80 +116,67 @@
       font-weight: 700;
     }
 
-    /* SVG gradient text - html2canvas compatible */
+ 
     .course-brand {
       font-family: "Poppins", sans-serif;
       font-weight: 700;
       font-size: 22px;
-      margin-left: 6px;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       position: relative;
+      top: 6px;
+      left:6px;
     }
 
     .signature-block {
       position: absolute;
-      left: 72px;
+      left: 115px;
       bottom: 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
     .signature-block .sig-name {
       font-family: "Poppins", sans-serif;
       font-weight: 700;
       font-size: 18px;
-      color: #0f1724;
+      color: #000000;
+      line-height: 1.4;
     }
 
     .signature-block .sig-title {
-      font-size: 14px;
+      font-size: 15px;
       color: var(--muted);
-    }
-
-    button#downloadBtn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #4b1869;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    button#downloadBtn:hover {
-      background: #5e1f89;
+      line-height: 1.4;
+      font-weight: 400;
     }
   </style>
 </head>
 <body>
  <div class="certificate" id="certificate" role="img" aria-label="Certificate frame background">
     <div class="content">
-      <!-- left main block containing the textual certificate content -->
       <div class="main">
         <h1 class="c-title">Certificate of Completion</h1>
         <div class="subtitle">Proudly presented to</div>
-
-        <!-- recipient name (change text) -->
         <div class="recipient">{{Your Name here}}</div>
-
-        <!-- smaller explanation row -->
         <div class="meta">
-          <span>For successfully completing
-            <strong>{{Subject Name here}}</strong>
-            <span class="course-brand">
-              <svg width="140" height="28" xmlns="http://www.w3.org/2000/svg" style="vertical-align: -8.1px;">
-                <defs>
-                  <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" style="stop-color:#6a2bd6;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#f07a2b;stop-opacity:1" />
-                  </linearGradient>
-                </defs>
-                <text x="0" y="22" font-family="Poppins, sans-serif" font-size="22" font-weight="700" fill="url(#textGradient)">CodeSprint</text>
-              </svg>
-            </span></span>
+          <span>For successfully completing <span class="subject-name">{{Subject Name here}}</span><span class="course-brand">
+            <svg width="135" height="26" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+              <defs>
+                <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#6a2bd6;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#f07a2b;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <text x="0" y="20" font-family="Poppins, sans-serif" font-size="22" font-weight="700" fill="url(#textGradient)">CodeSprint</text>
+            </svg>
+          </span></span>
+          
         </div>
       </div>
+      
+   
     </div>
   </div>
 </body>
