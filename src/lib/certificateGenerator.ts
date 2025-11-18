@@ -1,5 +1,8 @@
 'use client';
 
+// @ts-expect-error: dom-to-image-more has no types
+import * as domtoimage from 'dom-to-image-more';
+
 export interface CertificateData {
   studentName: string;
   subjectName: string;
@@ -9,8 +12,6 @@ export interface CertificateData {
 export const generateCertificateImage = async (data: CertificateData): Promise<string> => {
   try {
     console.log('Starting Image generation for:', data.studentName);
-
-    const html2canvas = (await import('html2canvas')).default;
 
     const response = await fetch('/certi.html');
     if(!response.ok) {
@@ -28,84 +29,92 @@ export const generateCertificateImage = async (data: CertificateData): Promise<s
     // Create an iframe with proper styling
     const iframe = document.createElement('iframe');
     iframe.style.position = 'fixed';
-    iframe.style.left = '-9999px';
-    iframe.style.top = '-9999px';
+    iframe.style.left = '-10000px';
+    iframe.style.top = '0';
     iframe.style.width = '1100px';
     iframe.style.height = '800px';
     iframe.style.border = 'none';
     iframe.style.visibility = 'hidden';
     iframe.style.margin = '0';
     iframe.style.padding = '0';
+    iframe.style.overflow = 'hidden';
     document.body.appendChild(iframe);
 
-    // Add CSS to reset iframe document styles
-    const styleReset = `
-      <style>
-        * { 
-          margin: 0; 
-          padding: 0; 
-          box-sizing: border-box; 
-        }
-        body { 
-          margin: 0; 
-          padding: 0; 
-          overflow: hidden;
-          width: 1100px;
-          height: 800px;
-          border-radius: 16px; /* Add border radius here */
-        }
-      </style>
-    `;
 
-    // Write the HTML content to the iframe with style reset
-    iframe.contentDocument?.write(styleReset + htmlContent);
-    iframe.contentDocument?.close();
-
-    const iframeBody = iframe.contentDocument?.body;
-    if(!iframeBody) {
-      throw new Error('Failed to create iframe content');
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+    if(!iframeDoc) {
+      throw new Error('Failed to access iframe document');
     }
 
-    // Ensure iframe body has no margins/padding and add border radius
-    iframeBody.style.margin = '0';
-    iframeBody.style.padding = '0';
-    iframeBody.style.overflow = 'hidden';
-    iframeBody.style.borderRadius = '16px';
+    iframeDoc.open();
+    iframeDoc.write(htmlContent);
+    iframeDoc.close();
+
     console.log('⏳ Loading resources...');
 
-    // Wait for iframe to load completely
     await new Promise<void>((resolve) => {
-      iframe.onload = () => resolve();
-      setTimeout(resolve, 1000);
+      if(iframe.contentWindow) {
+        iframe.contentWindow.addEventListener('load', () => resolve());
+      }
+      setTimeout(resolve, 1500);
     });
 
-    // Additional wait for iframe content to render
-    await new Promise(resolve => setTimeout(resolve, 500));
 
-    console.log('🖼️ Generating image...');
+    if(iframe.contentWindow?.document.fonts) {
+      await iframe.contentWindow.document.fonts.ready;
+      console.log('✅ Fonts loaded');
+    }
 
-    const canvas = await html2canvas(iframeBody, {
-      scale: 3,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: null,
-      logging: true, // Enable logging to debug
-      imageTimeout: 0,
+
+    await new Promise<void>((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        console.log('✅ Background image loaded');
+        resolve();
+      };
+      img.onerror = () => {
+        console.warn('⚠️ Background image failed to load, continuing anyway');
+        resolve();
+      };
+      img.src = '/certiBg.jpg';
+      setTimeout(resolve, 2000);
+    });
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    console.log('🖼️ Generating image with dom-to-image...');
+
+    const certificateEl = iframeDoc.querySelector('.certificate') as HTMLElement;
+
+    if(!certificateEl) {
+      throw new Error('Certificate element not found in iframe');
+    }
+
+    certificateEl.style.transform = 'translateZ(0)';
+    certificateEl.style.webkitTransform = 'translateZ(0)';
+    const dataUrl = await domtoimage.toPng(certificateEl, {
       width: 1100,
       height: 800,
-      x: 0, // Explicitly set capture position
-      y: 0,
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: 1100,
-      windowHeight: 800
+      quality: 1.0,
+      bgcolor: '#ffffff',
+      style: {
+        margin: '0',
+        padding: '0',
+        transform: 'scale(1)',
+        transformOrigin: 'top left',
+        webkitFontSmoothing: 'antialiased',
+        mozOsxFontSmoothing: 'grayscale'
+      },
+      filter: (node: unknown) => {
+        if((node as HTMLElement).tagName === 'SCRIPT') return false;
+        return true;
+      }
     });
 
-    const imageBase64 = canvas.toDataURL('image/jpeg', 1.0).split(',')[1];
+    const imageBase64 = dataUrl.split(',')[1];
 
     console.log('✅ Image generated successfully, length:', imageBase64.length);
 
-    // Clean up iframe
     document.body.removeChild(iframe);
 
     if(imageBase64.length < 1000) {
