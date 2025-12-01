@@ -88,7 +88,8 @@ export default function ApiDocsPage() {
       cancelled = true;
       try {
         (uiRef.current as unknown as { destroy?: () => void })?.destroy?.();
-      } catch{
+      } catch(err) {
+        console.warn('ui destroy failed:', err);
       }
       if(linkRef.current && linkRef.current.parentNode) {
         linkRef.current.parentNode.removeChild(linkRef.current);
