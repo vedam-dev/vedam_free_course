@@ -1,15 +1,11 @@
-'use client';
 import { Geist, Geist_Mono, Outfit } from 'next/font/google';
-import { Provider } from 'react-redux';
+import Script from 'next/script';
 import './globals.css';
 
 import BannerPopupModal from '@/components/BannerPopupModal';
-import ClientGaurd from '@/components/ClientGuard';
 import FloatingButton from '@/components/FloatingButton';
 import Footer from '@/components/Footer';
-
-import UTMCaptureClient from '../components/UTMCaptureClient';
-import { store } from '../lib/store';
+import Providers from '@/components/Providers';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -49,9 +45,23 @@ export default function RootLayout({
           }}
         />
         {/* End Google Tag Manager */}
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${outfit.className}`}>
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-K7ZDF4K4"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
 
         {/* Meta Pixel */}
-        <script
+        <Script
+          id="meta-pixel"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               !function(f,b,e,v,n,t,s)
@@ -77,29 +87,14 @@ export default function RootLayout({
             alt=""
           />
         </noscript>
-      </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${outfit.className}`}>
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-K7ZDF4K4"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          />
-        </noscript>
-        {/* End Google Tag Manager (noscript) */}
+        {/* End Meta Pixel */}
 
-        <Provider store={store}>
-          <UTMCaptureClient>
-            <ClientGaurd>
-              {children}
-              <FloatingButton />
-              <BannerPopupModal />
-            </ClientGaurd>
-            <Footer />
-          </UTMCaptureClient>
-        </Provider>
+        <Providers>
+          {children}
+          <FloatingButton />
+          <BannerPopupModal />
+        </Providers>
+        <Footer />
       </body>
     </html>
   );
