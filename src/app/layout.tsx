@@ -23,6 +23,21 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+export const metadata = {
+  title: 'CodeSprint | Vedam School of Technology - Free Coding Course',
+  description: 'Join CodeSprint - A free comprehensive coding course by Vedam School of Technology. Learn programming fundamentals, data structures, algorithms, and more with expert instructors.',
+  keywords: 'free coding course, programming course, CodeSprint, Vedam School of Technology, learn programming, coding bootcamp, free education',
+  openGraph: {
+    title: 'Vedam School of Technology - Free Coding Course | CodeSprint',
+    description: 'Join CodeSprint - A free comprehensive coding course by Vedam School of Technology. Learn programming fundamentals, data structures, algorithms, and more.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Vedam School of Technology - Free Coding Course | CodeSprint',
+    description: 'Join CodeSprint - A free comprehensive coding course by Vedam School of Technology.',
+  },
+};
 
 export default function RootLayout({
   children,
