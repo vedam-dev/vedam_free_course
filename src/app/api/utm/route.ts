@@ -4,8 +4,42 @@ import { supabase } from '@/lib/supabase';
 
 export async function POST(req: Request) {
   try {
+    // Check if request has a body
+    const contentType = req.headers.get('content-type');
+    if(!contentType || !contentType.includes('application/json')) {
+      return NextResponse.json(
+        { success: false, error: 'Content-Type must be application/json' },
+        { status: 400 }
+      );
+    }
 
-    const body = await req.json();
+    // Safely parse JSON body
+    let body;
+    try {
+      body = await req.json();
+    } catch(parseError) {
+      console.error('JSON parse error:', parseError);
+      // Check if it's an empty body error
+      if(parseError instanceof SyntaxError && parseError.message.includes('Unexpected end of JSON input')) {
+        return NextResponse.json(
+          { success: false, error: 'Request body is empty or invalid JSON' },
+          { status: 400 }
+        );
+      }
+      return NextResponse.json(
+        { success: false, error: 'Invalid JSON in request body' },
+        { status: 400 }
+      );
+    }
+
+    // Validate body is not null/undefined
+    if(!body || typeof body !== 'object') {
+      return NextResponse.json(
+        { success: false, error: 'Request body must be a valid JSON object' },
+        { status: 400 }
+      );
+    }
+
     const { visitor_token, utm_source, utm_medium, utm_campaign } = body;
 
     console.log('Received UTM data:', { visitor_token, utm_source, utm_medium, utm_campaign });
