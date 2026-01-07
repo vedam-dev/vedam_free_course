@@ -3,6 +3,7 @@ import Script from 'next/script';
 import './globals.css';
 
 import BannerPopupModal from '@/components/BannerPopupModal';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import FloatingButton from '@/components/FloatingButton';
 import Footer from '@/components/Footer';
 import Providers from '@/components/Providers';
@@ -104,11 +105,13 @@ export default function RootLayout({
         </noscript>
         {/* End Meta Pixel */}
 
-        <Providers>
-          {children}
-          <FloatingButton />
-          <BannerPopupModal />
-        </Providers>
+        <ErrorBoundary>
+          <Providers>
+            {children}
+            <FloatingButton />
+            <BannerPopupModal />
+          </Providers>
+        </ErrorBoundary>
         <Footer />
       </body>
     </html>
