@@ -47,9 +47,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
+      <head />
+      <body className={`${geistSans.variable} ${geistMono.variable} ${outfit.className}`}>
         {/* Google Tag Manager */}
-        <script
+        <Script
+          id="gtm-script"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -61,8 +64,6 @@ export default function RootLayout({
           }}
         />
         {/* End Google Tag Manager */}
-      </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${outfit.className}`}>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
