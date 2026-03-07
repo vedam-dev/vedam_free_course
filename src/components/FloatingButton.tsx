@@ -32,20 +32,23 @@ const FloatingButton = () => {
         sx={{
           fontSize: 'clamp(12px, 2.5vw, 20px)',
           color: '#F9F9F9',
-          background: 'linear-gradient(95.22deg, #FB7F05 2.91%, #6C10BC 99.18%)',
+          background: 'linear-gradient(95.22deg, rgba(251, 127, 5, 0.82) 2.91%, rgba(108, 16, 188, 0.82) 99.18%)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: 'none',
           borderRadius: '8px',
           padding: '12px 24px',
-          boxShadow: '0px 0px 11.2px rgba(255, 255, 255, 0.25)',
+          boxShadow: '0px 0px 20px rgba(108, 16, 188, 0.4), inset 0 1px 0 rgba(255,255,255,0.2)',
           transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
           transform: isClicked ? 'translateY(4px) scale(0.98)' : 'none',
           '&:hover': {
-            background: 'linear-gradient(95.22deg, #FB7F05 2.91%, #6C10BC 99.18%)',
-            boxShadow: '0px 0px 16px rgba(255, 255, 255, 0.5)',
+            background: 'linear-gradient(95.22deg, rgba(251, 127, 5, 0.9) 2.91%, rgba(108, 16, 188, 0.9) 99.18%)',
+            boxShadow: '0px 0px 28px rgba(108, 16, 188, 0.6), inset 0 1px 0 rgba(255,255,255,0.3)',
             transform: 'translateY(-2px)',
           },
           '&:active': {
             transform: 'translateY(4px) scale(0.96)',
-            boxShadow: '0px 0px 8px rgba(255, 255, 255, 0.25)',
+            boxShadow: '0px 0px 10px rgba(108, 16, 188, 0.3)',
           },
         }}
         href="https://vedam.org"
