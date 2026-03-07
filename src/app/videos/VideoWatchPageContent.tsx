@@ -218,7 +218,7 @@ const VideoWatchPage = () => {
             <Skeleton variant="text" sx={{ mb: 1 }} />
             <Skeleton variant="text" width="80%" sx={{ mb: 1 }} />
             <Skeleton variant="text" width="90%" />
-            <Skeleton variant="rectangular" sx={{ mt: 3, mb: 2, px: 3, py: 1, borderRadius: 3, boxShadow: 2, display: 'flex', alignItems: 'center', gap: 2, minHeight: 36, minWidth: 260, width: 'auto' }} height={60} />
+            <Skeleton variant="rectangular" sx={{ mt: 3, mb: 2, px: 3, py: 2, borderRadius: 3, boxShadow: 2, display: 'flex', alignItems: 'center', gap: 2, minWidth: 260, width: 'auto' }} height={68} />
           </Box>
           <Box sx={{
             flex: 1,
@@ -293,7 +293,7 @@ const VideoWatchPage = () => {
               <Skeleton variant="text" width="60%" height={40} />
             </Box>
             <Skeleton variant="rectangular" sx={{ position: 'relative', paddingTop: '56.25%', width: '100%', borderRadius: 2, overflow: 'hidden' }} />
-            <Skeleton variant="rectangular" sx={{ mt: 3, mb: 2, px: 3, py: 1, borderRadius: 3, boxShadow: 2, display: 'flex', alignItems: 'center', gap: 2, minHeight: 36, minWidth: 260, width: 'auto' }} height={30} />
+            <Skeleton variant="rectangular" sx={{ mt: 3, mb: 2, px: 3, py: 2, borderRadius: 3, boxShadow: 2, display: 'flex', alignItems: 'center', gap: 2, minWidth: 260, width: 'auto' }} height={68} />
           </>
         ) : (
           <>
@@ -340,12 +340,8 @@ const VideoWatchPage = () => {
                       sx={{
                         display: 'flex',
                         alignItems: 'center',
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
+                        width: '100%',
                         justifyContent: 'space-between',
-                        px: 3,
-                        py: 2,
                       }}
                     >
                       <Typography sx={{ fontWeight: 600, fontSize: 20 }}>Your Progress
@@ -362,13 +358,9 @@ const VideoWatchPage = () => {
                     <Box
                       sx={{
                         display: 'flex',
+                        width: '100%',
                         alignItems: 'center',
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
                         justifyContent: 'space-between',
-                        px: 3,
-                        py: 2,
                       }}
                     >
                       <Typography sx={{ fontWeight: 600, fontSize: 18 }}>
@@ -380,7 +372,6 @@ const VideoWatchPage = () => {
                           fontWeight: 600,
                           fontSize: 16,
                           p: 1,
-                          my: 1.5,
                           borderRadius: '12px',
                           background: 'rgba(251, 127, 5, 0.85)',
                           backdropFilter: 'blur(10px)',
