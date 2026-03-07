@@ -311,15 +311,17 @@ const VideoWatchPage = () => {
               sx={{
                 mt: 3,
                 mb: 2,
-                borderRadius: '16px',
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
+                borderRadius: '20px',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
                 border: '1px solid',
-                borderColor: completed ? 'rgba(46, 204, 64, 0.35)' : 'rgba(108, 16, 188, 0.18)',
-                background: completed ? 'rgba(46, 204, 64, 0.1)' : 'rgba(255, 255, 255, 0.6)',
+                borderColor: completed ? 'rgba(46, 204, 64, 0.4)' : 'rgba(255, 255, 255, 0.45)',
+                background: completed
+                  ? 'rgba(46, 204, 64, 0.12)'
+                  : 'rgba(255, 255, 255, 0.28)',
                 boxShadow: completed
-                  ? '0 4px 16px rgba(46, 204, 64, 0.12)'
-                  : '0 4px 16px rgba(108, 16, 188, 0.08)',
+                  ? '0 8px 32px rgba(46, 204, 64, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.6)'
+                  : '0 8px 32px rgba(108, 16, 188, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
                 minWidth: 260,
                 width: 'auto',
                 position: 'relative',
@@ -398,13 +400,16 @@ const VideoWatchPage = () => {
 
       <Box sx={{
         flex: 1,
-        borderLeft: '1px solid rgba(108, 16, 188, 0.15)',
         padding: '12px',
-        background: 'rgba(248, 245, 255, 0.65)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        height: '85vh',
+        height: '87vh',
         overflow: 'scroll',
+        background: 'rgba(255, 255, 255, 0.25)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        border: '1px solid rgba(255, 255, 255, 0.35)',
+        borderTop: 'none',
+        boxShadow: '0 8px 32px rgba(108, 16, 188, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+        borderRadius: '0 0 20px 20px',
       }}>
         <h3>All Videos</h3>
         {Object.entries(groupedVideos).map(([topic, vids]) => {
