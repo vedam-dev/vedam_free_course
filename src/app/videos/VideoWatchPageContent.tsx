@@ -311,26 +311,21 @@ const VideoWatchPage = () => {
               sx={{
                 mt: 3,
                 mb: 2,
-                px: 3,
-                py: 2,
                 borderRadius: '16px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 2,
-                background: completed ? 'rgba(46, 204, 64, 0.1)' : 'rgba(255, 255, 255, 0.6)',
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',
-                border: completed
-                  ? '1px solid rgba(46, 204, 64, 0.35)'
-                  : '1px solid rgba(108, 16, 188, 0.18)',
+                border: '1px solid',
+                borderColor: completed ? 'rgba(46, 204, 64, 0.35)' : 'rgba(108, 16, 188, 0.18)',
+                background: completed ? 'rgba(46, 204, 64, 0.1)' : 'rgba(255, 255, 255, 0.6)',
                 boxShadow: completed
                   ? '0 4px 16px rgba(46, 204, 64, 0.12)'
                   : '0 4px 16px rgba(108, 16, 188, 0.08)',
-                minHeight: 36,
                 minWidth: 260,
                 width: 'auto',
                 position: 'relative',
                 overflow: 'hidden',
+                height: 68,
+                transition: 'background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease',
               }}
             >
               {completed == undefined ? null : (
@@ -338,14 +333,16 @@ const VideoWatchPage = () => {
                   <Fade in={completed} timeout={400} unmountOnExit>
                     <Box
                       sx={{
+                        position: 'absolute',
+                        inset: 0,
+                        px: 3,
+                        py: 2,
                         display: 'flex',
                         alignItems: 'center',
-                        width: '100%',
                         justifyContent: 'space-between',
                       }}
                     >
-                      <Typography sx={{ fontWeight: 600, fontSize: 20 }}>Your Progress
-                        :</Typography>
+                      <Typography sx={{ fontWeight: 600, fontSize: 20 }}>Your Progress:</Typography>
                       <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <CheckCircleIcon sx={{ color: '#2ecc40', fontSize: 24, mr: 1 }} />
                         <Typography sx={{ color: '#218838', opacity: 0.8, fontWeight: 600, fontSize: 20 }}>
@@ -357,14 +354,16 @@ const VideoWatchPage = () => {
                   <Fade in={!completed} timeout={400} unmountOnExit>
                     <Box
                       sx={{
+                        position: 'absolute',
+                        inset: 0,
+                        px: 3,
+                        py: 2,
                         display: 'flex',
-                        width: '100%',
                         alignItems: 'center',
                         justifyContent: 'space-between',
                       }}
                     >
-                      <Typography sx={{ fontWeight: 600, fontSize: 18 }}>
-                        Your Progress :</Typography>
+                      <Typography sx={{ fontWeight: 600, fontSize: 18 }}>Your Progress:</Typography>
                       <Button
                         variant="contained"
                         onClick={handleMarkCompleted}
