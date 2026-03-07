@@ -106,7 +106,7 @@ const Landing: React.FC = () => {
       setTimeout(() => {
         setQuoteIndex((prev) => {
           let next = Math.floor(Math.random() * QUOTES.length);
-          while (next === prev) next = Math.floor(Math.random() * QUOTES.length);
+          while(next === prev) next = Math.floor(Math.random() * QUOTES.length);
           return next;
         });
         setQuoteVisible(true);
