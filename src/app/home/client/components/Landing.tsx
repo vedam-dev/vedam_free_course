@@ -104,7 +104,11 @@ const Landing: React.FC = () => {
     const interval = setInterval(() => {
       setQuoteVisible(false);
       setTimeout(() => {
-        setQuoteIndex((prev) => (prev + 1) % QUOTES.length);
+        setQuoteIndex((prev) => {
+          let next = Math.floor(Math.random() * QUOTES.length);
+          while (next === prev) next = Math.floor(Math.random() * QUOTES.length);
+          return next;
+        });
         setQuoteVisible(true);
       }, 400);
     }, 20000);
@@ -228,7 +232,7 @@ const Landing: React.FC = () => {
             }}
           >
             {/* Quote */}
-            <Fade in={quoteVisible} timeout={400}>
+            <Fade in={isLoggedIn && quoteVisible} timeout={400}>
               <Box
                 sx={{
                   display: { xs: 'none', md: 'flex' },
