@@ -35,7 +35,7 @@ const FloatingButton = () => {
           background: 'linear-gradient(95.22deg, rgba(251, 127, 5, 0.82) 2.91%, rgba(108, 16, 188, 0.82) 99.18%)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
-          border: '1px solid rgba(255, 255, 255, 0.25)',
+          border: 'none',
           borderRadius: '8px',
           padding: '12px 24px',
           boxShadow: '0px 0px 20px rgba(108, 16, 188, 0.4), inset 0 1px 0 rgba(255,255,255,0.2)',
