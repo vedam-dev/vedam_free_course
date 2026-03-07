@@ -4,7 +4,6 @@ import {
   Avatar,
   Box,
   Container,
-  Divider,
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -91,6 +90,14 @@ const Landing: React.FC = () => {
             alignItems: 'center',
             mb: { xs: 4, md: 6 },
             minHeight: { xs: '60px', md: '80px' },
+            position: 'relative',
+            zIndex: 10,
+            background: 'rgba(255, 255, 255, 0.12)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
+            borderRadius: '16px',
+            px: { xs: 1.5, sm: 2.5 },
           }}
         >
           {/* Logo Section */}
@@ -214,14 +221,6 @@ const Landing: React.FC = () => {
         </Box>
       </Container>
 
-      <Divider
-        sx={{
-          display: { xs: 'block', md: 'none', lg: 'none' },
-          mt: '-40px',
-          mb: '20px',
-          backgroundColor: '#929292',
-        }}
-      />
 
       <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3 } }}>
         {/* Main Content */}

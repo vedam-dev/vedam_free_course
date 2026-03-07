@@ -220,10 +220,29 @@ const VideoWatchPage = () => {
             <Skeleton variant="text" width="90%" />
             <Skeleton variant="rectangular" sx={{ mt: 3, mb: 2, px: 3, py: 1, borderRadius: 3, boxShadow: 2, display: 'flex', alignItems: 'center', gap: 2, minHeight: 36, minWidth: 260, width: 'auto' }} height={60} />
           </Box>
-          <Box sx={{ flex: 1, borderLeft: '1px solid #eee', p: 3, background: '#fafafa', height: '85vh', overflow: 'scroll' }}>
+          <Box sx={{
+            flex: 1,
+            borderLeft: '1px solid rgba(108, 16, 188, 0.15)',
+            p: 3,
+            background: 'rgba(248, 245, 255, 0.65)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            height: '85vh',
+            overflow: 'scroll',
+          }}>
             <Typography component="h3"><Skeleton variant="text" width="70%" /></Typography>
             {Array.from(new Array(3)).map((_, index) => (
-              <Accordion key={index} defaultExpanded={true} sx={{ mb: 1 }}>
+              <Accordion key={index} defaultExpanded={true} sx={{
+                mb: 1.5,
+                borderRadius: '16px !important',
+                overflow: 'hidden',
+                background: 'rgba(255, 255, 255, 0.55)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(108, 16, 188, 0.12)',
+                boxShadow: '0 2px 12px rgba(108, 16, 188, 0.07)',
+                '&:before': { display: 'none' },
+              }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <Typography fontWeight={600}><Skeleton variant="text" width="50%" /></Typography>
                 </AccordionSummary>
@@ -293,13 +312,20 @@ const VideoWatchPage = () => {
                 mt: 3,
                 mb: 2,
                 px: 3,
-                py: 1,
-                borderRadius: 3,
-                boxShadow: 2,
+                py: 2,
+                borderRadius: '16px',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 2,
-                backgroundColor: completed ? '#e6f9ed' : '#f5f5f5',
+                background: completed ? 'rgba(46, 204, 64, 0.1)' : 'rgba(255, 255, 255, 0.6)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: completed
+                  ? '1px solid rgba(46, 204, 64, 0.35)'
+                  : '1px solid rgba(108, 16, 188, 0.18)',
+                boxShadow: completed
+                  ? '0 4px 16px rgba(46, 204, 64, 0.12)'
+                  : '0 4px 16px rgba(108, 16, 188, 0.08)',
                 minHeight: 36,
                 minWidth: 260,
                 width: 'auto',
@@ -318,7 +344,8 @@ const VideoWatchPage = () => {
                         left: 0,
                         right: 0,
                         justifyContent: 'space-between',
-                        px: 1,
+                        px: 3,
+                        py: 2,
                       }}
                     >
                       <Typography sx={{ fontWeight: 600, fontSize: 20 }}>Your Progress
@@ -340,16 +367,31 @@ const VideoWatchPage = () => {
                         left: 0,
                         right: 0,
                         justifyContent: 'space-between',
-                        px: 1,
+                        px: 3,
+                        py: 2,
                       }}
                     >
                       <Typography sx={{ fontWeight: 600, fontSize: 18 }}>
                         Your Progress :</Typography>
                       <Button
                         variant="contained"
-                        color="warning"
-                        sx={{ fontWeight: 600, fontSize: 16, p: 1, my: 1.5, borderRadius: 3, boxShadow: '0 2px 8px #0001' }}
                         onClick={handleMarkCompleted}
+                        sx={{
+                          fontWeight: 600,
+                          fontSize: 16,
+                          p: 1,
+                          my: 1.5,
+                          borderRadius: '12px',
+                          background: 'rgba(251, 127, 5, 0.85)',
+                          backdropFilter: 'blur(10px)',
+                          WebkitBackdropFilter: 'blur(10px)',
+                          border: '1px solid rgba(255, 255, 255, 0.3)',
+                          boxShadow: '0 4px 16px rgba(251, 127, 5, 0.35)',
+                          '&:hover': {
+                            background: 'rgba(251, 127, 5, 0.95)',
+                            boxShadow: '0 6px 20px rgba(251, 127, 5, 0.5)',
+                          },
+                        }}
                       >
                         Mark as Completed
                       </Button>
@@ -364,7 +406,16 @@ const VideoWatchPage = () => {
         )}
       </Box>
 
-      <Box style={{ flex: 1, borderLeft: '1px solid #eee', padding: 8, background: '#fafafa', height: '85vh', overflow: 'scroll' }}>
+      <Box sx={{
+        flex: 1,
+        borderLeft: '1px solid rgba(108, 16, 188, 0.15)',
+        padding: '12px',
+        background: 'rgba(248, 245, 255, 0.65)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        height: '85vh',
+        overflow: 'scroll',
+      }}>
         <h3>All Videos</h3>
         {Object.entries(groupedVideos).map(([topic, vids]) => {
           const isTopicOfCurrentVideo = vids.some((v) => v.shortcode === shortcode);
@@ -374,15 +425,27 @@ const VideoWatchPage = () => {
               key={topic}
               expanded={expandedTopic === topic}
               onChange={(_e, isExpanded) => setExpandedTopic(isExpanded ? topic : false)}
-              sx={{ mb: 1 }}
+              sx={{
+                mb: 1.5,
+                borderRadius: '16px !important',
+                overflow: 'hidden',
+                background: 'rgba(255, 255, 255, 0.55)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: `1px solid ${isTopicOfCurrentVideo ? 'rgba(108, 16, 188, 0.35)' : 'rgba(108, 16, 188, 0.12)'}`,
+                boxShadow: isTopicOfCurrentVideo
+                  ? '0 4px 20px rgba(108, 16, 188, 0.18)'
+                  : '0 2px 12px rgba(108, 16, 188, 0.07)',
+                '&:before': { display: 'none' },
+              }}
             >
               <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
+                expandIcon={<ExpandMoreIcon sx={{ color: '#6C10BC' }} />}
                 sx={{
-                  borderRadius: 2,
                   fontWeight: isTopicOfCurrentVideo ? 800 : 500,
                   transition: 'background 0.2s',
-                  '&:hover': { backgroundColor: '#f0f4ff' },
+                  background: isTopicOfCurrentVideo ? 'rgba(108, 16, 188, 0.08)' : 'transparent',
+                  '&:hover': { background: 'rgba(108, 16, 188, 0.06)' },
                 }}
               >
                 <Typography fontWeight={isTopicOfCurrentVideo ? 700 : 600} fontSize={18}>
@@ -403,17 +466,21 @@ const VideoWatchPage = () => {
                         sx={{
                           mb: 1,
                           cursor: 'pointer',
-                          backgroundColor: isActive ? '#e0e7ff' : 'transparent',
-                          borderRadius: 2,
+                          background: isActive ? 'rgba(108, 16, 188, 0.12)' : 'transparent',
+                          backdropFilter: isActive ? 'blur(8px)' : 'none',
+                          WebkitBackdropFilter: isActive ? 'blur(8px)' : 'none',
+                          border: `1px solid ${isActive ? 'rgba(108, 16, 188, 0.3)' : 'transparent'}`,
+                          borderRadius: '12px',
                           px: 2,
                           py: 1.2,
-                          fontWeight: isActive ? 500 : 400,
+                          fontWeight: isActive ? 600 : 400,
                           fontSize: 17,
+                          color: isActive ? '#6C10BC' : 'inherit',
                           transition: 'all 0.2s',
                           '&:hover': {
-                            backgroundColor: isActive ? '#e0e7ff' : '#f3f4f6',
+                            background: isActive ? 'rgba(108, 16, 188, 0.14)' : 'rgba(108, 16, 188, 0.05)',
                             transform: 'scale(1.01)',
-                            boxShadow: isActive ? 'none' : '0 1px 4px rgba(0, 0, 0, 0.05)',
+                            boxShadow: '0 2px 8px rgba(108, 16, 188, 0.1)',
                           },
                         }}
                       >

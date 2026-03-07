@@ -218,6 +218,10 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
           flexDirection: 'column',
           justifyContent: 'space-between',
           zIndex: '3',
+          background: 'rgba(255, 255, 255, 0.65)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          borderLeft: '1px solid rgba(255, 255, 255, 0.5)',
         }}
       >
         <Typography

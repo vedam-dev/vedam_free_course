@@ -352,8 +352,11 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: { xs: '90%', sm: 400 },
-    bgcolor: '#fee5cd',
-    boxShadow: 24,
+    background: 'rgba(255, 237, 213, 0.6)',
+    backdropFilter: 'blur(24px)',
+    WebkitBackdropFilter: 'blur(24px)',
+    border: '1px solid rgba(255, 255, 255, 0.4)',
+    boxShadow: '0 8px 32px rgba(108, 16, 188, 0.25), inset 0 1px 0 rgba(255,255,255,0.5)',
     borderRadius: 2,
     p: 3,
     outline: 0,
@@ -505,9 +508,17 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
                   disabled={isLoading}
                   fullWidth
                   sx={{
-                    backgroundColor: '#FFA41A',
+                    background: 'rgba(251, 127, 5, 0.82)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    boxShadow: '0 4px 20px rgba(251, 127, 5, 0.35)',
                     borderRadius: '12px',
                     height: '56px',
+                    '&:hover': {
+                      background: 'rgba(251, 127, 5, 0.95)',
+                      boxShadow: '0 6px 28px rgba(251, 127, 5, 0.5)',
+                    },
                   }}
                   startIcon={isLoading ? <CircularProgress size={20} /> : null}
                 >
@@ -530,14 +541,23 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
                 inputProps={{ maxLength: 4 }}
               />
 
-              <Box display="flex" justifyContent="space-between" alignItems="center" mt={1}>
-                <Box>
+              <Box display="flex" flexDirection="column" gap={1} mt={1}>
+                <Box display="flex" gap={1}>
                   <Button
                     variant="text"
                     size="small"
                     onClick={handleResendOTP}
                     disabled={isLoading}
-                    sx={{ mr: 1, color: '#6C10BC' }}
+                    sx={{
+                      flex: 1,
+                      color: '#6C10BC',
+                      background: 'rgba(108, 16, 188, 0.06)',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      border: '1px solid rgba(108, 16, 188, 0.15)',
+                      borderRadius: '8px',
+                      '&:hover': { background: 'rgba(108, 16, 188, 0.12)' },
+                    }}
                   >
                     Resend OTP
                   </Button>
@@ -546,12 +566,21 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
                     size="small"
                     onClick={handleUpdateNumber}
                     disabled={isLoading}
-                    sx={{ ml: 1, color: '#6C10BC' }}
+                    sx={{
+                      flex: 1,
+                      color: '#6C10BC',
+                      background: 'rgba(108, 16, 188, 0.06)',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      border: '1px solid rgba(108, 16, 188, 0.15)',
+                      borderRadius: '8px',
+                      '&:hover': { background: 'rgba(108, 16, 188, 0.12)' },
+                    }}
                   >
                     Update Number
                   </Button>
                 </Box>
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant="caption" color="text.secondary" textAlign="right">
                   Valid for 5 minutes
                 </Typography>
               </Box>
@@ -565,9 +594,18 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
                   disabled={isLoading || otp.length !== 4 || isVerified}
                   fullWidth
                   sx={{
-                    backgroundColor: isVerified ? '#4CAF50' : '#FFA41A',
+                    background: isVerified ? 'rgba(108, 16, 188, 0.82)' : 'rgba(251, 127, 5, 0.82)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    boxShadow: isVerified
+                      ? '0 4px 20px rgba(108, 16, 188, 0.35)'
+                      : '0 4px 20px rgba(251, 127, 5, 0.35)',
                     borderRadius: '16px',
                     height: '56px',
+                    '&:hover': {
+                      background: isVerified ? 'rgba(108, 16, 188, 0.95)' : 'rgba(251, 127, 5, 0.95)',
+                    },
                   }}
                   startIcon={isLoading ? <CircularProgress size={20} /> : null}
                 >
