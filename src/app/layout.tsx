@@ -1,19 +1,18 @@
-import { Geist, Geist_Mono, Outfit } from 'next/font/google';
-import Script from 'next/script';
+'use client';
+import { Outfit } from 'next/font/google';
+import { Provider } from 'react-redux';
 import './globals.css';
 
 import BannerPopupModal from '@/components/BannerPopupModal';
-import { ErrorBoundary } from '@/components/ErrorBoundary';
+import ClientGaurd from '@/components/ClientGuard';
 import FloatingButton from '@/components/FloatingButton';
 import Footer from '@/components/Footer';
-import Providers from '@/components/Providers';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
+import UTMCaptureClient from '../components/UTMCaptureClient';
+import { store } from '../lib/store';
 
 const outfit = Outfit({
+  variable: '--font-outfit',
   subsets: ['latin'],
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   display: 'swap',
@@ -24,21 +23,6 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata = {
-  title: 'CodeSprint | Vedam School of Technology - Free Coding Course',
-  description: 'Join CodeSprint - A free comprehensive coding course by Vedam School of Technology. Learn programming fundamentals, data structures, algorithms, and more with expert instructors.',
-  keywords: 'free coding course, programming course, CodeSprint, Vedam School of Technology, learn programming, coding bootcamp, free education',
-  openGraph: {
-    title: 'Vedam School of Technology - Free Coding Course | CodeSprint',
-    description: 'Join CodeSprint - A free comprehensive coding course by Vedam School of Technology. Learn programming fundamentals, data structures, algorithms, and more.',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Vedam School of Technology - Free Coding Course | CodeSprint',
-    description: 'Join CodeSprint - A free comprehensive coding course by Vedam School of Technology.',
-  },
-};
 
 export default function RootLayout({
   children,
@@ -47,12 +31,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head />
-      <body className={`${geistSans.variable} ${geistMono.variable} ${outfit.className}`}>
+      <head>
         {/* Google Tag Manager */}
-        <Script
-          id="gtm-script"
-          strategy="beforeInteractive"
+        <script
           dangerouslySetInnerHTML={{
             __html: `
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -64,21 +45,9 @@ export default function RootLayout({
           }}
         />
         {/* End Google Tag Manager */}
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-K7ZDF4K4"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          />
-        </noscript>
-        {/* End Google Tag Manager (noscript) */}
 
         {/* Meta Pixel */}
-        <Script
-          id="meta-pixel"
-          strategy="afterInteractive"
+        <script
           dangerouslySetInnerHTML={{
             __html: `
               !function(f,b,e,v,n,t,s)
@@ -104,16 +73,29 @@ export default function RootLayout({
             alt=""
           />
         </noscript>
-        {/* End Meta Pixel */}
+      </head>
+      <body className={outfit.variable}>
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-K7ZDF4K4"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
 
-        <ErrorBoundary>
-          <Providers>
-            {children}
-            <FloatingButton />
-            <BannerPopupModal />
-          </Providers>
-        </ErrorBoundary>
-        <Footer />
+        <Provider store={store}>
+          <UTMCaptureClient>
+            <ClientGaurd>
+              {children}
+              <FloatingButton />
+              <BannerPopupModal />
+            </ClientGaurd>
+            <Footer />
+          </UTMCaptureClient>
+        </Provider>
       </body>
     </html>
   );

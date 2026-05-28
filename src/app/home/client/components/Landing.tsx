@@ -4,7 +4,7 @@ import {
   Avatar,
   Box,
   Container,
-  Divider,
+  Fade,
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -16,6 +16,44 @@ import OtpModal from '@/components/otp/OtpModal';
 import type { RootState } from '@/lib/store';
 
 import { useOtpModal } from '../../../../../hooks/useOtpModal';
+
+const QUOTES = [
+  { text: 'Knowledge is power.', author: 'Francis Bacon' },
+  { text: 'Learning never exhausts the mind.', author: 'Leonardo da Vinci' },
+  { text: 'Education is freedom.', author: 'Paulo Freire' },
+  { text: 'Education breeds confidence.', author: 'Confucius' },
+  { text: 'To teach is to learn twice.', author: 'Joseph Joubert' },
+  { text: 'The expert was once a beginner.', author: 'Helen Hayes' },
+  { text: 'Education is the great equalizer.', author: 'Horace Mann' },
+  { text: 'The roots of education are bitter.', author: 'Aristotle' },
+  { text: 'The mind is not a vessel to be filled.', author: 'Plutarch' },
+  { text: 'Develop a passion for learning.', author: 'Anthony J. D\'Angelo' },
+  { text: 'Education is not preparation for life.', author: 'John Dewey' },
+  { text: 'The more you read, the more you know.', author: 'Dr. Seuss' },
+  { text: 'A reader lives a thousand lives.', author: 'George R.R. Martin' },
+  { text: 'Education is the most powerful weapon.', author: 'Nelson Mandela' },
+  { text: 'Books are the quietest of teachers.', author: 'Charles W. Eliot' },
+  { text: 'Anyone who stops learning is old.', author: 'Henry Ford' },
+  { text: 'Change is the end result of learning.', author: 'Leo Buscaglia' },
+  { text: 'Learning is not attained by chance.', author: 'Abigail Adams' },
+  { text: 'Curiosity is the engine of achievement.', author: 'Ken Robinson' },
+  { text: 'The wisest mind has something to learn.', author: 'George Santayana' },
+  { text: 'An investment in knowledge pays best.', author: 'Benjamin Franklin' },
+  { text: 'Seek knowledge from cradle to grave.', author: 'Prophet Muhammad' },
+  { text: 'Live, learn, and pass it on.', author: 'H. Jackson Brown Jr.' },
+  { text: 'Teaching is the best way to learn.', author: 'Frank Oppenheimer' },
+  { text: 'Education makes all things possible.', author: 'Anonymous' },
+  { text: 'Commit yourself to lifelong learning.', author: 'Brian Tracy' },
+  { text: 'The goal of education is wisdom.', author: 'Anonymous' },
+  { text: 'Education is the passport to the future.', author: 'Malcolm X' },
+  { text: 'The educated differ from the uneducated.', author: 'Aristotle' },
+  { text: 'Study while others are sleeping.', author: 'Anonymous' },
+  { text: 'One book, one pen can change the world.', author: 'Malala Yousafzai' },
+  { text: 'Real learning comes from curiosity.', author: 'Anonymous' },
+  { text: 'The more you learn, the more you earn.', author: 'Warren Buffett' },
+  { text: 'Each day of learning brings new light.', author: 'Anonymous' },
+  { text: 'Education is light; ignorance, darkness.', author: 'Anonymous' },
+];
 
 const temp = [
   'Beginner Friendly',
@@ -41,6 +79,8 @@ const Landing: React.FC = () => {
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const username = useSelector((state: RootState) => state.user.username);
   const [hasMounted, setHasMounted] = useState(false);
+  const [quoteIndex, setQuoteIndex] = useState(0);
+  const [quoteVisible, setQuoteVisible] = useState(true);
   const { showOtpModal, setShowOtpModal, handleVerificationSuccess } =
     useOtpModal();
 
@@ -58,6 +98,21 @@ const Landing: React.FC = () => {
 
   useEffect(() => {
     setHasMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setQuoteVisible(false);
+      setTimeout(() => {
+        setQuoteIndex((prev) => {
+          let next = Math.floor(Math.random() * QUOTES.length);
+          while(next === prev) next = Math.floor(Math.random() * QUOTES.length);
+          return next;
+        });
+        setQuoteVisible(true);
+      }, 400);
+    }, 20000);
+    return () => clearInterval(interval);
   }, []);
 
   if(!hasMounted) return null;
@@ -91,6 +146,14 @@ const Landing: React.FC = () => {
             alignItems: 'center',
             mb: { xs: 4, md: 6 },
             minHeight: { xs: '60px', md: '80px' },
+            position: 'relative',
+            zIndex: 10,
+            background: 'rgba(255, 255, 255, 0.12)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
+            borderRadius: '16px',
+            px: { xs: 1.5, sm: 2.5 },
           }}
         >
           {/* Logo Section */}
@@ -168,6 +231,45 @@ const Landing: React.FC = () => {
               zIndex: 30,
             }}
           >
+            {/* Quote */}
+            <Fade in={isLoggedIn && quoteVisible} timeout={400}>
+              <Box
+                sx={{
+                  display: { xs: 'none', md: 'flex' },
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: '13px',
+                    fontFamily: 'Outfit, sans-serif',
+                    fontStyle: 'italic',
+                    fontWeight: 500,
+                    color: 'rgba(30, 30, 30, 0.85)',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    pr:1,
+                    maxWidth: '280px',
+                  }}
+                >
+                  &ldquo;{QUOTES[quoteIndex].text}&rdquo;
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: '11px',
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 600,
+                    color: 'rgba(90, 2, 167, 0.65)',
+                    whiteSpace: 'nowrap',
+                    mt: 0.25,
+                  }}
+                >
+                  ~ {QUOTES[quoteIndex].author}
+                </Typography>
+              </Box>
+            </Fade>
             {isLoggedIn ? (
               <>
                 <Avatar
@@ -214,14 +316,6 @@ const Landing: React.FC = () => {
         </Box>
       </Container>
 
-      <Divider
-        sx={{
-          display: { xs: 'block', md: 'none', lg: 'none' },
-          mt: '-40px',
-          mb: '20px',
-          backgroundColor: '#929292',
-        }}
-      />
 
       <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3 } }}>
         {/* Main Content */}

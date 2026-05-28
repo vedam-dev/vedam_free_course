@@ -1,11 +1,29 @@
 
-
 html,
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Outfit, sans‑serif !important';
+  font-family: var(--font-outfit), 'Outfit', sans-serif;
+}
+
+* {
+  box-sizing: inherit;
+  font-family: inherit;
+}
+
+/* Override MUI's injected Roboto across all typography & input components */
+.MuiTypography-root,
+.MuiLink-root,
+.MuiButton-root,
+.MuiInputBase-root,
+.MuiInputLabel-root,
+.MuiMenuItem-root,
+.MuiSelect-root,
+.MuiFormHelperText-root,
+.MuiTab-root,
+.MuiChip-root {
+  font-family: var(--font-outfit), 'Outfit', sans-serif !important;
 }
 /* 
 @media (prefers-color-scheme: dark) {

@@ -207,11 +207,14 @@ const VideoInfo: React.FC = () => {
       <Container maxWidth="lg">
         <Box
           sx={{
-            background: ' #8900FF',
+            background: 'rgba(137, 0, 255, 0.72)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
             borderRadius: 4,
             p: { xs: 1, md: 1.5 },
             color: 'white',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+            boxShadow: '0 8px 40px rgba(137, 0, 255, 0.35), inset 0 1px 0 rgba(255,255,255,0.15)',
+            border: '1px solid rgba(255, 255, 255, 0.18)',
           }}
         >
           <Box
