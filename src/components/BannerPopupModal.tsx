@@ -18,68 +18,46 @@ const BannerPopup: React.FC<BannerPopupProps> = ({
   const [shouldRecheck, setShouldRecheck] = useState(0); // Trigger for rechecking
 
   useEffect(() => {
-    // Ensure we're on the client side
-    if(typeof window === 'undefined') return;
+    // Check if user has permanently dismissed the banner (clicked on it)
+    const isPermanentlyDismissed = localStorage.getItem('bannerPermanentlyDismissed');
+    if(isPermanentlyDismissed === 'true') {
+      return;
+    }
 
-    try {
-      // Check if user has permanently dismissed the banner (clicked on it)
-      const isPermanentlyDismissed = localStorage.getItem('bannerPermanentlyDismissed');
-      if(isPermanentlyDismissed === 'true') {
-        return;
-      }
+    // Check last shown time
+    const lastShownTime = localStorage.getItem('bannerLastShown');
+    const now = Date.now();
+    const intervalMs = intervalSeconds * 1000;
 
-      // Check last shown time
-      const lastShownTime = localStorage.getItem('bannerLastShown');
-      const now = Date.now();
-      const intervalMs = intervalSeconds * 1000;
+    if(!lastShownTime || now - parseInt(lastShownTime) >= intervalMs) {
+      // Show banner after a small delay on first load
+      const timer = setTimeout(() => {
+        setOpen(true);
+        localStorage.setItem('bannerLastShown', Date.now().toString());
+      }, intervalMs);
 
-      if(!lastShownTime || now - parseInt(lastShownTime) >= intervalMs) {
-        // Show banner after a small delay on first load
-        const timer = setTimeout(() => {
+      return () => clearTimeout(timer);
+    }
+
+    // Set up timer to show banner again after the remaining interval
+    const timeUntilNext = intervalMs - (now - parseInt(lastShownTime));
+    if(timeUntilNext > 0) {
+      const timer = setTimeout(() => {
+        const isPermanentlyDismissed = localStorage.getItem('bannerPermanentlyDismissed');
+        if(isPermanentlyDismissed !== 'true') {
           setOpen(true);
-          try {
-            localStorage.setItem('bannerLastShown', Date.now().toString());
-          } catch{
-            // Ignore localStorage errors
-          }
-        }, intervalMs);
+          localStorage.setItem('bannerLastShown', Date.now().toString());
+        }
+      }, timeUntilNext);
 
-        return () => clearTimeout(timer);
-      }
-
-      // Set up timer to show banner again after the remaining interval
-      const timeUntilNext = intervalMs - (now - parseInt(lastShownTime));
-      if(timeUntilNext > 0) {
-        const timer = setTimeout(() => {
-          try {
-            const isPermanentlyDismissed = localStorage.getItem('bannerPermanentlyDismissed');
-            if(isPermanentlyDismissed !== 'true') {
-              setOpen(true);
-              localStorage.setItem('bannerLastShown', Date.now().toString());
-            }
-          } catch{
-            // Ignore localStorage errors
-          }
-        }, timeUntilNext);
-
-        return () => clearTimeout(timer);
-      }
-    } catch(error) {
-      // Silently handle localStorage errors
-      console.error('BannerPopup error:', error);
+      return () => clearTimeout(timer);
     }
   }, [intervalSeconds, shouldRecheck]);
 
   const handleClose = () => {
     setOpen(false);
     // Update last shown time so it reappears after the interval
-    try {
-      if(typeof window !== 'undefined') {
-        localStorage.setItem('bannerLastShown', Date.now().toString());
-      }
-    } catch(error) {
-      console.error('Error saving banner state:', error);
-    }
+    localStorage.setItem('bannerLastShown', Date.now().toString());
 
 
     const intervalMs = intervalSeconds * 1000;
