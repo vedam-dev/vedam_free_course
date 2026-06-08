@@ -25,6 +25,8 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import LogoutButton from '@/components/LogoutButton';
+
 interface User {
   id: number
   name: string
@@ -301,24 +303,27 @@ export default function AdminPage() {
           Admin Dashboard
         </Typography>
 
-        {/* Topic Filter */}
-        <FormControl sx={{ minWidth: 250 }}>
-          <InputLabel id="topic-filter-label">Filter by Topic</InputLabel>
-          <Select
-            labelId="topic-filter-label"
-            id="topic-filter"
-            value={selectedTopic}
-            label="Filter by Topic"
-            onChange={(e) => handleTopicChange(e.target.value)}
-          >
-            <MenuItem value="all">All Topics</MenuItem>
-            {topics.map((topic) => (
-              <MenuItem key={topic} value={topic}>
-                {topic}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          {/* Topic Filter */}
+          <FormControl sx={{ minWidth: 250 }}>
+            <InputLabel id="topic-filter-label">Filter by Topic</InputLabel>
+            <Select
+              labelId="topic-filter-label"
+              id="topic-filter"
+              value={selectedTopic}
+              label="Filter by Topic"
+              onChange={(e) => handleTopicChange(e.target.value)}
+            >
+              <MenuItem value="all">All Topics</MenuItem>
+              {topics.map((topic) => (
+                <MenuItem key={topic} value={topic}>
+                  {topic}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <LogoutButton />
+        </Box>
       </Box>
 
       {/* Statistics Cards */}

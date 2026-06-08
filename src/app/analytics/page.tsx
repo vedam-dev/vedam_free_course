@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 
+import LogoutButton from '@/components/LogoutButton';
 import { RootState } from '@/lib/store';
 
 import UTMFilters, { Filters } from './UTMFilters';
@@ -433,6 +434,7 @@ export default function AnalyticsPage() {
           >
             Refresh
           </Button>
+          <LogoutButton />
         </Box>
       </Box>
 

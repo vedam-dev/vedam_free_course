@@ -1,5 +1,6 @@
 'use client';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import TelegramIcon from '@mui/icons-material/Telegram';
 import {
   Avatar,
   Box,
@@ -12,6 +13,7 @@ import { useSelector } from 'react-redux';
 
 import BaseButton from '@/components/BaseButton';
 import BaseDecoration from '@/components/BaseDecoration';
+import LogoutButton from '@/components/LogoutButton';
 import OtpModal from '@/components/otp/OtpModal';
 import type { RootState } from '@/lib/store';
 
@@ -60,6 +62,8 @@ const temp = [
   'Free of Cost',
   'No prior experience required',
 ];
+
+const TELEGRAM_COMMUNITY_URL = 'https://bit.ly/4vtxclA';
 
 // Helper to get random color
 function stringToColor(str: string) {
@@ -283,6 +287,12 @@ const Landing: React.FC = () => {
                 >
                   {(username || 'U').charAt(0).toUpperCase()}
                 </Avatar>
+                <LogoutButton
+                  sx={{
+                    width: { xs: '32px', md: '40px' },
+                    height: { xs: '32px', md: '40px' },
+                  }}
+                />
               </>
             ) : (
               <>
@@ -385,6 +395,7 @@ const Landing: React.FC = () => {
               sx={{
                 display: 'flex',
                 flexDirection: { xs: 'column', md: 'column', lg: 'row' },
+                alignItems: { xs: 'stretch', lg: 'center' },
                 gap: 2,
                 mb: { xs: 3, md: 4 },
               }}
@@ -394,11 +405,107 @@ const Landing: React.FC = () => {
                 size="large"
                 onClick={handleJoinCodeSprint}
                 sx={{
-                  background: 'white',
+                  background: 'rgba(255, 255, 255, 0.78)',
+                  borderColor: 'rgba(108, 16, 188, 0.38)',
+                  color: '#6C10BC',
+                  boxShadow: 'none',
+                  px: { xs: 3, md: 4 },
+                  '&:hover': {
+                    background: '#fff',
+                    borderColor: '#6C10BC',
+                    boxShadow: '0 4px 18px rgba(108, 16, 188, 0.12)',
+                  },
                 }}
               >
                 {isLoggedIn ? "I'm Ready to Learn !" : 'Register for Codesprint'}
               </BaseButton>
+              <Box
+                component="a"
+                href={TELEGRAM_COMMUNITY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open Vedam Telegram community"
+                sx={{
+                  position: 'relative',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 1,
+                  minHeight: { xs: 50, md: 56 },
+                  px: { xs: 3, md: 4 },
+                  py: 1.25,
+                  borderRadius: '16px',
+                  border: '1px solid rgba(255, 255, 255, 0.45)',
+                  background: 'linear-gradient(90deg, #229ED9 0%, #7B1DFF 100%)',
+                  color: '#fff',
+                  textDecoration: 'none',
+                  boxShadow: '0 12px 34px rgba(64, 91, 220, 0.34)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease',
+                  zIndex: 60,
+                  '&:hover, &:focus-visible': {
+                    boxShadow: '0 18px 44px rgba(64, 91, 220, 0.42)',
+                    filter: 'saturate(1.08)',
+                    outline: 'none',
+                    transform: 'translateY(-3px)',
+                  },
+                  '&:hover .telegram-hover-banner, &:focus-visible .telegram-hover-banner': {
+                    opacity: 1,
+                    pointerEvents: 'auto',
+                    transform: {
+                      xs: 'translate(-50%, 8px) scale(1)',
+                      lg: 'translate(12px, -50%) scale(1)',
+                    },
+                    visibility: 'visible',
+                  },
+                }}
+              >
+                <TelegramIcon sx={{ fontSize: { xs: 22, md: 24 } }} />
+                <Typography
+                  component="span"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontSize: { xs: '0.95rem', md: '1.08rem' },
+                    fontWeight: 700,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Join Community
+                </Typography>
+                <Box
+                  className="telegram-hover-banner"
+                  sx={{
+                    position: 'absolute',
+                    left: { xs: '50%', lg: '100%' },
+                    top: { xs: '100%', lg: '50%' },
+                    width: { xs: 'min(82vw, 340px)', sm: 360, lg: 370 },
+                    opacity: 0,
+                    pointerEvents: 'none',
+                    transform: {
+                      xs: 'translate(-50%, 4px) scale(0.98)',
+                      lg: 'translate(0, -50%) scale(0.98)',
+                    },
+                    transformOrigin: { xs: 'top center', lg: 'left center' },
+                    transition: 'opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease',
+                    visibility: 'hidden',
+                    zIndex: 80,
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src="/telegram_popup.webp"
+                    alt="Start Building Before College Starts"
+                    sx={{
+                      display: 'block',
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '24px',
+                      boxShadow: '0 18px 45px rgba(52, 32, 84, 0.26)',
+                    }}
+                  />
+                </Box>
+              </Box>
               {/* <BaseButton variant="contained" size="large">
                 Register for later
               </BaseButton> */}

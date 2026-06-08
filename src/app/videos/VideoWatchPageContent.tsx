@@ -20,6 +20,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import { CertificateGenerator } from '@/components/CertificateGenerator';
+import LogoutButton from '@/components/LogoutButton';
 
 import VideoPlayerCard from './VideoPlayerCard';
 
@@ -297,11 +298,34 @@ const VideoWatchPage = () => {
           </>
         ) : (
           <>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <IconButton onClick={() => router.replace('/home')} sx={{ mr: 1 }}>
-                <ArrowBackIcon />
-              </IconButton>
-              <h1 style={{ margin: 0 }}>{currentVideo.title}</h1>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 0 }}>
+                <IconButton onClick={() => router.replace('/home')} sx={{ mr: 1 }}>
+                  <ArrowBackIcon />
+                </IconButton>
+                <Typography
+                  component="h1"
+                  sx={{
+                    m: 0,
+                    fontSize: 32,
+                    fontWeight: 700,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {currentVideo.title}
+                </Typography>
+              </Box>
+              <LogoutButton />
             </Box>
 
             <VideoPlayerCard shortcode={currentVideo.shortcode} />
