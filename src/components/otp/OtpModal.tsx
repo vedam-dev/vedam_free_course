@@ -38,6 +38,20 @@ const validateName = (name: string) => {
   return name.trim().length >= 3;
 };
 
+// The MSG91 widget script is loaded lazily when the modal opens, so on slow
+// connections it may not be ready when the user clicks "Send OTP". Poll for
+// the exposed method instead of failing immediately.
+const waitForOtpService = async (timeoutMs = 8000) => {
+  const start = Date.now();
+  while(!window.sendOtp) {
+    if(Date.now() - start > timeoutMs) {
+      return false;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 200));
+  }
+  return true;
+};
+
 interface OtpModalProps {
   open: boolean
   onClose: () => void
@@ -101,8 +115,10 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
       // Using MSG91 widget method
       const formattedPhone = phoneNumber.startsWith('91') ? phoneNumber : `91${phoneNumber}`;
 
-      if(window.sendOtp) {
-        window.sendOtp(
+      const isReady = await waitForOtpService();
+
+      if(isReady) {
+        window.sendOtp?.(
           formattedPhone,
           () => {
             setStep('enterOTP');
@@ -117,7 +133,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
           },
         );
       } else {
-        setError('OTP service not initialized. Please try again.');
+        setError('OTP service could not load. Please check your connection and try again.');
         setIsLoading(false);
       }
     } catch(error) {
@@ -193,7 +209,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
       if(window.verifyOtp) {
         // Create a promise to handle the OTP verification
         const verifyOtpPromise = new Promise<void>((resolve, reject) => {
-          window.verifyOtp(
+          window.verifyOtp?.(
             otp,
             () => resolve(),
             (error: unknown) => reject(error),
@@ -623,8 +639,8 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
 // Extend Window interface for MSG91 methods
 declare global {
   interface Window {
-    sendOtp: (phone: string, success: () => void, error: (err: unknown) => void) => void
-    verifyOtp: (otp: string, success: () => void, error: (err: unknown) => void) => void
-    initSendOTP: (config: unknown) => void
+    sendOtp?: (phone: string, success: () => void, error: (err: unknown) => void) => void
+    verifyOtp?: (otp: string, success: () => void, error: (err: unknown) => void) => void
+    initSendOTP?: (config: unknown) => void
   }
 }
