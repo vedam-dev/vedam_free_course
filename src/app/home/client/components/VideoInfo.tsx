@@ -5,6 +5,9 @@ import { Box, Container, IconButton, Typography,useMediaQuery } from '@mui/mater
 import Image from 'next/image';
 import React from 'react';
 
+const VIDEO_THUMBNAIL_URL =
+  '/home/codesprint-thumbnail.webp';
+
 const VideoInfo: React.FC = () => {
   const [playing, setPlaying] = React.useState(false);
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -247,7 +250,7 @@ const VideoInfo: React.FC = () => {
               <>
                 <Box
                   component="img"
-                  src="/home/thumbnail2.jpg"
+                  src={VIDEO_THUMBNAIL_URL}
                   alt="Tech Minds Behind Vedam"
                   sx={{
                     position: 'absolute',
