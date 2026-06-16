@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { supabase } from '@/lib/supabase';
+import { verifyVerificationToken } from '@/lib/otpVerification';
 
 export async function GET() {
   try {
@@ -34,7 +35,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, mobile, passout_year, stream } = body;
+    const { name, email, mobile, passout_year, stream, verificationToken } = body;
 
     const cookieStore = await cookies();
     const visitorToken = cookieStore.get('visitor_token')?.value;
@@ -42,6 +43,32 @@ export async function POST(request: NextRequest) {
     if(!name || !email || !mobile || !passout_year || !stream || !visitorToken) {
       return NextResponse.json(
         { error: 'Name, email, mobile, year of passing, and visitor_token are required' },
+        { status: 400 }
+      );
+    }
+
+    // SERVER-SIDE OTP VERIFICATION
+    // Verify that the OTP was validated server-side before allowing user creation
+    if(!verificationToken) {
+      return NextResponse.json(
+        { error: 'OTP verification required. Please verify your phone number.' },
+        { status: 400 }
+      );
+    }
+
+    const verificationResult = verifyVerificationToken(verificationToken);
+    
+    if(!verificationResult) {
+      return NextResponse.json(
+        { error: 'Invalid or expired verification token. Please verify your OTP again.' },
+        { status: 400 }
+      );
+    }
+
+    // Ensure the mobile number in the request matches the verified mobile number
+    if(verificationResult.mobile !== mobile) {
+      return NextResponse.json(
+        { error: 'Mobile number mismatch. Please verify the correct number.' },
         { status: 400 }
       );
     }
