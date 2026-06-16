@@ -87,10 +87,12 @@ export default function AdminPage() {
     setAuthError('');
     setAuthLoading(true);
 
-    if(
-      username === process.env.NEXT_PUBLIC_ADMIN_USERNAME &&
-      password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD
-    ) {
+    const res = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+    if (res.ok) {
       setIsAuthenticated(true);
     } else {
       setAuthError('Invalid credentials');
@@ -99,14 +101,14 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    if(!isLoggedIn) {
+    if (!isLoggedIn) {
       router.push('/');
       return;
     }
-    if(isAuthenticated) {
+    if (isAuthenticated) {
       fetchUsers();
       fetchTopics();
-      if(selectedTopic === 'all') {
+      if (selectedTopic === 'all') {
         fetchCompletedStudents();
         fetchAllStudentsProgress();
       } else {
@@ -116,8 +118,8 @@ export default function AdminPage() {
   }, [isLoggedIn, isAuthenticated, router]);
 
   useEffect(() => {
-    if(isAuthenticated && selectedTopic) {
-      if(selectedTopic === 'all') {
+    if (isAuthenticated && selectedTopic) {
+      if (selectedTopic === 'all') {
         fetchCompletedStudents();
         fetchAllStudentsProgress();
       } else {
@@ -132,7 +134,7 @@ export default function AdminPage() {
       const response = await fetch('/api/users');
       const result = await response.json();
       setUsers(result.data);
-    } catch(error) {
+    } catch (error) {
       console.error('Error fetching users:', error);
     } finally {
       setLoading(false);
@@ -144,11 +146,11 @@ export default function AdminPage() {
       const response = await fetch('/api/admin/completed-students');
       const result = await response.json();
 
-      if(result.data) {
+      if (result.data) {
         setCompletionStats(result.data.completionStats);
         setTotalVideos(result.data.totalVideos);
       }
-    } catch(error) {
+    } catch (error) {
       console.error('Error fetching completed students:', error);
     }
   };
@@ -158,10 +160,10 @@ export default function AdminPage() {
       const response = await fetch('/api/admin/topics');
       const result = await response.json();
 
-      if(result.data && result.data.topics) {
+      if (result.data && result.data.topics) {
         setTopics(result.data.topics);
       }
-    } catch(error) {
+    } catch (error) {
       console.error('Error fetching topics:', error);
     }
   };
@@ -172,12 +174,12 @@ export default function AdminPage() {
       const response = await fetch(`/api/admin/topic-progress?topic=${encodeURIComponent(topic)}`);
       const result = await response.json();
 
-      if(result.data) {
+      if (result.data) {
         setAllStudentsProgress(result.data.students);
         setCompletionStats(result.data.completionStats);
         setTotalVideos(result.data.totalVideos);
       }
-    } catch(error) {
+    } catch (error) {
       console.error('Error fetching topic progress:', error);
     } finally {
       setProgressLoading(false);
@@ -190,9 +192,9 @@ export default function AdminPage() {
       const response = await fetch('/api/admin/all-students-progress');
       const result = await response.json();
 
-      if(result.data) {
+      if (result.data) {
         setAllStudentsProgress(result.data.students);
-        const completedCount = result.data.students.filter((s: StudentProgress)=>
+        const completedCount = result.data.students.filter((s: StudentProgress) =>
           s.completionPercentage === 100).length;
         const totalStudents = result.data.totalStudents || result.data.students.length || 0;
         const completionPercentage = totalStudents > 0
@@ -205,7 +207,7 @@ export default function AdminPage() {
         });
         setTotalVideos(result.data.totalVideos);
       }
-    } catch(error) {
+    } catch (error) {
       console.error('Error fetching all students progress:', error);
     } finally {
       setProgressLoading(false);
@@ -216,7 +218,7 @@ export default function AdminPage() {
     setSelectedTopic(topic);
   };
 
-  if(!isAuthenticated) {
+  if (!isAuthenticated) {
     return (
       <Container maxWidth="sm" sx={{ py: 8 }}>
         <Card sx={{ p: 4 }}>
@@ -286,7 +288,7 @@ export default function AdminPage() {
     );
   }
 
-  if(loading) {
+  if (loading) {
     return (
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>

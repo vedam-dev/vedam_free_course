@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from 'next/server';
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  if(pathname.startsWith('/api-docs') || pathname.startsWith('/api/swagger')) {
+  if (pathname.startsWith('/api-docs') || pathname.startsWith('/api/swagger')) {
     const authHeader = req.headers.get('authorization');
 
-    if(!authHeader || !authHeader.startsWith('Basic ')) {
+    if (!authHeader || !authHeader.startsWith('Basic ')) {
       return new NextResponse('Authentication required', {
         status: 401,
         headers: {
@@ -20,10 +20,13 @@ export function middleware(req: NextRequest) {
       const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
       const [username, password] = credentials.split(':');
 
-      const validUsername = process.env.ADMIN_USERNAME || 'admin';
-      const validPassword = process.env.ADMIN_PASSWORD || 'admin123';
+      const validUsername = process.env.ADMIN_USERNAME;
+      const validPassword = process.env.ADMIN_PASSWORD;
+      if (!validUsername || !validPassword) {
+        return new NextResponse('Server misconfiguration', { status: 500 });
+      }
 
-      if(username !== validUsername || password !== validPassword) {
+      if (username !== validUsername || password !== validPassword) {
         return new NextResponse('Invalid credentials', {
           status: 401,
           headers: {
@@ -31,7 +34,7 @@ export function middleware(req: NextRequest) {
           },
         });
       }
-    } catch(error) {
+    } catch (error) {
       return new NextResponse(`Invalid authorization header, ${error}`, {
         status: 401,
         headers: {
