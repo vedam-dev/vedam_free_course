@@ -1,9 +1,7 @@
 'use client';
 
 import {
-  Alert,
   Box,
-  Button,
   Card,
   Chip,
   CircularProgress,
@@ -52,14 +50,13 @@ interface CompletionStats {
 }
 
 interface RootState {
-  user: {
-    isLoggedIn: boolean;
-  };
+  user: { isLoggedIn: boolean };
 }
 
 export default function AdminPage() {
   const router = useRouter();
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+
   const [users, setUsers] = useState<User[]>([]);
   const [allStudentsProgress, setAllStudentsProgress] = useState<StudentProgress[]>([]);
   const [completionStats, setCompletionStats] = useState<CompletionStats>({
@@ -70,69 +67,34 @@ export default function AdminPage() {
   const [totalVideos, setTotalVideos] = useState(0);
   const [loading, setLoading] = useState(true);
   const [progressLoading, setProgressLoading] = useState(false);
-
-  // Topic filter state
   const [topics, setTopics] = useState<string[]>([]);
   const [selectedTopic, setSelectedTopic] = useState<string>('all');
-
-  // Admin authentication state
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authError, setAuthError] = useState('');
-  const [authLoading, setAuthLoading] = useState(false);
-
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setAuthError('');
-    setAuthLoading(true);
-
-    const res = await fetch('/api/admin/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
-    if (res.ok) {
-      setIsAuthenticated(true);
-    } else {
-      setAuthError('Invalid credentials');
-      setAuthLoading(false);
-    }
-  };
 
   useEffect(() => {
     if (!isLoggedIn) {
       router.push('/');
       return;
     }
-    if (isAuthenticated) {
-      fetchUsers();
-      fetchTopics();
-      if (selectedTopic === 'all') {
-        fetchCompletedStudents();
-        fetchAllStudentsProgress();
-      } else {
-        fetchTopicProgress(selectedTopic);
-      }
-    }
-  }, [isLoggedIn, isAuthenticated, router]);
+    fetchUsers();
+    fetchTopics();
+    fetchCompletedStudents();
+    fetchAllStudentsProgress();
+  }, [isLoggedIn, router]);
 
   useEffect(() => {
-    if (isAuthenticated && selectedTopic) {
-      if (selectedTopic === 'all') {
-        fetchCompletedStudents();
-        fetchAllStudentsProgress();
-      } else {
-        fetchTopicProgress(selectedTopic);
-      }
+    if (selectedTopic === 'all') {
+      fetchCompletedStudents();
+      fetchAllStudentsProgress();
+    } else {
+      fetchTopicProgress(selectedTopic);
     }
-  }, [selectedTopic, isAuthenticated]);
+  }, [selectedTopic]);
 
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/users');
-      const result = await response.json();
+      const res = await fetch('/api/users');
+      const result = await res.json();
       setUsers(result.data);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -143,9 +105,8 @@ export default function AdminPage() {
 
   const fetchCompletedStudents = async () => {
     try {
-      const response = await fetch('/api/admin/completed-students');
-      const result = await response.json();
-
+      const res = await fetch('/api/admin/completed-students');
+      const result = await res.json();
       if (result.data) {
         setCompletionStats(result.data.completionStats);
         setTotalVideos(result.data.totalVideos);
@@ -157,12 +118,9 @@ export default function AdminPage() {
 
   const fetchTopics = async () => {
     try {
-      const response = await fetch('/api/admin/topics');
-      const result = await response.json();
-
-      if (result.data && result.data.topics) {
-        setTopics(result.data.topics);
-      }
+      const res = await fetch('/api/admin/topics');
+      const result = await res.json();
+      if (result.data?.topics) setTopics(result.data.topics);
     } catch (error) {
       console.error('Error fetching topics:', error);
     }
@@ -171,9 +129,8 @@ export default function AdminPage() {
   const fetchTopicProgress = async (topic: string) => {
     try {
       setProgressLoading(true);
-      const response = await fetch(`/api/admin/topic-progress?topic=${encodeURIComponent(topic)}`);
-      const result = await response.json();
-
+      const res = await fetch(`/api/admin/topic-progress?topic=${encodeURIComponent(topic)}`);
+      const result = await res.json();
       if (result.data) {
         setAllStudentsProgress(result.data.students);
         setCompletionStats(result.data.completionStats);
@@ -189,21 +146,19 @@ export default function AdminPage() {
   const fetchAllStudentsProgress = async () => {
     try {
       setProgressLoading(true);
-      const response = await fetch('/api/admin/all-students-progress');
-      const result = await response.json();
-
+      const res = await fetch('/api/admin/all-students-progress');
+      const result = await res.json();
       if (result.data) {
         setAllStudentsProgress(result.data.students);
-        const completedCount = result.data.students.filter((s: StudentProgress) =>
-          s.completionPercentage === 100).length;
+        const completedCount = result.data.students.filter(
+          (s: StudentProgress) => s.completionPercentage === 100
+        ).length;
         const totalStudents = result.data.totalStudents || result.data.students.length || 0;
-        const completionPercentage = totalStudents > 0
-          ? Math.round((completedCount / totalStudents) * 100) : 0;
-
         setCompletionStats({
           totalStudents,
           completedStudents: completedCount,
-          completionPercentage
+          completionPercentage: totalStudents > 0
+            ? Math.round((completedCount / totalStudents) * 100) : 0
         });
         setTotalVideos(result.data.totalVideos);
       }
@@ -213,80 +168,6 @@ export default function AdminPage() {
       setProgressLoading(false);
     }
   };
-
-  const handleTopicChange = (topic: string) => {
-    setSelectedTopic(topic);
-  };
-
-  if (!isAuthenticated) {
-    return (
-      <Container maxWidth="sm" sx={{ py: 8 }}>
-        <Card sx={{ p: 4 }}>
-          <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', mb: 3 }}>
-            Admin Dashboard Login
-          </Typography>
-
-          {authError && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {authError}
-            </Alert>
-          )}
-
-          <Box component="form" onSubmit={handleLogin} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Box>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                Username
-              </Typography>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter username"
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #ccc',
-                  borderRadius: '4px',
-                  fontSize: '16px',
-                }}
-                required
-                autoFocus
-              />
-            </Box>
-
-            <Box>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                Password
-              </Typography>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #ccc',
-                  borderRadius: '4px',
-                  fontSize: '16px',
-                }}
-                required
-              />
-            </Box>
-
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={authLoading}
-              sx={{ mt: 2 }}
-            >
-              {authLoading ? 'Signing In...' : 'Sign In'}
-            </Button>
-          </Box>
-        </Card>
-      </Container>
-    );
-  }
 
   if (loading) {
     return (
@@ -301,26 +182,19 @@ export default function AdminPage() {
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4">
-          Admin Dashboard
-        </Typography>
-
+        <Typography variant="h4">Admin Dashboard</Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          {/* Topic Filter */}
           <FormControl sx={{ minWidth: 250 }}>
             <InputLabel id="topic-filter-label">Filter by Topic</InputLabel>
             <Select
               labelId="topic-filter-label"
-              id="topic-filter"
               value={selectedTopic}
               label="Filter by Topic"
-              onChange={(e) => handleTopicChange(e.target.value)}
+              onChange={(e) => setSelectedTopic(e.target.value)}
             >
               <MenuItem value="all">All Topics</MenuItem>
               {topics.map((topic) => (
-                <MenuItem key={topic} value={topic}>
-                  {topic}
-                </MenuItem>
+                <MenuItem key={topic} value={topic}>{topic}</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -328,54 +202,33 @@ export default function AdminPage() {
         </Box>
       </Box>
 
-      {/* Statistics Cards */}
-      <Box sx={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: 3,
-        mb: 4,
-        '& > *': { flex: '1 1 200px', minWidth: '200px' }
-      }}>
+      {/* Stats */}
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mb: 4, '& > *': { flex: '1 1 200px', minWidth: '200px' } }}>
         <Card sx={{ p: 2, textAlign: 'center' }}>
-          <Typography variant="h6" color="primary">
-            {completionStats.totalStudents}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Total Students
-          </Typography>
+          <Typography variant="h6" color="primary">{completionStats.totalStudents}</Typography>
+          <Typography variant="body2" color="text.secondary">Total Students</Typography>
         </Card>
         <Card sx={{ p: 2, textAlign: 'center' }}>
-          <Typography variant="h6" color="success.main">
-            {completionStats.completedStudents}
-          </Typography>
+          <Typography variant="h6" color="success.main">{completionStats.completedStudents}</Typography>
           <Typography variant="body2" color="text.secondary">
             {selectedTopic === 'all' ? 'Completed All Videos' : `Completed ${selectedTopic}`}
           </Typography>
         </Card>
         <Card sx={{ p: 2, textAlign: 'center' }}>
-          <Typography variant="h6" color="info.main">
-            {totalVideos}
-          </Typography>
+          <Typography variant="h6" color="info.main">{totalVideos}</Typography>
           <Typography variant="body2" color="text.secondary">
             {selectedTopic === 'all' ? 'Total Videos' : `Videos in ${selectedTopic}`}
           </Typography>
         </Card>
         <Card sx={{ p: 2, textAlign: 'center' }}>
-          <Typography variant="h6" color="warning.main">
-            {completionStats.completionPercentage}%
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Completion Rate
-          </Typography>
+          <Typography variant="h6" color="warning.main">{completionStats.completionPercentage}%</Typography>
+          <Typography variant="body2" color="text.secondary">Completion Rate</Typography>
         </Card>
       </Box>
 
-      {/* All Students Progress Section */}
+      {/* Students Progress */}
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h5" gutterBottom>
-          All Students Progress Status
-        </Typography>
-
+        <Typography variant="h5" gutterBottom>All Students Progress Status</Typography>
         {progressLoading ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
             <CircularProgress />
@@ -385,25 +238,16 @@ export default function AdminPage() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>S.No</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Mobile</TableCell>
-                  <TableCell>Year of Passout</TableCell>
-                  <TableCell>Stream</TableCell>
-                  <TableCell>Progress</TableCell>
-                  <TableCell>Completion %</TableCell>
-                  <TableCell>Last Activity</TableCell>
-                  <TableCell>Status</TableCell>
+                  {['S.No', 'Name', 'Email', 'Mobile', 'Year of Passout', 'Stream', 'Progress', 'Completion %', 'Last Activity', 'Status'].map((h) => (
+                    <TableCell key={h}>{h}</TableCell>
+                  ))}
                 </TableRow>
               </TableHead>
               <TableBody>
                 {allStudentsProgress.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={10} sx={{ textAlign: 'center', py: 4 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        No students found.
-                      </Typography>
+                      <Typography variant="body2" color="text.secondary">No students found.</Typography>
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -418,30 +262,24 @@ export default function AdminPage() {
                       <TableCell>
                         <Chip
                           label={`${student.completedVideos}/${student.totalVideos}`}
-                          color={student.completedVideos === student.totalVideos ? 'success' :
-                            student.completedVideos > 0 ? 'warning' : 'default'}
+                          color={student.completedVideos === student.totalVideos ? 'success' : student.completedVideos > 0 ? 'warning' : 'default'}
                           size="small"
                         />
                       </TableCell>
                       <TableCell>
                         <Typography variant="body2" color={
-                          student.completionPercentage === 100 ? 'success.main' :
-                            student.completionPercentage > 0 ? 'warning.main' : 'text.secondary'
+                          student.completionPercentage === 100 ? 'success.main' : student.completionPercentage > 0 ? 'warning.main' : 'text.secondary'
                         }>
                           {student.completionPercentage}%
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        {student.lastCompletionDate
-                          ? new Date(student.lastCompletionDate).toLocaleDateString()
-                          : 'Never'
-                        }
+                        {student.lastCompletionDate ? new Date(student.lastCompletionDate).toLocaleDateString() : 'Never'}
                       </TableCell>
                       <TableCell>
                         <Chip
                           label={student.status}
-                          color={student.status === 'Completed' ? 'success' :
-                            student.status === 'In Progress' ? 'warning' : 'default'}
+                          color={student.status === 'Completed' ? 'success' : student.status === 'In Progress' ? 'warning' : 'default'}
                           size="small"
                         />
                       </TableCell>
@@ -454,23 +292,16 @@ export default function AdminPage() {
         )}
       </Box>
 
-      {/* All Users Section */}
+      {/* All Users */}
       <Box>
-        <Typography variant="h5" gutterBottom>
-          All Registered Users
-        </Typography>
-
+        <Typography variant="h5" gutterBottom>All Registered Users</Typography>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Mobile</TableCell>
-                <TableCell>Year of Passout</TableCell>
-                <TableCell>Stream</TableCell>
-                <TableCell>Created At</TableCell>
+                {['ID', 'Name', 'Email', 'Mobile', 'Year of Passout', 'Stream', 'Created At'].map((h) => (
+                  <TableCell key={h}>{h}</TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>

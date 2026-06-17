@@ -37,11 +37,21 @@ export default function LogoutButton({
     ? [defaultButtonSx, ...(Array.isArray(sx) ? sx : [sx])]
     : defaultButtonSx;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/logout', {
+        method: 'POST',
+      });
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+
     AUTH_STORAGE_KEYS.forEach((key) => {
       localStorage.removeItem(key);
     });
+
     dispatch(resetUser());
+
     router.replace(redirectTo);
   };
 

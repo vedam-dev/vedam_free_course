@@ -53,8 +53,8 @@ export interface UTMAnalytics {
     userMedium: string,
     userCampaign: string,
     userId: number,
-    userRecordedAt:string,
-    isUserVerified:boolean,
+    userRecordedAt: string,
+    isUserVerified: boolean,
   }>;
 }
 
@@ -65,41 +65,17 @@ export default function AnalyticsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Admin authentication state
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authError, setAuthError] = useState('');
-  const [authLoading, setAuthLoading] = useState(false);
 
-  const [filters, setfilters] = useState<Filters>({ source: '', medium:'', startDate:null, endDate:null });
+  const [filters, setfilters] = useState<Filters>({ source: '', medium: '', startDate: null, endDate: null });
 
-
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setAuthError('');
-    setAuthLoading(true);
-
-    if(
-      username === process.env.NEXT_PUBLIC_ADMIN_USERNAME &&
-      password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD
-    ) {
-      setIsAuthenticated(true);
-    } else {
-      setAuthError('Invalid credentials');
-      setAuthLoading(false);
-    }
-  };
 
   useEffect(() => {
-    if(!isLoggedIn) {
+    if (!isLoggedIn) {
       router.push('/');
       return;
     }
-    if(isAuthenticated) {
       fetchAnalytics();
-    }
-  }, [isLoggedIn, isAuthenticated, router]);
+  }, [isLoggedIn, router]);
 
   const fetchAnalytics = async () => {
     try {
@@ -107,12 +83,12 @@ export default function AnalyticsPage() {
       const response = await fetch('/api/analytics');
       const data = await response.json();
 
-      if(!response.ok) {
+      if (!response.ok) {
         throw new Error(data.error || 'Failed to fetch analytics');
       }
 
       setAnalytics(data);
-    } catch(err) {
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
@@ -125,34 +101,34 @@ export default function AnalyticsPage() {
     data: UTMAnalytics,
     filters: Filters
   ): UTMAnalytics => {
-    if(!data) return data;
+    if (!data) return data;
 
 
     let filteredUsers = [...data.usersData];
 
-    if(filters.source) {
+    if (filters.source) {
       filteredUsers = filteredUsers.filter(user =>
         user.userSource?.toLowerCase().includes(filters.source!.toLowerCase())
       );
     }
 
-    if(filters.medium) {
+    if (filters.medium) {
       filteredUsers = filteredUsers.filter(user =>
         user.userMedium?.toLowerCase().includes(filters.medium!.toLowerCase())
       );
     }
 
-    if(filters.startDate || filters.endDate) {
+    if (filters.startDate || filters.endDate) {
       const start = filters.startDate ? new Date(filters.startDate) : null;
       const end = filters.endDate ? new Date(filters.endDate) : null;
 
-      if(start) start.setHours(0, 0, 0, 0);
-      if(end) end.setHours(23, 59, 59, 999);
+      if (start) start.setHours(0, 0, 0, 0);
+      if (end) end.setHours(23, 59, 59, 999);
 
       filteredUsers = filteredUsers.filter(user => {
         const userDate = new Date(user.userRecordedAt);
-        if(start && userDate < start) return false;
-        if(end && userDate > end) return false;
+        if (start && userDate < start) return false;
+        if (end && userDate > end) return false;
         return true;
       });
     }
@@ -208,11 +184,11 @@ export default function AnalyticsPage() {
     const verificationTrendMap: Record<string, { verified: number; total: number }> = {};
     filteredUsers.forEach(user => {
       const dateStr = new Date(user.userRecordedAt).toISOString().split('T')[0];
-      if(!verificationTrendMap[dateStr]) {
+      if (!verificationTrendMap[dateStr]) {
         verificationTrendMap[dateStr] = { verified: 0, total: 0 };
       }
       verificationTrendMap[dateStr].total++;
-      if(user.isUserVerified) {
+      if (user.isUserVerified) {
         verificationTrendMap[dateStr].verified++;
       }
     });
@@ -243,88 +219,7 @@ export default function AnalyticsPage() {
     : null;
 
 
-
-
-
-
-
-
-
-
-
-
-
-  if(!isAuthenticated) {
-    return (
-      <Container maxWidth="sm" sx={{ py: 8 }}>
-        <Card sx={{ p: 4 }}>
-          <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', mb: 3 }}>
-            Analytics Dashboard Login
-          </Typography>
-
-          {authError && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {authError}
-            </Alert>
-          )}
-
-          <Box component="form" onSubmit={handleLogin} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Box>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                Username
-              </Typography>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter username"
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #ccc',
-                  borderRadius: '4px',
-                  fontSize: '16px',
-                }}
-                required
-                autoFocus
-              />
-            </Box>
-
-            <Box>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                Password
-              </Typography>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #ccc',
-                  borderRadius: '4px',
-                  fontSize: '16px',
-                }}
-                required
-              />
-            </Box>
-
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={authLoading}
-              sx={{ mt: 2 }}
-            >
-              {authLoading ? 'Signing In...' : 'Sign In'}
-            </Button>
-          </Box>
-        </Card>
-      </Container>
-    );
-  }
-
-  if(loading) {
+  if (loading) {
     return (
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Typography variant="h4" gutterBottom>
@@ -334,7 +229,7 @@ export default function AnalyticsPage() {
     );
   }
 
-  if(error) {
+  if (error) {
     return (
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Typography variant="h4" color="error" gutterBottom>
@@ -344,7 +239,7 @@ export default function AnalyticsPage() {
     );
   }
 
-  if(!analytics) {
+  if (!analytics) {
     return (
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Typography variant="h4" gutterBottom>
@@ -420,7 +315,7 @@ export default function AnalyticsPage() {
   };
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <UTMFilters analytics={analytics} setFilter={setfilters } />
+      <UTMFilters analytics={analytics} setFilter={setfilters} />
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Typography variant="h3" gutterBottom>
           UTM Analytics Dashboard
@@ -445,7 +340,7 @@ export default function AnalyticsPage() {
             {filteredAnalytics?.totalVisitors.toLocaleString() || 0}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-      Visitors
+            Visitors
           </Typography>
         </Card>
         <Card sx={{ p: 3, textAlign: 'center' }}>
@@ -453,7 +348,7 @@ export default function AnalyticsPage() {
             {filteredAnalytics?.totalVerifiedUsers.toLocaleString() || 0}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-      Verified Users
+            Verified Users
           </Typography>
         </Card>
         <Card sx={{ p: 3, textAlign: 'center' }}>
@@ -461,7 +356,7 @@ export default function AnalyticsPage() {
             {filteredAnalytics?.totalConversionRate.toFixed(1) || '0.0'}%
           </Typography>
           <Typography variant="body2" color="text.secondary">
-      Conversion Rate
+            Conversion Rate
           </Typography>
         </Card>
         <Card sx={{ p: 3, textAlign: 'center' }}>
@@ -469,7 +364,7 @@ export default function AnalyticsPage() {
             {filteredAnalytics?.topSources.length || 0}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-      Traffic Sources
+            Traffic Sources
           </Typography>
         </Card>
       </Box>
