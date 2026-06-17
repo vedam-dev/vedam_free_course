@@ -28,3 +28,14 @@ export function requireAdminAuth(request: NextRequest) {
   }
   return null;
 }
+
+export function requireAdminSession(request: NextRequest): NextResponse | null {
+  const session = request.cookies.get('admin_session')?.value;
+  if(session !== 'true') {
+    return NextResponse.json(
+      { error: 'Unauthorized – admin login required' },
+      { status: 401 }
+    );
+  }
+  return null;
+}

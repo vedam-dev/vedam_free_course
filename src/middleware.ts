@@ -36,14 +36,21 @@ export async function middleware(req: NextRequest) {
   }
 
   // ── Admin-gated routes ───────────────────────────────────────────────────
-  const adminRoutes = ['/admin', '/upload', '/analytics', '/api/admin'];
+  const adminRoutes = [
+    '/admin',
+    '/upload',
+    '/analytics',
+    '/api/admin',
+    '/api/users',     
+    '/api/analytics', 
+  ];
   const publicRoutes = ['/admin/login', '/api/admin/login'];
   const isAdminRoute = adminRoutes.some(route => pathname.startsWith(route));
   if(isAdminRoute && !publicRoutes.includes(pathname)) {
     const isAuthenticated = req.cookies.get('admin_session')?.value === 'true';
     if(!isAuthenticated) {
       return pathname.startsWith('/api/')
-        ? NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        ? NextResponse.json({ error: 'Unauthorized – admin login required' }, { status: 401 })
         : NextResponse.redirect(new URL(`/admin/login?next=${pathname}`, req.url));
     }
   }
@@ -57,6 +64,8 @@ export const config = {
     '/upload/:path*',
     '/analytics/:path*',
     '/api/admin/:path*',
+    '/api/users',       // protect user PII endpoint
+    '/api/analytics',   // protect analytics/UTM endpoint
     '/api-docs/:path*',
     '/api/swagger/:path*',
   ],

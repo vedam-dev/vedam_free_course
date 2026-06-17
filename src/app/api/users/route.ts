@@ -1,10 +1,14 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { requireAdminSession } from '@/lib/adminAuth';
 import { verifyVerificationToken } from '@/lib/otpVerification';
 import { supabase } from '@/lib/supabase';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authError = requireAdminSession(request);
+  if(authError) return authError;
+
   try {
     const { data, error } = await supabase
       .from('users')
