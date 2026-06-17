@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { supabase } from '@/lib/supabase';
 import { verifyVerificationToken } from '@/lib/otpVerification';
+import { supabase } from '@/lib/supabase';
 
 export async function GET() {
   try {
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
     }
 
     const verificationResult = verifyVerificationToken(verificationToken);
-    
+
     if(!verificationResult) {
       return NextResponse.json(
         { error: 'Invalid or expired verification token. Please verify your OTP again.' },

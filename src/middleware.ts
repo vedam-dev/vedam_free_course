@@ -4,16 +4,16 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // ── Swagger ──────────────────────────────────────────────────────────────
-  if (pathname.startsWith('/api-docs') || pathname.startsWith('/api/swagger')) {
+  if(pathname.startsWith('/api-docs') || pathname.startsWith('/api/swagger')) {
     const authHeader = req.headers.get('authorization');
     const swaggerUsername = process.env.SWAGGER_USERNAME;
     const swaggerPassword = process.env.SWAGGER_PASSWORD;
 
-    if (!swaggerUsername || !swaggerPassword) {
+    if(!swaggerUsername || !swaggerPassword) {
       return new NextResponse('Server misconfiguration', { status: 500 });
     }
 
-    if (!authHeader?.startsWith('Basic ')) {
+    if(!authHeader?.startsWith('Basic ')) {
       return new NextResponse('Authentication required', {
         status: 401,
         headers: { 'WWW-Authenticate': 'Basic realm="API Documentation"' },
@@ -25,7 +25,7 @@ export async function middleware(req: NextRequest) {
       .split(':');
     const password = rest.join(':');
 
-    if (username !== swaggerUsername || password !== swaggerPassword) {
+    if(username !== swaggerUsername || password !== swaggerPassword) {
       return new NextResponse('Invalid credentials', {
         status: 401,
         headers: { 'WWW-Authenticate': 'Basic realm="API Documentation"' },
@@ -39,9 +39,9 @@ export async function middleware(req: NextRequest) {
   const adminRoutes = ['/admin', '/upload', '/analytics', '/api/admin'];
   const publicRoutes = ['/admin/login', '/api/admin/login'];
   const isAdminRoute = adminRoutes.some(route => pathname.startsWith(route));
-  if (isAdminRoute && !publicRoutes.includes(pathname)) {
+  if(isAdminRoute && !publicRoutes.includes(pathname)) {
     const isAuthenticated = req.cookies.get('admin_session')?.value === 'true';
-    if (!isAuthenticated) {
+    if(!isAuthenticated) {
       return pathname.startsWith('/api/')
         ? NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         : NextResponse.redirect(new URL(`/admin/login?next=${pathname}`, req.url));

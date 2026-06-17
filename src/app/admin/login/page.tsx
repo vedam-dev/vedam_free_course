@@ -26,12 +26,12 @@ function AdminLoginForm() {
         body: JSON.stringify({ username, password }),
       });
 
-      if (res.ok) {
+      if(res.ok) {
         router.push(next);
       } else {
         setError('Invalid credentials');
       }
-    } catch {
+    } catch{
       setError('Network error — please try again');
     } finally {
       setLoading(false);

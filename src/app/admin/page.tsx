@@ -71,7 +71,7 @@ export default function AdminPage() {
   const [selectedTopic, setSelectedTopic] = useState<string>('all');
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if(!isLoggedIn) {
       router.push('/');
       return;
     }
@@ -82,7 +82,7 @@ export default function AdminPage() {
   }, [isLoggedIn, router]);
 
   useEffect(() => {
-    if (selectedTopic === 'all') {
+    if(selectedTopic === 'all') {
       fetchCompletedStudents();
       fetchAllStudentsProgress();
     } else {
@@ -96,7 +96,7 @@ export default function AdminPage() {
       const res = await fetch('/api/users');
       const result = await res.json();
       setUsers(result.data);
-    } catch (error) {
+    } catch(error) {
       console.error('Error fetching users:', error);
     } finally {
       setLoading(false);
@@ -107,11 +107,11 @@ export default function AdminPage() {
     try {
       const res = await fetch('/api/admin/completed-students');
       const result = await res.json();
-      if (result.data) {
+      if(result.data) {
         setCompletionStats(result.data.completionStats);
         setTotalVideos(result.data.totalVideos);
       }
-    } catch (error) {
+    } catch(error) {
       console.error('Error fetching completed students:', error);
     }
   };
@@ -120,8 +120,8 @@ export default function AdminPage() {
     try {
       const res = await fetch('/api/admin/topics');
       const result = await res.json();
-      if (result.data?.topics) setTopics(result.data.topics);
-    } catch (error) {
+      if(result.data?.topics) setTopics(result.data.topics);
+    } catch(error) {
       console.error('Error fetching topics:', error);
     }
   };
@@ -131,12 +131,12 @@ export default function AdminPage() {
       setProgressLoading(true);
       const res = await fetch(`/api/admin/topic-progress?topic=${encodeURIComponent(topic)}`);
       const result = await res.json();
-      if (result.data) {
+      if(result.data) {
         setAllStudentsProgress(result.data.students);
         setCompletionStats(result.data.completionStats);
         setTotalVideos(result.data.totalVideos);
       }
-    } catch (error) {
+    } catch(error) {
       console.error('Error fetching topic progress:', error);
     } finally {
       setProgressLoading(false);
@@ -148,7 +148,7 @@ export default function AdminPage() {
       setProgressLoading(true);
       const res = await fetch('/api/admin/all-students-progress');
       const result = await res.json();
-      if (result.data) {
+      if(result.data) {
         setAllStudentsProgress(result.data.students);
         const completedCount = result.data.students.filter(
           (s: StudentProgress) => s.completionPercentage === 100
@@ -162,14 +162,14 @@ export default function AdminPage() {
         });
         setTotalVideos(result.data.totalVideos);
       }
-    } catch (error) {
+    } catch(error) {
       console.error('Error fetching all students progress:', error);
     } finally {
       setProgressLoading(false);
     }
   };
 
-  if (loading) {
+  if(loading) {
     return (
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>

@@ -9,19 +9,19 @@
  */
 export function generateVerificationToken(mobile: string): string {
   const timestamp = Date.now();
-  const secret = process.env.NEXT_PUBLIC_MSG91_AUTH_KEY || 'fallback-secret';
-  
+
   // Simple token generation - in production, use a proper signing mechanism
   const payload = `${mobile}:${timestamp}`;
   const token = Buffer.from(payload).toString('base64');
-  
+
   return token;
 }
 
 /**
  * Verify the verification token and extract the mobile number
  */
-export function verifyVerificationToken(token: string): { mobile: string; timestamp: number } | null {
+export function verifyVerificationToken(token: string):
+{ mobile: string; timestamp: number } | null {
   try {
     const payload = Buffer.from(token, 'base64').toString('utf-8');
     const [mobile, timestampStr] = payload.split(':');

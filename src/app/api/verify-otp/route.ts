@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import { generateVerificationToken } from '@/lib/otpVerification';
 
 /**
@@ -45,7 +46,7 @@ export async function POST(request: NextRequest) {
 
     // Verify OTP with MSG91 API
     // MSG91 OTP Verification API endpoint
-    const verificationUrl = `https://control.msg91.com/api/v5/otp/verify`;
+    const verificationUrl = 'https://control.msg91.com/api/v5/otp/verify';
 
     const verificationResponse = await fetch(verificationUrl, {
       method: 'POST',

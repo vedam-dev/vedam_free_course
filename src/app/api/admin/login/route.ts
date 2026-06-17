@@ -6,11 +6,11 @@ export async function POST(request: NextRequest) {
   const validUsername = process.env.ADMIN_USERNAME;
   const validPassword = process.env.ADMIN_PASSWORD;
 
-  if (!validUsername || !validPassword) {
+  if(!validUsername || !validPassword) {
     return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 });
   }
 
-  if (username !== validUsername || password !== validPassword) {
+  if(username !== validUsername || password !== validPassword) {
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
   }
 

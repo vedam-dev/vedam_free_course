@@ -5,8 +5,8 @@ const adminPassword = process.env.ADMIN_PASSWORD;
 
 export function validateAdminAuth(request: NextRequest): boolean {
   const authHeader = request.headers.get('authorization');
-  if (!adminUsername || !adminPassword) return false;
-  if (!authHeader || !authHeader.startsWith('Basic ')) {
+  if(!adminUsername || !adminPassword) return false;
+  if(!authHeader || !authHeader.startsWith('Basic ')) {
     return false;
   }
 
@@ -18,7 +18,7 @@ export function validateAdminAuth(request: NextRequest): boolean {
 }
 
 export function requireAdminAuth(request: NextRequest) {
-  if (!validateAdminAuth(request)) {
+  if(!validateAdminAuth(request)) {
     return new NextResponse('Authentication required', {
       status: 401,
       headers: {

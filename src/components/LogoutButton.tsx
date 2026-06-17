@@ -42,7 +42,7 @@ export default function LogoutButton({
       await fetch('/api/admin/logout', {
         method: 'POST',
       });
-    } catch (error) {
+    } catch(error) {
       console.error('Logout failed:', error);
     }
 
