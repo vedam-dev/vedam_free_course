@@ -18,9 +18,11 @@ import Snackbar from '@mui/material/Snackbar';
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { CertificateGenerator } from '@/components/CertificateGenerator';
 import LogoutButton from '@/components/LogoutButton';
+import { RootState } from '@/lib/store';
 
 import VideoPlayerCard from './VideoPlayerCard';
 
@@ -47,6 +49,9 @@ const VideoWatchPage = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const shortcode = searchParams.get('v') ?? '';
+
+  const userId = useSelector((state: RootState) => state.user.user_id);
+
   const [currentVideo, setCurrentVideo] = useState<Video | null>(null);
   const [groupedVideos, setGroupedVideos] = useState<Record<string, Video[]>>({});
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -82,31 +87,28 @@ const VideoWatchPage = () => {
   }, [shortcode, groupedVideos]);
 
   useEffect(() => {
-    if(!currentVideo) return;
+    if(!currentVideo || !userId) return;
 
-    const user_id = localStorage.getItem('userId');
-    if(user_id && currentVideo) {
-      fetch(`/api/progress?user_id=${user_id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if(Array.isArray(data.data)) {
-            const progress = data.data.find((p: unknown) => {
-              if(
-                typeof p === 'object' &&
-                p !== null &&
-                'content_id' in p &&
-                'is_complete' in p
-              ) {
-                const prog = p as { content_id: string; is_complete: boolean };
-                return prog.content_id === currentVideo.id && prog.is_complete;
-              }
-              return false;
-            });
-            setCompleted(!!progress);
-          }
-        });
-    }
-  }, [currentVideo]);
+    fetch(`/api/progress?user_id=${userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if(Array.isArray(data.data)) {
+          const progress = data.data.find((p: unknown) => {
+            if(
+              typeof p === 'object' &&
+              p !== null &&
+              'content_id' in p &&
+              'is_complete' in p
+            ) {
+              const prog = p as { content_id: string; is_complete: boolean };
+              return prog.content_id === currentVideo.id && prog.is_complete;
+            }
+            return false;
+          });
+          setCompleted(!!progress);
+        }
+      });
+  }, [currentVideo, userId]);
 
   useEffect(() => {
     if(!shortcode || Object.keys(groupedVideos).length === 0) return;
@@ -124,17 +126,19 @@ const VideoWatchPage = () => {
 
   const handleMarkCompleted = async () => {
     if(!currentVideo) return;
-    const user_id = localStorage.getItem('userId');
-    if(!user_id) {
+
+    if(!userId) {
       setSnackbarOpen(true);
       setSnackbarMsg('You must be logged in to mark as completed.');
       return;
     }
+
     const body = {
-      user_id,
+      user_id: userId,
       content_id: currentVideo.id,
       is_complete: true,
     };
+
     try {
       const res = await fetch('/api/progress', {
         method: 'POST',

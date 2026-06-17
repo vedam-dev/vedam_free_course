@@ -141,6 +141,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({
           name: userData.name,
           email: userData.email,

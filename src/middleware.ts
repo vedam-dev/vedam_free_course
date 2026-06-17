@@ -41,8 +41,8 @@ export async function middleware(req: NextRequest) {
     '/upload',
     '/analytics',
     '/api/admin',
-    '/api/users',     
-    '/api/analytics', 
+    '/api/users',
+    '/api/analytics',
   ];
   const publicRoutes = ['/admin/login', '/api/admin/login'];
   const isAdminRoute = adminRoutes.some(route => pathname.startsWith(route));
@@ -64,8 +64,8 @@ export const config = {
     '/upload/:path*',
     '/analytics/:path*',
     '/api/admin/:path*',
-    '/api/users',       // protect user PII endpoint
-    '/api/analytics',   // protect analytics/UTM endpoint
+    '/api/users', // protect user PII endpoint
+    '/api/analytics', // protect analytics/UTM endpoint
     '/api-docs/:path*',
     '/api/swagger/:path*',
   ],
