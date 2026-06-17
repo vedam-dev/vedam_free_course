@@ -133,6 +133,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     passout_year: string
     stream: string
     phone: string
+    verificationToken: string
   }) => {
     try {
       const response = await fetch('/api/users', {
@@ -146,6 +147,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
           passout_year: userData.passout_year,
           mobile: userData.phone,
           stream: userData.stream,
+          verificationToken: userData.verificationToken,
         }),
       });
 
@@ -190,115 +192,129 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     setIsLoading(true);
 
     try {
-      if(window.verifyOtp) {
-        // Create a promise to handle the OTP verification
-        const verifyOtpPromise = new Promise<void>((resolve, reject) => {
-          window.verifyOtp(
-            otp,
-            () => resolve(),
-            (error: unknown) => reject(error),
-          );
+      // SERVER-SIDE OTP VERIFICATION
+      // Verify OTP with server instead of relying on client-side only
+      const verifyResponse = await fetch('/api/verify-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          mobile: phoneNumber,
+          otp: otp,
+        }),
+      });
+
+      const verifyData = await verifyResponse.json();
+
+      if(!verifyResponse.ok || !verifyData.success) {
+        throw new Error(verifyData.error || 'OTP verification failed');
+      }
+
+      console.log('OTP verified successfully on server');
+
+      // Get the verification token from server response
+      const verificationToken = verifyData.verificationToken;
+
+      if(!verificationToken) {
+        throw new Error('Verification token not received from server');
+      }
+
+      // Mark as verified to prevent re-verification
+      setIsVerified(true);
+
+      try {
+        // Save user data to database with verification token
+        const dbResult = await saveUserToDatabase({
+          name: fullName,
+          email: email,
+          passout_year: passout_year,
+          phone: phoneNumber,
+          stream: stream,
+          verificationToken: verificationToken,
         });
 
-        // Wait for OTP verification to complete
-        await verifyOtpPromise;
-        console.log('OTP verified successfully');
+        // Try multiple ways to extract userId from the response
+        let userId = null;
 
-        // Mark as verified to prevent re-verification
-        setIsVerified(true);
-
-        try {
-          // Save user data to database
-          const dbResult = await saveUserToDatabase({
-            name: fullName,
-            email: email,
-            passout_year: passout_year,
-            phone: phoneNumber,
-            stream: stream,
-          });
-
-          // Try multiple ways to extract userId from the response
-          let userId = null;
-
-          // Check common response structures
-          if(dbResult?.id) {
-            userId = dbResult.id;
-          } else if(dbResult?._id) {
-            userId = dbResult._id;
-          } else if(dbResult?.user?.id) {
-            userId = dbResult.user.id;
-          } else if(dbResult?.user?._id) {
-            userId = dbResult.user._id;
-          } else if(dbResult?.data?.id) {
-            userId = dbResult.data.id;
-          } else if(dbResult?.data?._id) {
-            userId = dbResult.data._id;
-          } else if(dbResult?.insertedId) {
-            userId = dbResult.insertedId;
-          } else if(dbResult?.result?.insertedId) {
-            userId = dbResult.result.insertedId;
-          } else if(Array.isArray(dbResult?.user) && dbResult.user.length > 0) {
-            // Handle case where user is an array (like your response)
-            userId = dbResult.user[0]?.id ?? dbResult.user[0]?._id;
-          }
-
-          if(!userId) {
-            console.error('No userId found in database response');
-            setError('User data saved but ID not found. Please contact support.');
-            setIsLoading(false);
-            setIsVerified(false);
-            return;
-          }
-
-          console.log('User authenticated successfully with ID:', userId);
-
-          // Update Redux state first
-          dispatch(setUserId(userId));
-          dispatch(setMobile(phoneNumber));
-          dispatch(setUsername(fullName));
-          dispatch(setIsLoggedIn(true));
-
-          // Set localStorage items with verification
-          setLocalStorageItem('userId', String(userId));
-          setLocalStorageItem('isLoggedIn', 'true');
-          setLocalStorageItem('username', fullName);
-          setLocalStorageItem('mobile', phoneNumber);
-
-          // Verify localStorage was set correctly
-          const storedUserId = localStorage.getItem('userId');
-          console.log('Stored userId in localStorage:', storedUserId);
-
-          if(storedUserId !== String(userId)) {
-            console.error('localStorage userId mismatch!', { expected: userId, stored: storedUserId });
-          }
-
-          setSuccess('Verification successful! Data saved.');
-
-          // Call the success callback with user data
-          onVerificationSuccess({
-            name: fullName,
-            email: email,
-            passout_year: passout_year,
-            stream: stream,
-            phone: phoneNumber,
-          });
-
-          // Close modal with fade effect after a short delay
-          setTimeout(() => {
-            setSuccess(null);
-            handleModalClose();
-          }, 2000);
-        } catch(dbError) {
-          console.error('Error saving to database:', dbError);
-          setError('Verification successful but failed to save data. Please try again.');
-          setIsVerified(false);
+        // Check common response structures
+        if(dbResult?.id) {
+          userId = dbResult.id;
+        } else if(dbResult?._id) {
+          userId = dbResult._id;
+        } else if(dbResult?.user?.id) {
+          userId = dbResult.user.id;
+        } else if(dbResult?.user?._id) {
+          userId = dbResult.user._id;
+        } else if(dbResult?.data?.id) {
+          userId = dbResult.data.id;
+        } else if(dbResult?.data?._id) {
+          userId = dbResult.data._id;
+        } else if(dbResult?.insertedId) {
+          userId = dbResult.insertedId;
+        } else if(dbResult?.result?.insertedId) {
+          userId = dbResult.result.insertedId;
+        } else if(Array.isArray(dbResult?.user) && dbResult.user.length > 0) {
+          // Handle case where user is an array (like your response)
+          userId = dbResult.user[0]?.id ?? dbResult.user[0]?._id;
         }
-      } else {
-        setError('OTP service not initialized. Please try again.');
+
+        if(!userId) {
+          console.error('No userId found in database response');
+          setError('User data saved but ID not found. Please contact support.');
+          setIsLoading(false);
+          setIsVerified(false);
+          return;
+        }
+
+        console.log('User authenticated successfully with ID:', userId);
+
+        // Update Redux state first
+        dispatch(setUserId(userId));
+        dispatch(setMobile(phoneNumber));
+        dispatch(setUsername(fullName));
+        dispatch(setIsLoggedIn(true));
+
+        // Set localStorage items with verification
+        setLocalStorageItem('userId', String(userId));
+        setLocalStorageItem('isLoggedIn', 'true');
+        setLocalStorageItem('username', fullName);
+        setLocalStorageItem('mobile', phoneNumber);
+
+        // Verify localStorage was set correctly
+        const storedUserId = localStorage.getItem('userId');
+        console.log('Stored userId in localStorage:', storedUserId);
+
+        if(storedUserId !== String(userId)) {
+          console.error('localStorage userId mismatch!', { expected: userId, stored: storedUserId });
+        }
+
+        setSuccess('Verification successful! Data saved.');
+
+        // Call the success callback with user data
+        onVerificationSuccess({
+          name: fullName,
+          email: email,
+          passout_year: passout_year,
+          stream: stream,
+          phone: phoneNumber,
+        });
+
+        // Close modal with fade effect after a short delay
+        setTimeout(() => {
+          setSuccess(null);
+          handleModalClose();
+        }, 2000);
+      } catch(dbError) {
+        console.error('Error saving to database:', dbError);
+        const errorMessage = dbError instanceof Error ? dbError.message : 'Failed to save data. Please try again.';
+        setError(errorMessage);
+        setIsVerified(false);
       }
     } catch(error) {
       console.error('Error verifying OTP:', error);
-      setError('Invalid OTP. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Invalid OTP. Please try again.';
+      setError(errorMessage);
       setIsVerified(false);
     } finally {
       setIsLoading(false);
