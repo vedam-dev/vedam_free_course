@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const ADMIN_CREDENTIALS = {
-  username: process.env.ADMIN_USERNAME || 'admin',
-  password: process.env.ADMIN_PASSWORD || 'admin123',
-};
+const adminUsername = process.env.ADMIN_USERNAME;
+const adminPassword = process.env.ADMIN_PASSWORD;
 
 export function validateAdminAuth(request: NextRequest): boolean {
   const authHeader = request.headers.get('authorization');
-
+  if(!adminUsername || !adminPassword) return false;
   if(!authHeader || !authHeader.startsWith('Basic ')) {
     return false;
   }
@@ -16,8 +14,7 @@ export function validateAdminAuth(request: NextRequest): boolean {
   const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
   const [username, password] = credentials.split(':');
 
-  return username === ADMIN_CREDENTIALS.username &&
-         password === ADMIN_CREDENTIALS.password;
+  return username === adminUsername && password === adminPassword;
 }
 
 export function requireAdminAuth(request: NextRequest) {
