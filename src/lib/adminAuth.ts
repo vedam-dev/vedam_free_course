@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { isAdminSessionValid } from '@/lib/adminSessionStore';
+
 const adminUsername = process.env.ADMIN_USERNAME;
 const adminPassword = process.env.ADMIN_PASSWORD;
 
@@ -30,8 +32,8 @@ export function requireAdminAuth(request: NextRequest) {
 }
 
 export function requireAdminSession(request: NextRequest): NextResponse | null {
-  const session = request.cookies.get('admin_session')?.value;
-  if(session !== 'true') {
+  const session = request.cookies.get('admin_session_id')?.value;
+  if(!isAdminSessionValid(session)) {
     return NextResponse.json(
       { error: 'Unauthorized – admin login required' },
       { status: 401 }

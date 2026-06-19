@@ -2,13 +2,23 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { supabase } from '@/lib/supabase';
+import { getUserSession } from '@/lib/userSessionStore';
 
 export async function GET() {
   try {
     const cookieStore = await cookies();
-    const userId = cookieStore.get('user_id')?.value;
+    const userSessionId = cookieStore.get('user_session_id')?.value;
+    const session = getUserSession(userSessionId);
+    const cookieUserId = cookieStore.get('user_id')?.value;
 
-    if(!userId) {
+    if(!session) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    if(cookieUserId && cookieUserId !== session.userId) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -21,7 +31,7 @@ export async function GET() {
         *,
         content:content_id (id,shortcode)
       `)
-      .eq('user_id', userId)
+      .eq('user_id', session.userId)
       .order('timestamp', { ascending: false });
 
     if(error) {
@@ -45,9 +55,10 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const userId = cookieStore.get('user_id')?.value;
+    const userSessionId = cookieStore.get('user_session_id')?.value;
+    const session = getUserSession(userSessionId);
 
-    if(!userId) {
+    if(!session) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -67,7 +78,7 @@ export async function POST(request: NextRequest) {
     const { data: existing, error: selectError } = await supabase
       .from('progress')
       .select('*')
-      .eq('user_id', userId)
+      .eq('user_id', session.userId)
       .eq('content_id', content_id)
       .maybeSingle();
 
@@ -97,7 +108,7 @@ export async function POST(request: NextRequest) {
       const { data, error } = await supabase
         .from('progress')
         .insert({
-          user_id: userId,
+          user_id: session.userId,
           content_id,
           is_complete,
           timestamp: new Date().toISOString()
@@ -111,7 +122,7 @@ export async function POST(request: NextRequest) {
 
     if(is_complete && result) {
       try {
-        const certificateData = await checkTopicCompletion(userId, content_id);
+        const certificateData = await checkTopicCompletion(session.userId, content_id);
         if(certificateData) {
           return NextResponse.json(
             {
