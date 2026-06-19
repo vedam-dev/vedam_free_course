@@ -20,7 +20,7 @@ const vimeoUploadClient = new Vimeo(vimeoClientId, vimeoClientSecret, vimeoAcces
 export async function POST(request: NextRequest): Promise<Response> {
   try {
     // Parse the incoming form data
-    const adminCookie = request.cookies.get('admin_session');
+    const adminCookie = request.cookies.get('admin_session_id')?.value;
 
     if(!adminCookie) {
       return NextResponse.json(

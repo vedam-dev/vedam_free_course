@@ -27,9 +27,10 @@ function AdminLoginForm() {
       });
 
       if(res.ok) {
-        router.push(next);
+        router.replace(next);
       } else {
-        setError('Invalid credentials');
+        const data = await res.json().catch(() => null);
+        setError(data?.error || 'Invalid credentials');
       }
     } catch{
       setError('Network error — please try again');

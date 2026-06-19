@@ -11,7 +11,7 @@ export default function ClientGuard({ children }: Readonly<ClientGuardProps>) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if(pathname === '/') return;
+    if(pathname === '/' || pathname === '/login' || pathname.startsWith('/admin')) return;
     const userId = localStorage.getItem('userId');
     if(!userId) {
       router.push('/');
