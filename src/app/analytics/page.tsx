@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react';
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 
-import LogoutButton from '@/components/LogoutButton';
+import AdminLogoutButton from '@/components/AdminLogoutButton';
 import { RootState } from '@/lib/store';
 
 import UTMFilters, { Filters } from './UTMFilters';
@@ -70,12 +70,8 @@ export default function AnalyticsPage() {
 
 
   useEffect(() => {
-    if(!isLoggedIn) {
-      router.push('/');
-      return;
-    }
     fetchAnalytics();
-  }, [isLoggedIn, router]);
+  }, [router]);
 
   const fetchAnalytics = async () => {
     try {
@@ -329,7 +325,7 @@ export default function AnalyticsPage() {
           >
             Refresh
           </Button>
-          <LogoutButton />
+          <AdminLogoutButton />
         </Box>
       </Box>
 

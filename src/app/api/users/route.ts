@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAdminSession } from '@/lib/adminAuth';
 import { verifyVerificationToken } from '@/lib/otpVerification';
 import { supabase } from '@/lib/supabase';
+import { createUserSession } from '@/lib/userSessionStore';
 
 export async function GET(request: NextRequest) {
   const authError = requireAdminSession(request);
@@ -72,8 +73,17 @@ export async function POST(request: NextRequest) {
     }
 
 
-    const setAuthCookie = async (userId: string | number) => {
+    const setAuthCookie = async (userId: string | number, mobileValue: string) => {
       cookieStore.set('user_id', String(userId), {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 60 * 60 * 24 * 1,
+        path: '/',
+      });
+
+      const sessionId = createUserSession(String(userId), mobileValue);
+      cookieStore.set('user_session_id', sessionId, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
@@ -98,7 +108,7 @@ export async function POST(request: NextRequest) {
     }
 
     if(existingUser) {
-      await setAuthCookie(existingUser.id);
+      await setAuthCookie(existingUser.id, mobile);
 
       return NextResponse.json(
         {
@@ -125,7 +135,7 @@ export async function POST(request: NextRequest) {
     }
 
     const newUser = userData[0];
-    await setAuthCookie(newUser.id);
+    await setAuthCookie(newUser.id, mobile);
 
     // Step 3: Update utm-data using visitor_token from cookies
     const { data: updatedUtmData, error: utmError } = await supabase

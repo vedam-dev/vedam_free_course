@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { createAdminSession } from '@/lib/adminSessionStore';
+
 export async function POST(request: NextRequest) {
   const { username, password } = await request.json();
+  const normalizedUsername = typeof username === 'string' ? username.trim() : '';
+  const normalizedPassword = typeof password === 'string' ? password.trim() : '';
 
   const validUsername = process.env.ADMIN_USERNAME;
   const validPassword = process.env.ADMIN_PASSWORD;
@@ -10,16 +14,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 });
   }
 
-  if(username !== validUsername || password !== validPassword) {
-    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+  if(normalizedUsername !== validUsername || normalizedPassword !== validPassword) {
+    return NextResponse.json(
+      { error: 'Invalid credentials.' },
+      { status: 401 },
+    );
   }
 
-  const response = NextResponse.json({ ok: true });
+  const sessionId = createAdminSession(normalizedUsername);
+  const response = NextResponse.json({ ok: true, sessionId });
 
-  response.cookies.set('admin_session', 'true', {
+  response.cookies.set('admin_session_id', sessionId, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: 'lax',
     maxAge: 60 * 60 * 24, // 8 hours
     path: '/',
   });

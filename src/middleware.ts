@@ -1,19 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(req: NextRequest) {
+  console.log('MIDDLEWARE HIT:', req.nextUrl.pathname);
   const { pathname } = req.nextUrl;
 
   // ── Swagger ──────────────────────────────────────────────────────────────
-  if(pathname.startsWith('/api-docs') || pathname.startsWith('/api/swagger')) {
+  if (pathname.startsWith('/api-docs') || pathname.startsWith('/api/swagger')) {
     const authHeader = req.headers.get('authorization');
     const swaggerUsername = process.env.SWAGGER_USERNAME;
     const swaggerPassword = process.env.SWAGGER_PASSWORD;
 
-    if(!swaggerUsername || !swaggerPassword) {
+    if (!swaggerUsername || !swaggerPassword) {
       return new NextResponse('Server misconfiguration', { status: 500 });
     }
 
-    if(!authHeader?.startsWith('Basic ')) {
+    if (!authHeader?.startsWith('Basic ')) {
       return new NextResponse('Authentication required', {
         status: 401,
         headers: { 'WWW-Authenticate': 'Basic realm="API Documentation"' },
@@ -25,7 +26,7 @@ export async function middleware(req: NextRequest) {
       .split(':');
     const password = rest.join(':');
 
-    if(username !== swaggerUsername || password !== swaggerPassword) {
+    if (username !== swaggerUsername || password !== swaggerPassword) {
       return new NextResponse('Invalid credentials', {
         status: 401,
         headers: { 'WWW-Authenticate': 'Basic realm="API Documentation"' },
@@ -35,24 +36,37 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // ── Admin-gated routes ───────────────────────────────────────────────────
-  const adminRoutes = [
-    '/admin',
-    '/upload',
-    '/analytics',
-    '/api/admin',
-    '/api/users',
-    '/api/analytics',
-  ];
-  const publicRoutes = ['/admin/login', '/api/admin/login'];
-  const isAdminRoute = adminRoutes.some(route => pathname.startsWith(route));
-  if(isAdminRoute && !publicRoutes.includes(pathname)) {
-    const isAuthenticated = req.cookies.get('admin_session')?.value === 'true';
-    if(!isAuthenticated) {
-      return pathname.startsWith('/api/')
-        ? NextResponse.json({ error: 'Unauthorized – admin login required' }, { status: 401 })
-        : NextResponse.redirect(new URL(`/admin/login?next=${pathname}`, req.url));
+  // ── Admin-gated routes ─────────────────────────────────────────────────
+  const sessionId = req.cookies.get('admin_session_id')?.value;
+  const isAuthenticated = Boolean(sessionId);
+
+  if (pathname === '/login') {
+    const AdminUrl = new URL('/admin', req.url);
+    if(isAuthenticated){
+      console.log('authenticated');
+      return NextResponse.redirect(AdminUrl);
+    } 
+    return NextResponse.next();
+  }
+
+  if (pathname === '/admin') {
+    if (!isAuthenticated) {
+      const loginUrl = new URL('/login', req.url);
+      loginUrl.searchParams.set('next', '/admin');
+      return NextResponse.redirect(loginUrl);
     }
+    return NextResponse.next();
+  }
+
+  if (pathname.startsWith('/admin/')) {
+    console.log('cookies:', req.cookies.getAll());
+    console.log('sessionId:', req.cookies.get('admin_session_id')?.value);
+    if (!isAuthenticated) {
+      const loginUrl = new URL('/login', req.url);
+      loginUrl.searchParams.set('next', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+    return NextResponse.next();
   }
 
   return NextResponse.next();
@@ -60,12 +74,9 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
+    "/login",
+    '/admin',
     '/admin/:path*',
-    '/upload/:path*',
-    '/analytics/:path*',
-    '/api/admin/:path*',
-    '/api/users', // protect user PII endpoint
-    '/api/analytics', // protect analytics/UTM endpoint
     '/api-docs/:path*',
     '/api/swagger/:path*',
   ],

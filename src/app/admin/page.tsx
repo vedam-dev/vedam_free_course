@@ -21,9 +21,8 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 
-import LogoutButton from '@/components/LogoutButton';
+import AdminLogoutButton from '@/components/AdminLogoutButton';
 
 interface User {
   id: number
@@ -49,13 +48,13 @@ interface CompletionStats {
   completionPercentage: number
 }
 
-interface RootState {
-  user: { isLoggedIn: boolean };
-}
+// interface RootState {
+//   user: { isLoggedIn: boolean };
+// }
 
 export default function AdminPage() {
   const router = useRouter();
-  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+  // const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
   const [users, setUsers] = useState<User[]>([]);
   const [allStudentsProgress, setAllStudentsProgress] = useState<StudentProgress[]>([]);
@@ -71,15 +70,15 @@ export default function AdminPage() {
   const [selectedTopic, setSelectedTopic] = useState<string>('all');
 
   useEffect(() => {
-    if(!isLoggedIn) {
-      router.push('/');
-      return;
-    }
+    // if(!isLoggedIn) {
+    //   router.push('/');
+    //   return;
+    // }
     fetchUsers();
     fetchTopics();
     fetchCompletedStudents();
     fetchAllStudentsProgress();
-  }, [isLoggedIn, router]);
+  }, [router]);
 
   useEffect(() => {
     if(selectedTopic === 'all') {
@@ -198,7 +197,7 @@ export default function AdminPage() {
               ))}
             </Select>
           </FormControl>
-          <LogoutButton />
+          <AdminLogoutButton />
         </Box>
       </Box>
 
@@ -305,7 +304,7 @@ export default function AdminPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map((user) => (
+              {users?.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell>{user.id}</TableCell>
                   <TableCell>{user.name}</TableCell>
