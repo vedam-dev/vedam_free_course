@@ -5,16 +5,16 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // ── Swagger ──────────────────────────────────────────────────────────────
-  if (pathname.startsWith('/api-docs') || pathname.startsWith('/api/swagger')) {
+  if(pathname.startsWith('/api-docs') || pathname.startsWith('/api/swagger')) {
     const authHeader = req.headers.get('authorization');
     const swaggerUsername = process.env.SWAGGER_USERNAME;
     const swaggerPassword = process.env.SWAGGER_PASSWORD;
 
-    if (!swaggerUsername || !swaggerPassword) {
+    if(!swaggerUsername || !swaggerPassword) {
       return new NextResponse('Server misconfiguration', { status: 500 });
     }
 
-    if (!authHeader?.startsWith('Basic ')) {
+    if(!authHeader?.startsWith('Basic ')) {
       return new NextResponse('Authentication required', {
         status: 401,
         headers: { 'WWW-Authenticate': 'Basic realm="API Documentation"' },
@@ -26,7 +26,7 @@ export async function middleware(req: NextRequest) {
       .split(':');
     const password = rest.join(':');
 
-    if (username !== swaggerUsername || password !== swaggerPassword) {
+    if(username !== swaggerUsername || password !== swaggerPassword) {
       return new NextResponse('Invalid credentials', {
         status: 401,
         headers: { 'WWW-Authenticate': 'Basic realm="API Documentation"' },
@@ -40,17 +40,17 @@ export async function middleware(req: NextRequest) {
   const sessionId = req.cookies.get('admin_session_id')?.value;
   const isAuthenticated = Boolean(sessionId);
 
-  if (pathname === '/login') {
+  if(pathname === '/login') {
     const AdminUrl = new URL('/admin', req.url);
-    if(isAuthenticated){
+    if(isAuthenticated) {
       console.log('authenticated');
       return NextResponse.redirect(AdminUrl);
-    } 
+    }
     return NextResponse.next();
   }
 
-  if (pathname === '/admin') {
-    if (!isAuthenticated) {
+  if(pathname === '/admin') {
+    if(!isAuthenticated) {
       const loginUrl = new URL('/login', req.url);
       loginUrl.searchParams.set('next', '/admin');
       return NextResponse.redirect(loginUrl);
@@ -58,10 +58,10 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  if (pathname.startsWith('/admin/')) {
+  if(pathname.startsWith('/admin/')) {
     console.log('cookies:', req.cookies.getAll());
     console.log('sessionId:', req.cookies.get('admin_session_id')?.value);
-    if (!isAuthenticated) {
+    if(!isAuthenticated) {
       const loginUrl = new URL('/login', req.url);
       loginUrl.searchParams.set('next', pathname);
       return NextResponse.redirect(loginUrl);
@@ -74,7 +74,7 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/login",
+    '/login',
     '/admin',
     '/admin/:path*',
     '/api-docs/:path*',

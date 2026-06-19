@@ -18,10 +18,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
-import { useSelector } from 'react-redux';
 
 import AdminLogoutButton from '@/components/AdminLogoutButton';
-import { RootState } from '@/lib/store';
 
 import UTMFilters, { Filters } from './UTMFilters';
 
@@ -60,7 +58,6 @@ export interface UTMAnalytics {
 
 export default function AnalyticsPage() {
   const router = useRouter();
-  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const [analytics, setAnalytics] = useState<UTMAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

@@ -16,7 +16,7 @@ const readStore = (): Record<string, AdminSession> => {
   try {
     const raw = fs.readFileSync(STORE_PATH, 'utf-8');
     sessionsCache = JSON.parse(raw) as Record<string, AdminSession>;
-  } catch {
+  } catch{
     sessionsCache = {};
   }
   return sessionsCache!;
@@ -31,14 +31,14 @@ const pruneExpiredSessions = (store: Record<string, AdminSession>) => {
   const now = Date.now();
   let changed = false;
 
-  for (const [sessionId, session] of Object.entries(store)) {
-    if (now - session.createdAt > SESSION_TTL_MS) {
+  for(const [sessionId, session] of Object.entries(store)) {
+    if(now - session.createdAt > SESSION_TTL_MS) {
       delete store[sessionId];
       changed = true;
     }
   }
 
-  if (changed) {
+  if(changed) {
     writeStore(store);
   }
 };
@@ -58,7 +58,7 @@ export const createAdminSession = (username: string) => {
 };
 
 export const isAdminSessionValid = (sessionId?: string | null) => {
-  if (!sessionId) return false;
+  if(!sessionId) return false;
 
   const store = readStore();
   pruneExpiredSessions(store);
@@ -66,10 +66,10 @@ export const isAdminSessionValid = (sessionId?: string | null) => {
 };
 
 export const destroyAdminSession = (sessionId?: string | null) => {
-  if (!sessionId) return;
+  if(!sessionId) return;
 
   const store = readStore();
-  if (store[sessionId]) {
+  if(store[sessionId]) {
     delete store[sessionId];
     writeStore(store);
   }
@@ -78,7 +78,7 @@ export const destroyAdminSession = (sessionId?: string | null) => {
 export const getSession = (sessionId: string): AdminSession | null => {
   const store = readStore();
   const session = store[sessionId];
-  if (!session) return null;
-  if (Date.now() - session.createdAt > SESSION_TTL_MS) return null;
+  if(!session) return null;
+  if(Date.now() - session.createdAt > SESSION_TTL_MS) return null;
   return session;
 };

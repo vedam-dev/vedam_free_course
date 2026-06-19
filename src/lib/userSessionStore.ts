@@ -19,7 +19,7 @@ const readStore = (): Record<string, UserSession> => {
   try {
     const raw = fs.readFileSync(STORE_PATH, 'utf-8');
     sessionsCache = JSON.parse(raw) as Record<string, UserSession>;
-  } catch {
+  } catch{
     sessionsCache = {};
   }
 
