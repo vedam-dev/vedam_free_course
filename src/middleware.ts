@@ -1,45 +1,71 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
+  console.log('MIDDLEWARE HIT:', req.nextUrl.pathname);
   const { pathname } = req.nextUrl;
 
+  // ── Swagger ──────────────────────────────────────────────────────────────
   if(pathname.startsWith('/api-docs') || pathname.startsWith('/api/swagger')) {
     const authHeader = req.headers.get('authorization');
+    const swaggerUsername = process.env.SWAGGER_USERNAME;
+    const swaggerPassword = process.env.SWAGGER_PASSWORD;
 
-    if(!authHeader || !authHeader.startsWith('Basic ')) {
+    if(!swaggerUsername || !swaggerPassword) {
+      return new NextResponse('Server misconfiguration', { status: 500 });
+    }
+
+    if(!authHeader?.startsWith('Basic ')) {
       return new NextResponse('Authentication required', {
         status: 401,
-        headers: {
-          'WWW-Authenticate': 'Basic realm="Swagger Documentation"',
-        },
+        headers: { 'WWW-Authenticate': 'Basic realm="API Documentation"' },
       });
     }
 
-    try {
-      const base64Credentials = authHeader.split(' ')[1];
-      const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
-      const [username, password] = credentials.split(':');
+    const [username, ...rest] = Buffer.from(authHeader.split(' ')[1], 'base64')
+      .toString('utf-8')
+      .split(':');
+    const password = rest.join(':');
 
-      const validUsername = process.env.ADMIN_USERNAME || 'admin';
-      const validPassword = process.env.ADMIN_PASSWORD || 'admin123';
-
-      if(username !== validUsername || password !== validPassword) {
-        return new NextResponse('Invalid credentials', {
-          status: 401,
-          headers: {
-            'WWW-Authenticate': 'Basic realm="Swagger Documentation"',
-          },
-        });
-      }
-    } catch(error) {
-      return new NextResponse(`Invalid authorization header, ${error}`, {
+    if(username !== swaggerUsername || password !== swaggerPassword) {
+      return new NextResponse('Invalid credentials', {
         status: 401,
-        headers: {
-          'WWW-Authenticate': 'Basic realm="Swagger Documentation"',
-        },
+        headers: { 'WWW-Authenticate': 'Basic realm="API Documentation"' },
       });
     }
 
+    return NextResponse.next();
+  }
+
+  // ── Admin-gated routes ─────────────────────────────────────────────────
+  const sessionId = req.cookies.get('admin_session_id')?.value;
+  const isAuthenticated = Boolean(sessionId);
+
+  if(pathname === '/login') {
+    const AdminUrl = new URL('/admin', req.url);
+    if(isAuthenticated) {
+      console.log('authenticated');
+      return NextResponse.redirect(AdminUrl);
+    }
+    return NextResponse.next();
+  }
+
+  if(pathname === '/admin') {
+    if(!isAuthenticated) {
+      const loginUrl = new URL('/login', req.url);
+      loginUrl.searchParams.set('next', '/admin');
+      return NextResponse.redirect(loginUrl);
+    }
+    return NextResponse.next();
+  }
+
+  if(pathname.startsWith('/admin/')) {
+    console.log('cookies:', req.cookies.getAll());
+    console.log('sessionId:', req.cookies.get('admin_session_id')?.value);
+    if(!isAuthenticated) {
+      const loginUrl = new URL('/login', req.url);
+      loginUrl.searchParams.set('next', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
     return NextResponse.next();
   }
 
@@ -48,6 +74,9 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
+    '/login',
+    '/admin',
+    '/admin/:path*',
     '/api-docs/:path*',
     '/api/swagger/:path*',
   ],

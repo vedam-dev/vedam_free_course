@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const ADMIN_CREDENTIALS = {
-  username: process.env.ADMIN_USERNAME || 'admin',
-  password: process.env.ADMIN_PASSWORD || 'admin123',
-};
+import { isAdminSessionValid } from '@/lib/adminSessionStore';
+
+const adminUsername = process.env.ADMIN_USERNAME;
+const adminPassword = process.env.ADMIN_PASSWORD;
 
 export function validateAdminAuth(request: NextRequest): boolean {
   const authHeader = request.headers.get('authorization');
-
+  if(!adminUsername || !adminPassword) return false;
   if(!authHeader || !authHeader.startsWith('Basic ')) {
     return false;
   }
@@ -16,8 +16,7 @@ export function validateAdminAuth(request: NextRequest): boolean {
   const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
   const [username, password] = credentials.split(':');
 
-  return username === ADMIN_CREDENTIALS.username &&
-         password === ADMIN_CREDENTIALS.password;
+  return username === adminUsername && password === adminPassword;
 }
 
 export function requireAdminAuth(request: NextRequest) {
@@ -28,6 +27,17 @@ export function requireAdminAuth(request: NextRequest) {
         'WWW-Authenticate': 'Basic realm="Swagger Documentation"',
       },
     });
+  }
+  return null;
+}
+
+export function requireAdminSession(request: NextRequest): NextResponse | null {
+  const session = request.cookies.get('admin_session_id')?.value;
+  if(!isAdminSessionValid(session)) {
+    return NextResponse.json(
+      { error: 'Unauthorized – admin login required' },
+      { status: 401 }
+    );
   }
   return null;
 }
