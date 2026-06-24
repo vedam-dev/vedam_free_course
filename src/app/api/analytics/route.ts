@@ -1,8 +1,12 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
+import { requireAdminSession } from '@/lib/adminAuth';
 import { supabase } from '@/lib/supabase';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authError = requireAdminSession(request);
+  if(authError) return authError;
+
   try {
     // Fetch all UTM data
     const { data: utmData, error: utmError } = await supabase

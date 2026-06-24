@@ -1,7 +1,7 @@
 'use client';
 
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Alert, Box, Button, Card, Container, Typography } from '@mui/material';
+import { Box, Button, Card, Container, Typography } from '@mui/material';
 import {
   ArcElement,
   BarElement,
@@ -18,10 +18,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
-import { useSelector } from 'react-redux';
 
-import LogoutButton from '@/components/LogoutButton';
-import { RootState } from '@/lib/store';
+import AdminLogoutButton from '@/components/AdminLogoutButton';
 
 import UTMFilters, { Filters } from './UTMFilters';
 
@@ -53,53 +51,24 @@ export interface UTMAnalytics {
     userMedium: string,
     userCampaign: string,
     userId: number,
-    userRecordedAt:string,
-    isUserVerified:boolean,
+    userRecordedAt: string,
+    isUserVerified: boolean,
   }>;
 }
 
 export default function AnalyticsPage() {
   const router = useRouter();
-  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const [analytics, setAnalytics] = useState<UTMAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Admin authentication state
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authError, setAuthError] = useState('');
-  const [authLoading, setAuthLoading] = useState(false);
 
-  const [filters, setfilters] = useState<Filters>({ source: '', medium:'', startDate:null, endDate:null });
+  const [filters, setfilters] = useState<Filters>({ source: '', medium: '', startDate: null, endDate: null });
 
-
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setAuthError('');
-    setAuthLoading(true);
-
-    if(
-      username === process.env.NEXT_PUBLIC_ADMIN_USERNAME &&
-      password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD
-    ) {
-      setIsAuthenticated(true);
-    } else {
-      setAuthError('Invalid credentials');
-      setAuthLoading(false);
-    }
-  };
 
   useEffect(() => {
-    if(!isLoggedIn) {
-      router.push('/');
-      return;
-    }
-    if(isAuthenticated) {
-      fetchAnalytics();
-    }
-  }, [isLoggedIn, isAuthenticated, router]);
+    fetchAnalytics();
+  }, [router]);
 
   const fetchAnalytics = async () => {
     try {
@@ -243,87 +212,6 @@ export default function AnalyticsPage() {
     : null;
 
 
-
-
-
-
-
-
-
-
-
-
-
-  if(!isAuthenticated) {
-    return (
-      <Container maxWidth="sm" sx={{ py: 8 }}>
-        <Card sx={{ p: 4 }}>
-          <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', mb: 3 }}>
-            Analytics Dashboard Login
-          </Typography>
-
-          {authError && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {authError}
-            </Alert>
-          )}
-
-          <Box component="form" onSubmit={handleLogin} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Box>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                Username
-              </Typography>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter username"
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #ccc',
-                  borderRadius: '4px',
-                  fontSize: '16px',
-                }}
-                required
-                autoFocus
-              />
-            </Box>
-
-            <Box>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                Password
-              </Typography>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #ccc',
-                  borderRadius: '4px',
-                  fontSize: '16px',
-                }}
-                required
-              />
-            </Box>
-
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={authLoading}
-              sx={{ mt: 2 }}
-            >
-              {authLoading ? 'Signing In...' : 'Sign In'}
-            </Button>
-          </Box>
-        </Card>
-      </Container>
-    );
-  }
-
   if(loading) {
     return (
       <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -420,7 +308,7 @@ export default function AnalyticsPage() {
   };
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <UTMFilters analytics={analytics} setFilter={setfilters } />
+      <UTMFilters analytics={analytics} setFilter={setfilters} />
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Typography variant="h3" gutterBottom>
           UTM Analytics Dashboard
@@ -434,7 +322,7 @@ export default function AnalyticsPage() {
           >
             Refresh
           </Button>
-          <LogoutButton />
+          <AdminLogoutButton />
         </Box>
       </Box>
 
@@ -445,7 +333,7 @@ export default function AnalyticsPage() {
             {filteredAnalytics?.totalVisitors.toLocaleString() || 0}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-      Visitors
+            Visitors
           </Typography>
         </Card>
         <Card sx={{ p: 3, textAlign: 'center' }}>
@@ -453,7 +341,7 @@ export default function AnalyticsPage() {
             {filteredAnalytics?.totalVerifiedUsers.toLocaleString() || 0}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-      Verified Users
+            Verified Users
           </Typography>
         </Card>
         <Card sx={{ p: 3, textAlign: 'center' }}>
@@ -461,7 +349,7 @@ export default function AnalyticsPage() {
             {filteredAnalytics?.totalConversionRate.toFixed(1) || '0.0'}%
           </Typography>
           <Typography variant="body2" color="text.secondary">
-      Conversion Rate
+            Conversion Rate
           </Typography>
         </Card>
         <Card sx={{ p: 3, textAlign: 'center' }}>
@@ -469,7 +357,7 @@ export default function AnalyticsPage() {
             {filteredAnalytics?.topSources.length || 0}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-      Traffic Sources
+            Traffic Sources
           </Typography>
         </Card>
       </Box>

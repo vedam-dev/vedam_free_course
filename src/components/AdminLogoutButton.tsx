@@ -10,27 +10,25 @@ import { useDispatch } from 'react-redux';
 import { resetUser } from '@/lib/store';
 import type { AppDispatch } from '@/lib/store';
 
-const AUTH_STORAGE_KEYS = ['userId', 'isLoggedIn', 'username', 'mobile'];
-
-interface LogoutButtonProps extends Omit<IconButtonProps, 'aria-label' | 'onClick'> {
-  redirectTo?: string;
-}
-
 const defaultButtonSx: SxProps<Theme> = {
-  color: '#6C10BC',
-  background: 'rgba(255, 255, 255, 0.8)',
-  border: '1px solid rgba(108, 16, 188, 0.18)',
-  boxShadow: '0 4px 14px rgba(108, 16, 188, 0.12)',
+  color: '#b42318',
+  background: 'rgba(255, 243, 240, 0.9)',
+  border: '1px solid rgba(180, 35, 24, 0.2)',
+  boxShadow: '0 4px 14px rgba(180, 35, 24, 0.12)',
   '&:hover': {
-    background: 'rgba(108, 16, 188, 0.08)',
+    background: 'rgba(180, 35, 24, 0.08)',
   },
 };
 
-export default function LogoutButton({
-  redirectTo = '/',
+interface AdminLogoutButtonProps extends Omit<IconButtonProps, 'aria-label' | 'onClick'> {
+  redirectTo?: string;
+}
+
+export default function AdminLogoutButton({
+  redirectTo = '/login',
   sx,
   ...props
-}: LogoutButtonProps) {
+}: AdminLogoutButtonProps) {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const buttonSx = sx
@@ -41,24 +39,20 @@ export default function LogoutButton({
     try {
       await fetch('/api/admin/logout', {
         method: 'POST',
+        credentials: 'include',
       });
     } catch(error) {
-      console.error('Logout failed:', error);
+      console.error('Admin logout failed:', error);
     }
 
-    AUTH_STORAGE_KEYS.forEach((key) => {
-      localStorage.removeItem(key);
-    });
-
     dispatch(resetUser());
-
     router.replace(redirectTo);
   };
 
   return (
-    <Tooltip title="Logout">
+    <Tooltip title="Admin Logout">
       <IconButton
-        aria-label="Logout"
+        aria-label="Admin Logout"
         onClick={handleLogout}
         sx={buttonSx}
         {...props}
@@ -68,3 +62,4 @@ export default function LogoutButton({
     </Tooltip>
   );
 }
+
