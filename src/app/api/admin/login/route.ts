@@ -7,35 +7,20 @@ export async function POST(request: NextRequest) {
   const normalizedUsername = typeof username === 'string' ? username.trim() : '';
   const normalizedPassword = typeof password === 'string' ? password.trim() : '';
 
-  const validUsername = process.env.ADMIN_USERNAME;
-  const validPassword = process.env.ADMIN_PASSWORD;
+  const validUsername = process.env.ADMIN_USERNAME?.trim();
+  const validPassword = process.env.ADMIN_PASSWORD?.trim();
 
-  if (!validUsername || !validPassword) {
+  if(!validUsername || !validPassword) {
     return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 });
   }
 
-  if (normalizedUsername !== validUsername || normalizedPassword !== validPassword) {
+  if(normalizedUsername !== validUsername || normalizedPassword !== validPassword) {
     return NextResponse.json(
       { error: 'Invalid credentials.' },
       { status: 401 },
     );
   }
-  console.log('Received:', {
-    username: normalizedUsername,
-    password: normalizedPassword,
-  });
 
-  console.log('Env:', {
-    username: process.env.ADMIN_USERNAME,
-    password: process.env.ADMIN_PASSWORD,
-  });
-
-  console.log('Comparison:', {
-    usernameMatch:
-      normalizedUsername === process.env.ADMIN_USERNAME?.trim(),
-    passwordMatch:
-      normalizedPassword === process.env.ADMIN_PASSWORD?.trim(),
-  });
   const sessionId = createAdminSession(normalizedUsername);
   const response = NextResponse.json({ ok: true, sessionId });
 
@@ -43,7 +28,7 @@ export async function POST(request: NextRequest) {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 60 * 60 * 24, // 8 hours
+    maxAge: 60 * 60 * 24, // 24 hours
     path: '/',
   });
 
