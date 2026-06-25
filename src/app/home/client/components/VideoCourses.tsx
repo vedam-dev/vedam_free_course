@@ -65,25 +65,35 @@ const courseData = [
   },
   {
     color:
-      'linear-gradient(90deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)',
+      'linear-gradient(90deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
     color2:
-      'linear-gradient(180deg, #A64EFF 0%, #DDB6FF 33.46%, #EEDBFF 51.58%, #FFF 66.62%)',
-    image: '/home/instructors/instructor.png',
-    companyname: 'AMAZON',
+      'linear-gradient(180deg, #02A390 0%, #B9FFB4 33.46%, #86F3FF 51.58%, #FFF 66.62%)',
+    image: '/home/instructors/aman.png',
+    companyname: 'Apple',
     level: 'Beginner',
     time: '2',
-    viewed: 'false',
-    usedby: 'Amazon, Google, and Microsoft',
+    viewed: 'true',
+    usedby: 'Meta, Microsoft, and Salesforce',
   },
 ];
 
 const topicTemplateMap: Record<string, number> = {
   DSA: 0,
+  'Introduction to Programming': 0,
   'Template 1': 1,
   'Prompt Engineering': 1,
   'Template 2': 3,
   'Machine Learning': 0,
+  'Web Development': 2,
+  'Build AI Study Planner': 3,
 };
+
+const topicDisplayOrder = [
+  'Introduction to Programming',
+  'Prompt Engineering',
+  'Web Development',
+  'Build AI Study Planner',
+];
 
 export default function VideoCourses() {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -100,6 +110,36 @@ export default function VideoCourses() {
     setShowOtpModal,
     handleVerificationSuccess
   } = useOtpModal();
+
+  const courseEntries = Object.entries(groupedContent).sort(
+    ([topicA], [topicB]) => {
+      const topicAIndex = topicDisplayOrder.indexOf(topicA);
+      const topicBIndex = topicDisplayOrder.indexOf(topicB);
+
+      if(topicAIndex !== -1 && topicBIndex !== -1) {
+        return topicAIndex - topicBIndex;
+      }
+
+      if(topicAIndex !== -1) return -1;
+      if(topicBIndex !== -1) return 1;
+
+      return topicA.localeCompare(topicB);
+    }
+  );
+  const getCourseTemplate = (topic: string, idx: number) =>
+    courseData[topicTemplateMap[topic] ?? idx % courseData.length];
+  const totalCourseHours = courseEntries.reduce((total, [topic], idx) => {
+    const template = getCourseTemplate(topic, idx);
+    return total + Number(template.time || 0);
+  }, 0);
+  const courseCountLabel =
+    !isLoading && courseEntries.length > 0
+      ? `${courseEntries.length} Industry-Led Modules`
+      : '3 Industry-Led Modules';
+  const durationLabel =
+    !isLoading && totalCourseHours > 0
+      ? `${totalCourseHours} ${totalCourseHours === 1 ? 'hour' : 'hours'}`
+      : '8 hour';
 
   useEffect(() => {
     fetch('/api/content')
@@ -205,7 +245,7 @@ export default function VideoCourses() {
                   textAlign: 'left',
                 }}
               >
-                3 Industry-Led Modules
+                {courseCountLabel}
               </Typography>
             </Box>
           </Box>
@@ -261,7 +301,7 @@ export default function VideoCourses() {
                   textAlign: 'left',
                 }}
               >
-                8 hour
+                {durationLabel}
               </Typography>
             </Box>
           </Box>
@@ -394,10 +434,8 @@ export default function VideoCourses() {
                   </Box>
                 </Box>
               ))
-              : Object.entries(groupedContent).map(([topic, videos], idx) => {
-                const templateIdx =
-                    topicTemplateMap[topic] ?? idx % courseData.length;
-                const ref = courseData[templateIdx];
+              : courseEntries.map(([topic, videos], idx) => {
+                const ref = getCourseTemplate(topic, idx);
                 const firstVideo = videos[0];
                 return (
                   <Box key={topic} sx={{ mb: 6 }}>

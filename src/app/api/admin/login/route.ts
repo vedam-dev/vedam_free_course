@@ -10,17 +10,32 @@ export async function POST(request: NextRequest) {
   const validUsername = process.env.ADMIN_USERNAME;
   const validPassword = process.env.ADMIN_PASSWORD;
 
-  if(!validUsername || !validPassword) {
+  if (!validUsername || !validPassword) {
     return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 });
   }
 
-  if(normalizedUsername !== validUsername || normalizedPassword !== validPassword) {
+  if (normalizedUsername !== validUsername || normalizedPassword !== validPassword) {
     return NextResponse.json(
       { error: 'Invalid credentials.' },
       { status: 401 },
     );
   }
+  console.log('Received:', {
+    username: normalizedUsername,
+    password: normalizedPassword,
+  });
 
+  console.log('Env:', {
+    username: process.env.ADMIN_USERNAME,
+    password: process.env.ADMIN_PASSWORD,
+  });
+
+  console.log('Comparison:', {
+    usernameMatch:
+      normalizedUsername === process.env.ADMIN_USERNAME?.trim(),
+    passwordMatch:
+      normalizedPassword === process.env.ADMIN_PASSWORD?.trim(),
+  });
   const sessionId = createAdminSession(normalizedUsername);
   const response = NextResponse.json({ ok: true, sessionId });
 

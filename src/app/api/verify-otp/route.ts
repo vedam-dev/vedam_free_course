@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     }
 
     const bypassOtp = process.env.NEXT_PUBLIC_BYPASS_OTP === 'true';
-    if(bypassOtp && (process.env.NODE_ENV !== 'production' || request.nextUrl.hostname === 'localhost')) {
+    if(bypassOtp && (request.nextUrl.hostname === 'localhost')) {
       if(otp !== '1234') {
         return NextResponse.json(
           { error: 'Invalid OTP', success: false },
