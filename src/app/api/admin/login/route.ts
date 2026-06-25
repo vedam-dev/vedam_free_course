@@ -20,7 +20,6 @@ export async function POST(request: NextRequest) {
       { status: 401 },
     );
   }
-
   const sessionId = createAdminSession(normalizedUsername);
   const response = NextResponse.json({ ok: true, sessionId });
 

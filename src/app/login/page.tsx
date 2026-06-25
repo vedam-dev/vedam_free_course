@@ -29,6 +29,7 @@ function AdminLoginForm() {
       if(res.ok) {
         router.replace(next);
       } else {
+        
         const data = await res.json().catch(() => null);
         setError(data?.error);
       }

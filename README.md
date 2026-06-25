@@ -2,7 +2,7 @@
 
 A Next.js application for managing and delivering free educational content with UTM tracking, analytics, and automated certificate delivery.
 
-## Features
+## Feature
 
 - **Video Content Management**: Upload and manage video content using Streamable
 - **User Authentication**: OTP-based authentication system
@@ -677,4 +677,4 @@ This project is licensed under the MIT License.
 ---
 
 **Release**: 5 November 2025  
-Last Deployment : 24 Jun 2026  4:50 PM IST
+Last Deployment : 25 Jun 2026  2:44 PM IST
