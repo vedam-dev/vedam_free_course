@@ -31,10 +31,10 @@ function AdminLoginForm() {
       } else {
         
         const data = await res.json().catch(() => null);
-        setError(data?.error || 'Invalid credentials');
+        setError(data?.error);
       }
     } catch{
-      setError('Network error — please try again');
+      setError('Network error. Please try again');
     } finally {
       setLoading(false);
     }

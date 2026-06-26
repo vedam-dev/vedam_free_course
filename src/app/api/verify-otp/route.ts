@@ -34,30 +34,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const bypassOtp = process.env.NEXT_PUBLIC_BYPASS_OTP === 'true';
-    if(bypassOtp && (request.nextUrl.hostname === 'localhost')) {
-      if(otp !== '1234') {
-        return NextResponse.json(
-          { error: 'Invalid OTP', success: false },
-          { status: 400 }
-        );
-      }
-
-      const verificationToken = generateVerificationToken(mobile);
-
-      return NextResponse.json(
-        {
-          success: true,
-          message: 'OTP verified successfully',
-          verificationToken,
-          mobile,
-          bypass: true,
-        },
-        { status: 200 }
-      );
-    }
-
-    const authKey = process.env.NEXT_PUBLIC_MSG91_AUTH_KEY;
+    const authKey = process.env.MSG91_AUTH_KEY?.trim();
 
     if(!authKey) {
       console.error('MSG91_AUTH_KEY not configured');

@@ -69,10 +69,6 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
   const [isVerified, setIsVerified] = useState(false);
 
   const dispatch = useDispatch();
-  const isOtpBypassEnabled = process.env.NEXT_PUBLIC_BYPASS_OTP === 'true';
-  const isLocalhost =
-    typeof window !== 'undefined' &&
-    ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
 
   const handleBlur = (field: keyof typeof touched) => () => {
     setTouched({ ...touched, [field]: true });
@@ -102,14 +98,6 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     setIsLoading(true);
 
     try {
-      if(isOtpBypassEnabled && isLocalhost) {
-        setStep('enterOTP');
-        setSuccess('Local OTP bypass enabled. Use 1234 to continue.');
-        setIsLoading(false);
-        setTimeout(() => setSuccess(null), 3000);
-        return;
-      }
-
       // Using MSG91 widget method
       const formattedPhone = phoneNumber.startsWith('91') ? phoneNumber : `91${phoneNumber}`;
 
@@ -205,10 +193,6 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     setIsLoading(true);
 
     try {
-      if(isOtpBypassEnabled && isLocalhost && otp !== '1234') {
-        throw new Error('Use 1234 when OTP bypass is enabled on localhost');
-      }
-
       // SERVER-SIDE OTP VERIFICATION
       // Verify OTP with server instead of relying on client-side only
       const verifyResponse = await fetch('/api/verify-otp', {
