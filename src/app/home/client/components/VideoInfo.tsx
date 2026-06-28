@@ -1,7 +1,7 @@
 'use client';
 
 import { PlayCircleFilled } from '@mui/icons-material';
-import { Box, Container, IconButton, Typography,useMediaQuery } from '@mui/material';
+import { Box, Container, IconButton, Typography } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
 
@@ -10,7 +10,6 @@ const VIDEO_THUMBNAIL_URL =
 
 const VideoInfo: React.FC = () => {
   const [playing, setPlaying] = React.useState(false);
-  const isMobile = useMediaQuery('(max-width:600px)');
 
   const handlePlayVideo = () => {
     setPlaying(true);
@@ -21,33 +20,41 @@ const VideoInfo: React.FC = () => {
     <>
       <Box
         sx={{
-          margin: 'auto',
-          fontFamily: 'system-ui, sans-serif',
+          position: 'relative',
+          zIndex: 1,
+          overflow: 'hidden',
+          background:
+            'linear-gradient(180deg, #AEF3F1 0%, #E9FBF8 42%, #FFFFFF 76%)',
           bgcolor: '#fff',
-          background: 'linear-gradient(180deg, #A0EBD4 -98.87%, #FFF 100%)',
         }}
       >
-        <Container maxWidth="lg">
+        <Container
+          maxWidth={false}
+          sx={{
+            maxWidth: '1280px',
+            px: { xs: 2.5, sm: 3, md: 4 },
+            pt: { xs: 5.5, sm: 7, md: 18 },
+            pb: { xs: 7, sm: 9, md: 24 },
+          }}
+        >
           {/* Top Header Section */}
           <Box
             sx={{
               textAlign: 'center',
               display: 'flex',
               flexDirection: 'column',
-              width: '100%',
               alignItems: 'center',
-              boxShadow: { xs: 0, md: '0 2px 12px rgba(160,235,212,0.15)' },
             }}
           >
             <Typography
-              variant="caption"
-              color="text.secondary"
+              component="p"
               sx={{
-                marginTop: 2,
-                letterSpacing: '0.5px',
-                fontSize: { xs: '0.85rem', md: '1rem' },
-                fontWeight: 600,
-                fontFamily:'Outfit'
+                color: '#45484F',
+                fontSize: { xs: 15, sm: 18, md: 22 },
+                fontWeight: 800,
+                lineHeight: 1,
+                letterSpacing: 0,
+                m: 0,
               }}
             >
               BROUGHT TO YOU BY
@@ -57,11 +64,9 @@ const VideoInfo: React.FC = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                flexWrap: 'wrap',
-                gap: { xs: 1, md: 0 },
                 width: '100%',
-                maxWidth: 700,
-                mx: 'auto',
+                gap: { xs: 1.5, sm: 2.5, md: 4.5 },
+                mt: { xs: 3, sm: 4.5, md: 10 },
               }}
             >
               {/* Vedam Logo Image */}
@@ -70,24 +75,21 @@ const VideoInfo: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  mr: { xs: 0, md: 2 },
-                  mb: { xs: 1, md: 0 },
-                  width: { xs: 120, sm: 180, md:  220 },
-                  minWidth: 92,
-                  maxWidth: 264,
+                  width: { xs: 146, sm: 250, md: 352 },
+                  flex: '0 1 auto',
                 }}
               >
                 <Image
-                  width={isMobile ? 115 : 264}
-                  height={isMobile ? 45 : 104}
-                  src="/home/videoInfo/VedamLogo.png"
+                  width={3408}
+                  height={1102}
+                  src="/home/videoInfo/VedamLogoTight.png"
                   alt="Vedam School of Technology Logo"
                   style={{
                     width: '100%',
                     height: 'auto',
                     objectFit: 'contain',
                   }}
-                  sizes="(max-width: 600px) 120px, (max-width: 900px) 180px, 220px"
+                  sizes="(max-width: 600px) 146px, (max-width: 900px) 250px, 352px"
                   priority
                 />
               </Box>
@@ -95,28 +97,12 @@ const VideoInfo: React.FC = () => {
               {/* Divider Line */}
               <Box
                 sx={{
-                  display: {
-                    xs: 'block',
-                    md: 'block',
-                  },
-                  lineHeight:'0.5px',
-                  mx: { sm: 1, md: 2 },
-                  fill: '#B7B7B7',
+                  width: '1px',
+                  height: { xs: 62, sm: 86, md: 120 },
+                  bgcolor: '#AEB8BC',
+                  flex: '0 0 1px',
                 }}
-              >
-                <Image
-                  src="/home/videoInfo/Line 23 (Stroke).svg"
-                  width={2}
-                  height={70}
-                  alt="Divider Line"
-                  style={{
-                    width: '2px',
-                    height: isMobile ? '58px' : '72px',
-                    minWidth: '2px',
-                    minHeight: '40px',
-                  }}
-                />
-              </Box>
+              />
 
               {/* CodeSprint Logo */}
               <Box
@@ -124,33 +110,24 @@ const VideoInfo: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRadius: 2,
-                  px: 1,
-                  background: 'none',
-                  overflow: 'visible',
-                  minHeight: { xs: 48, sm: 60, md: 72 },
-
+                  minWidth: 0,
                 }}
               >
                 <Typography
-                  variant="h6"
+                  component="p"
                   sx={{
-                    fontWeight: 700,
+                    fontWeight: 800,
                     fontFamily: 'Outfit, sans-serif',
-                    fontSize: { xs: '1.5rem', sm: '2.5rem', md: '3rem' },
-                    fontStyle: 'normal',
-                    lineHeight: 1.1,
+                    fontSize: { xs: 30, sm: 52, md: 76 },
+                    lineHeight: 1,
                     background:
-                      'linear-gradient(90deg, #5A02A7 0%, #8A18FF 33.74%, #C14B81 54.73%, #DD6442 75%, #F97D03 100%)',
+                      'linear-gradient(90deg, #6200D4 0%, #8F16FC 31%, #C74787 57%, #DF6240 78%, #FF7C00 100%)',
                     backgroundClip: 'text',
                     WebkitBackgroundClip: 'text',
                     color: 'transparent',
                     WebkitTextFillColor: 'transparent',
-                    textAlign: 'center',
-                    width: '100%',
-                    display: 'inline-block',
-                    overflow: 'visible',
                     whiteSpace: 'nowrap',
+                    m: 0,
                   }}
                 >
                   CodeSprint
@@ -160,48 +137,70 @@ const VideoInfo: React.FC = () => {
           </Box>
 
           {/* Text Display Section */}
-          <Box sx={{ textAlign: 'center', mb: 4 }}>
+          <Box
+            sx={{
+              textAlign: 'center',
+              mt: { xs: 4.5, sm: 7, md: 10 },
+            }}
+          >
             <Typography
               component="p"
               sx={{
-                margin: '0 auto',
-                fontWeight: 600,
-                fontFamily: 'Outfit, sans‑serif',
-                fontSize: { xs: 16, sm: 36 },
-                mt: { xs: 2, sm: 3 },
-                mb: { xs: 3, sm: 4 },
+                color: '#1D1D20',
+                fontWeight: 800,
+                fontFamily: 'Outfit, sans-serif',
+                fontSize: { xs: 25, sm: 34, md: 46 },
+                lineHeight: { xs: 1.26, sm: 1.28, md: 1.26 },
+                m: '0 auto',
+                maxWidth: '1180px',
               }}
             >
-              Vedam School of Technology is an Advanced Tech College offering
-              on-campus 4 year CS & AI program for{' '}
-              <Box component="span" sx={{ color: '#7000E3',fontWeight: 700, }}>
-                12 pass-outs
+              <Box component="span" sx={{ display: 'block' }}>
+                Vedam School of Technology is an Advanced Tech
               </Box>
-              .
+              <Box component="span" sx={{ display: 'block' }}>
+                College offering on-campus 4 year CS & AI program
+              </Box>
+              <Box component="span" sx={{ display: 'block' }}>
+                for{' '}
+                <Box component="span" sx={{ color: '#6A00E8', fontWeight: 800 }}>
+                  12 pass-out
+                </Box>
+                .
+              </Box>
             </Typography>
             <Typography
-              variant="body2"
-              color="text.primary"
+              component="p"
               sx={{
-                mt: 2,
-                fontWeight: 500,
-                fontFamily: 'Outfit, sans‑serif',
-                fontSize: { xs: 16, sm: 28 },
+                color: '#1D1D20',
+                mt: { xs: 4, sm: 5.5, md: 7 },
+                mb: { xs: 2.5, sm: 3, md: 4 },
+                fontWeight: 700,
+                fontFamily: 'Outfit, sans-serif',
+                fontSize: { xs: 21, sm: 28, md: 36 },
+                lineHeight: 1.2,
               }}
             >
-              B.Tech Degree awarded by Ajeenkya DY Patil University
+              B.Tech Degree awarded by UGC Approved Universities
             </Typography>
-            <Typography
-              variant="caption"
-              color="text.primary"
+            <Box
               sx={{
-                fontFamily: 'Outfit, sans‑serif',
-                fontSize: { xs: 12, sm: 20 },
-                fontWeight: 600,
+                display: 'flex',
+                justifyContent: 'center',
               }}
             >
-              UGC Approved
-            </Typography>
+              <Image
+                src="/home/videoInfo/university-logos.png"
+                alt="Ajeenkya DY Patil University and Sushant University"
+                width={1385}
+                height={300}
+                style={{
+                  width: 'min(480px, 100%)',
+                  height: 'auto',
+                }}
+                sizes="(max-width: 600px) calc(100vw - 40px), 480px"
+              />
+            </Box>
           </Box>
         </Container>
       </Box>

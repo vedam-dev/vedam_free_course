@@ -10,6 +10,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -95,6 +96,21 @@ const topicDisplayOrder = [
   'Build AI Study Planner',
 ];
 
+const outcomeBanners = [
+  {
+    src: '/home/videoInfo/student-success-outcome-1.webp',
+    alt: 'Global outcomes at Vedam with student selections and earnings',
+    width: 4152,
+    height: 1564,
+  },
+  {
+    src: '/home/videoInfo/student-success-outcome-2.webp',
+    alt: 'Vedam students achieved seven plus paid internships in first year',
+    width: 3114,
+    height: 1173,
+  },
+];
+
 export default function VideoCourses() {
   const isMobile = useMediaQuery('(max-width:600px)');
   const [groupedContent, setGroupedContent] = useState<Record<string, Video[]>>(
@@ -174,6 +190,87 @@ export default function VideoCourses() {
           px: 1,
         }}
       >
+        <Box
+          sx={{
+            mb: { xs: 5, md: 8 },
+          }}
+        >
+          <Typography
+            component="h2"
+            sx={{
+              fontFamily: 'Outfit, sans-serif',
+              fontWeight: 800,
+              fontSize: { xs: '26px', md: '42px' },
+              lineHeight: 1.12,
+              color: '#1E1E1E',
+              textAlign: 'center',
+              mb: { xs: 3, md: 4 },
+            }}
+          >
+            Real Outcomes from First Year
+          </Typography>
+          <Box
+            sx={{
+              overflow: 'hidden',
+              borderRadius: { xs: '16px', md: '28px' },
+              boxShadow: '0 18px 42px rgba(73, 30, 138, 0.12)',
+              lineHeight: 0,
+              backgroundColor: '#F8F5FF',
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                width: '300%',
+                animation: 'outcomeBannerScroll 12s ease-in-out infinite',
+                willChange: 'transform',
+                '@keyframes outcomeBannerScroll': {
+                  '0%, 38%': {
+                    transform: 'translateX(0)',
+                  },
+                  '50%, 88%': {
+                    transform: 'translateX(-33.333333%)',
+                  },
+                  '100%': {
+                    transform: 'translateX(-66.666666%)',
+                  },
+                },
+                '&:hover': {
+                  animationPlayState: 'paused',
+                },
+                '@media (prefers-reduced-motion: reduce)': {
+                  animation: 'none',
+                },
+              }}
+            >
+              {[...outcomeBanners, outcomeBanners[0]].map((banner, index) => (
+                <Box
+                  key={`${banner.src}-${index}`}
+                  aria-hidden={index === outcomeBanners.length}
+                  sx={{
+                    flex: '0 0 33.333333%',
+                    width: '33.333333%',
+                  }}
+                >
+                  <Image
+                    src={banner.src}
+                    alt={index === outcomeBanners.length ? '' : banner.alt}
+                    width={banner.width}
+                    height={banner.height}
+                    loading="eager"
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      height: 'auto',
+                    }}
+                    sizes="(max-width: 600px) calc(100vw - 32px), 1120px"
+                  />
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </Box>
+
         <Typography
           component="h2"
           sx={{
