@@ -8,7 +8,7 @@ export async function GET() {
   try {
     const cookieStore = await cookies();
     const userSessionId = cookieStore.get('user_session_id')?.value;
-    const session = getUserSession(userSessionId);
+    const session = await getUserSession(userSessionId);
     const cookieUserId = cookieStore.get('user_id')?.value;
 
     if(!session) {
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
   try {
     const cookieStore = await cookies();
     const userSessionId = cookieStore.get('user_session_id')?.value;
-    const session = getUserSession(userSessionId);
+    const session = await getUserSession(userSessionId);
 
     if(!session) {
       return NextResponse.json(

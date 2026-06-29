@@ -76,12 +76,12 @@ export default function AnalyticsPage() {
       const response = await fetch('/api/analytics');
       const data = await response.json();
 
-      if (!response.ok) {
+      if(!response.ok) {
         throw new Error(data.error || 'Failed to fetch analytics');
       }
 
       setAnalytics(data);
-    } catch (err) {
+    } catch(err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
@@ -94,34 +94,34 @@ export default function AnalyticsPage() {
     data: UTMAnalytics,
     filters: Filters
   ): UTMAnalytics => {
-    if (!data) return data;
+    if(!data) return data;
 
 
     let filteredUsers = [...data.usersData];
 
-    if (filters.source) {
+    if(filters.source) {
       filteredUsers = filteredUsers.filter(user =>
         user.userSource?.toLowerCase().includes(filters.source!.toLowerCase())
       );
     }
 
-    if (filters.medium) {
+    if(filters.medium) {
       filteredUsers = filteredUsers.filter(user =>
         user.userMedium?.toLowerCase().includes(filters.medium!.toLowerCase())
       );
     }
 
-    if (filters.startDate || filters.endDate) {
+    if(filters.startDate || filters.endDate) {
       const start = filters.startDate ? new Date(filters.startDate) : null;
       const end = filters.endDate ? new Date(filters.endDate) : null;
 
-      if (start) start.setHours(0, 0, 0, 0);
-      if (end) end.setHours(23, 59, 59, 999);
+      if(start) start.setHours(0, 0, 0, 0);
+      if(end) end.setHours(23, 59, 59, 999);
 
       filteredUsers = filteredUsers.filter(user => {
         const userDate = new Date(user.userRecordedAt);
-        if (start && userDate < start) return false;
-        if (end && userDate > end) return false;
+        if(start && userDate < start) return false;
+        if(end && userDate > end) return false;
         return true;
       });
     }
@@ -177,11 +177,11 @@ export default function AnalyticsPage() {
     const verificationTrendMap: Record<string, { verified: number; total: number }> = {};
     filteredUsers.forEach(user => {
       const dateStr = new Date(user.userRecordedAt).toISOString().split('T')[0];
-      if (!verificationTrendMap[dateStr]) {
+      if(!verificationTrendMap[dateStr]) {
         verificationTrendMap[dateStr] = { verified: 0, total: 0 };
       }
       verificationTrendMap[dateStr].total++;
-      if (user.isUserVerified) {
+      if(user.isUserVerified) {
         verificationTrendMap[dateStr].verified++;
       }
     });
@@ -212,7 +212,7 @@ export default function AnalyticsPage() {
     : null;
 
 
-  if (loading) {
+  if(loading) {
     return (
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Typography variant="h4" gutterBottom>
@@ -222,7 +222,7 @@ export default function AnalyticsPage() {
     );
   }
 
-  if (error) {
+  if(error) {
     return (
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Typography variant="h4" color="error" gutterBottom>
@@ -232,7 +232,7 @@ export default function AnalyticsPage() {
     );
   }
 
-  if (!analytics) {
+  if(!analytics) {
     return (
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Typography variant="h4" gutterBottom>
