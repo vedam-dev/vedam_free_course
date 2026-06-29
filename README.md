@@ -74,7 +74,7 @@ Server attaches JPG and emails via Nodemailer
 User receives certificate in email inbox
 ```
 
-### Certificate Features
+### Certificate Feature
 
 - **Automatic Trigger**: No manual intervention required
 - **Topic-Based**: One certificate per completed topic (not per course)
