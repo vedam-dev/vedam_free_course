@@ -91,9 +91,9 @@ const topicTemplateMap: Record<string, number> = {
 
 const topicDisplayOrder = [
   'Introduction to Programming',
-  'Prompt Engineering',
-  'Web Development',
   'Build AI Study Planner',
+  'Web Development',
+  'Prompt Engineering',
 ];
 
 const outcomeBanners = [
@@ -108,6 +108,25 @@ const outcomeBanners = [
     alt: 'Vedam students achieved seven plus paid internships in first year',
     width: 3114,
     height: 1173,
+  },
+];
+
+const yearOneBuildVideos = [
+  {
+    title: 'Ishaan',
+    youtubeId: 'zS9iKI12VvU',
+  },
+  {
+    title: 'Vaani Setu',
+    youtubeId: 'sxJyD_Q8_9M',
+  },
+  {
+    title: 'Agrima',
+    youtubeId: 'MU7zCxLHthM',
+  },
+  {
+    title: 'Sidhant Chatbot',
+    youtubeId: 'bzkkq6qTGwk',
   },
 ];
 
@@ -268,6 +287,103 @@ export default function VideoCourses() {
                 </Box>
               ))}
             </Box>
+          </Box>
+        </Box>
+
+        <Box
+          sx={{
+            mb: { xs: 5, md: 8 },
+          }}
+        >
+          <Typography
+            component="h2"
+            sx={{
+              fontFamily: 'Outfit, sans-serif',
+              fontWeight: 800,
+              fontSize: { xs: '26px', md: '42px' },
+              lineHeight: 1.12,
+              color: '#1E1E1E',
+              textAlign: 'center',
+              mb: { xs: 3, md: 4 },
+            }}
+          >
+            What students at Vedam build in Year 1
+          </Typography>
+          <Box
+            sx={{
+              display: { xs: 'flex', md: 'grid' },
+              gridTemplateColumns: { md: 'repeat(4, minmax(0, 1fr))' },
+              gap: { xs: 2, md: 2.5 },
+              overflowX: { xs: 'auto', md: 'visible' },
+              mx: { xs: -1, md: 0 },
+              px: { xs: 1, md: 0 },
+              pb: { xs: 1, md: 0 },
+              scrollSnapType: { xs: 'x mandatory', md: 'none' },
+              WebkitOverflowScrolling: 'touch',
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+              scrollbarWidth: 'none',
+            }}
+          >
+            {yearOneBuildVideos.map((video) => (
+              <Box
+                key={video.youtubeId}
+                sx={{
+                  flex: { xs: '0 0 74%', sm: '0 0 42%', md: 'initial' },
+                  minWidth: 0,
+                  p: { xs: 1, md: 1.25 },
+                  borderRadius: '18px',
+                  background:
+                    'linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(248,245,255,0.92) 100%)',
+                  border: '1px solid rgba(120, 44, 204, 0.12)',
+                  boxShadow: '0 16px 38px rgba(73, 30, 138, 0.10)',
+                  scrollSnapAlign: 'start',
+                }}
+              >
+                <Box
+                  sx={{
+                    position: 'relative',
+                    aspectRatio: '9 / 16',
+                    overflow: 'hidden',
+                    borderRadius: '14px',
+                    bgcolor: '#111',
+                  }}
+                >
+                  <Box
+                    component="iframe"
+                    src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                    title={`${video.title} YouTube Short`}
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    sx={{
+                      position: 'absolute',
+                      inset: 0,
+                      width: '100%',
+                      height: '100%',
+                      border: 0,
+                    }}
+                  />
+                </Box>
+                <Typography
+                  component="p"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 700,
+                    fontSize: { xs: '16px', md: '18px' },
+                    lineHeight: 1.2,
+                    color: '#1E1E1E',
+                    textAlign: 'center',
+                    mt: 1.5,
+                    mb: 0.25,
+                  }}
+                >
+                  {video.title}
+                </Typography>
+              </Box>
+            ))}
           </Box>
         </Box>
 

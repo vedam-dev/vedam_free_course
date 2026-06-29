@@ -564,11 +564,19 @@ const Landing: React.FC = () => {
               maxWidth: { xs: '100%', lg: '771px' },
               backgroundImage: {
                 xs: 'url("/assets/centralBox.png")',
-                lg: 'url("/assets/rightBox.png")',
+                lg: 'url("/assets/landing-right-instructors.png")',
               },
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
+              WebkitMaskImage: {
+                lg: 'linear-gradient(to right, transparent 0%, #000 9%, #000 96%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 7%, #000 96%, transparent 100%)',
+              },
+              WebkitMaskComposite: { lg: 'source-in' },
+              maskImage: {
+                lg: 'linear-gradient(to right, transparent 0%, #000 9%, #000 96%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 7%, #000 96%, transparent 100%)',
+              },
+              maskComposite: { lg: 'intersect' },
               zIndex: 20,
 
               // background:'red'
