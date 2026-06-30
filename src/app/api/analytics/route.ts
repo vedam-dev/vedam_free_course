@@ -4,7 +4,7 @@ import { requireAdminSession } from '@/lib/adminAuth';
 import { supabase } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
-  const authError = requireAdminSession(request);
+  const authError = await requireAdminSession(request);
   if(authError) return authError;
 
   try {

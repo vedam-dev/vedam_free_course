@@ -7,7 +7,7 @@ import { supabase } from '@/lib/supabase';
 import { createUserSession } from '@/lib/userSessionStore';
 
 export async function GET(request: NextRequest) {
-  const authError = requireAdminSession(request);
+  const authError = await requireAdminSession(request);
   if(authError) return authError;
 
   try {
@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
         path: '/',
       });
 
-      const sessionId = createUserSession(String(userId), mobileValue);
+      const sessionId = await createUserSession(String(userId), mobileValue);
       cookieStore.set('user_session_id', sessionId, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { isAdminPagePath } from '@/lib/adminRoutes';
+import { isAdminSessionValid } from '@/lib/adminSessionStore';
+
 export async function middleware(req: NextRequest) {
   console.log('MIDDLEWARE HIT:', req.nextUrl.pathname);
   const { pathname } = req.nextUrl;
@@ -38,7 +41,7 @@ export async function middleware(req: NextRequest) {
 
   // ── Admin-gated routes ─────────────────────────────────────────────────
   const sessionId = req.cookies.get('admin_session_id')?.value;
-  const isAuthenticated = Boolean(sessionId);
+  const isAuthenticated = await isAdminSessionValid(sessionId);
 
   if(pathname === '/login') {
     const AdminUrl = new URL('/admin', req.url);
@@ -69,6 +72,15 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  if(isAdminPagePath(pathname)) {
+    if(!isAuthenticated) {
+      const loginUrl = new URL('/login', req.url);
+      loginUrl.searchParams.set('next', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+    return NextResponse.next();
+  }
+
   return NextResponse.next();
 }
 
@@ -77,6 +89,9 @@ export const config = {
     '/login',
     '/admin',
     '/admin/:path*',
+    '/analytics',
+    '/upload',
+    '/upload/:path*',
     '/api-docs/:path*',
     '/api/swagger/:path*',
   ],

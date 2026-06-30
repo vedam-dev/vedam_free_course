@@ -6,6 +6,8 @@ import path from 'path';
 import { NextRequest, NextResponse } from 'next/server';
 import { Vimeo } from 'vimeo';
 
+import { isAdminSessionValid } from '@/lib/adminSessionStore';
+
 const vimeoClientId = process.env.VIMEO_CLIENT_ID;
 const vimeoClientSecret = process.env.VIMEO_CLIENT_SECRET;
 const vimeoAccessToken = process.env.VIMEO_ACCESS_TOKEN;
@@ -22,7 +24,7 @@ export async function POST(request: NextRequest): Promise<Response> {
     // Parse the incoming form data
     const adminCookie = request.cookies.get('admin_session_id')?.value;
 
-    if(!adminCookie) {
+    if(!(await isAdminSessionValid(adminCookie))) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

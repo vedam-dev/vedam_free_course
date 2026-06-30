@@ -31,9 +31,9 @@ export function requireAdminAuth(request: NextRequest) {
   return null;
 }
 
-export function requireAdminSession(request: NextRequest): NextResponse | null {
+export async function requireAdminSession(request: NextRequest): Promise<NextResponse | null> {
   const session = request.cookies.get('admin_session_id')?.value;
-  if(!isAdminSessionValid(session)) {
+  if(!(await isAdminSessionValid(session))) {
     return NextResponse.json(
       { error: 'Unauthorized – admin login required' },
       { status: 401 }
