@@ -562,10 +562,7 @@ const Landing: React.FC = () => {
               minHeight: { xs: '300px', sm: '400px', md: '500px', lg: '670px' },
               width: { xs: '100%', lg: '100%' },
               maxWidth: { xs: '100%', lg: '771px' },
-              backgroundImage: {
-                xs: 'url("/assets/centralBox.png")',
-                lg: 'url("/assets/landing-right-instructors.png")',
-              },
+              backgroundImage: 'url("/assets/landing-right-instructors.png")',
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
