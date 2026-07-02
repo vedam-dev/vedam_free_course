@@ -61,6 +61,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
   const [passout_year, setpassout_year] = useState('2026');
   const [stream, setStream] = useState('PCM');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [otpRequestId, setOtpRequestId] = useState('');
   const [touched, setTouched] = useState({
     fullName: false,
     email: false,
@@ -80,6 +81,21 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     phoneNumber: !validatePhoneNumber(phoneNumber),
   };
 
+  const extractRequestId = (source: unknown): string => {
+    if (!source || typeof source !== 'object') {
+      return '';
+    }
+
+    const payload = source as Record<string, unknown>;
+    const message = payload.message;
+
+    if (typeof message === 'string') {
+      return message.trim();
+    }
+
+    return '';
+  };
+
   const handleSendOTP = async () => {
     // Mark all fields as touched to show errors
     setTouched({
@@ -89,7 +105,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     });
 
     // Check for errors
-    if(errors.fullName || errors.email || errors.phoneNumber) {
+    if (errors.fullName || errors.email || errors.phoneNumber) {
       setError('Please fix the errors before proceeding');
       return;
     }
@@ -101,10 +117,20 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
       // Using MSG91 widget method
       const formattedPhone = phoneNumber.startsWith('91') ? phoneNumber : `91${phoneNumber}`;
 
-      if(window.sendOtp) {
+      if (window.sendOtp) {
         window.sendOtp(
           formattedPhone,
-          () => {
+          (data: unknown) => {
+            const requestId = extractRequestId(data);
+
+            if (!requestId) {
+              console.warn('MSG91 sendOtp success payload did not include request id', data);
+              setError('OTP session details were not returned. Please try again.');
+              setIsLoading(false);
+              return;
+            }
+
+            setOtpRequestId(requestId);
             setStep('enterOTP');
             setSuccess('OTP sent successfully!');
             setIsLoading(false);
@@ -120,7 +146,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
         setError('OTP service not initialized. Please try again.');
         setIsLoading(false);
       }
-    } catch(error) {
+    } catch (error) {
       console.error('Error sending OTP:', error);
       setError('Failed to send OTP. Please try again.');
       setIsLoading(false);
@@ -152,14 +178,14 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
         }),
       });
 
-      if(!response.ok) {
+      if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error ?? 'Failed to save user data');
       }
 
       const data = await response.json();
       return data;
-    } catch(error) {
+    } catch (error) {
       console.error('Error saving user data:', error);
       throw error;
     }
@@ -171,30 +197,29 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
       localStorage.setItem(key, value);
       // Verify it was set correctly
       const stored = localStorage.getItem(key);
-      if(stored !== value) {
+      if (stored !== value) {
         console.warn(`Failed to set localStorage item: ${key}`);
       }
-    } catch(error) {
+    } catch (error) {
       console.error('Error setting localStorage:', error);
     }
   };
 
   const handleVerifyOTP = async () => {
-    if(!otp || otp.length !== 4) {
-      setError('Please enter a valid 4-digit OTP');
+    if (otp.length !== 4) {
+      setError('Please enter a valid OTP');
       return;
     }
 
-    if(isVerified) {
+    if (!otpRequestId) {
+      setError('OTP session expired or missing. Please resend OTP.');
       return;
     }
 
-    setError(null);
     setIsLoading(true);
+    setError(null);
 
     try {
-      // SERVER-SIDE OTP VERIFICATION
-      // Verify OTP with server instead of relying on client-side only
       const verifyResponse = await fetch('/api/verify-otp', {
         method: 'POST',
         headers: {
@@ -202,137 +227,205 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
         },
         body: JSON.stringify({
           mobile: phoneNumber,
-          otp: otp,
+          otp,
+          reqId: otpRequestId,
         }),
       });
 
       const verifyData = await verifyResponse.json();
 
-      if(!verifyResponse.ok || !verifyData.success) {
+      if (!verifyResponse.ok || !verifyData.success) {
         throw new Error(verifyData.error || 'OTP verification failed');
       }
 
-      console.log('OTP verified successfully on server');
-
-      // Get the verification token from server response
       const verificationToken = verifyData.verificationToken;
 
-      if(!verificationToken) {
+      if (!verificationToken) {
         throw new Error('Verification token not received from server');
       }
 
-      // Mark as verified to prevent re-verification
-      setIsVerified(true);
-
       try {
-        // Save user data to database with verification token
+        setIsVerified(true);
+
         const dbResult = await saveUserToDatabase({
           name: fullName,
           email: email,
           passout_year: passout_year,
           phone: phoneNumber,
           stream: stream,
-          verificationToken: verificationToken,
+          verificationToken,
         });
 
         // Try multiple ways to extract userId from the response
-        let userId = null;
+          let userId = null;
 
         // Check common response structures
-        if(dbResult?.id) {
-          userId = dbResult.id;
-        } else if(dbResult?._id) {
-          userId = dbResult._id;
-        } else if(dbResult?.user?.id) {
-          userId = dbResult.user.id;
-        } else if(dbResult?.user?._id) {
-          userId = dbResult.user._id;
-        } else if(dbResult?.data?.id) {
-          userId = dbResult.data.id;
-        } else if(dbResult?.data?._id) {
-          userId = dbResult.data._id;
-        } else if(dbResult?.insertedId) {
-          userId = dbResult.insertedId;
-        } else if(dbResult?.result?.insertedId) {
-          userId = dbResult.result.insertedId;
-        } else if(Array.isArray(dbResult?.user) && dbResult.user.length > 0) {
+          if (dbResult?.id) {
+            userId = dbResult.id;
+          } else if (dbResult?._id) {
+            userId = dbResult._id;
+          } else if (dbResult?.user?.id) {
+            userId = dbResult.user.id;
+          } else if (dbResult?.user?._id) {
+            userId = dbResult.user._id;
+          } else if (dbResult?.data?.id) {
+            userId = dbResult.data.id;
+          } else if (dbResult?.data?._id) {
+            userId = dbResult.data._id;
+          } else if (dbResult?.insertedId) {
+            userId = dbResult.insertedId;
+          } else if (dbResult?.result?.insertedId) {
+            userId = dbResult.result.insertedId;
+          } else if (Array.isArray(dbResult?.user) && dbResult.user.length > 0) {
           // Handle case where user is an array (like your response)
-          userId = dbResult.user[0]?.id ?? dbResult.user[0]?._id;
-        }
+            userId = dbResult.user[0]?.id ?? dbResult.user[0]?._id;
+          }
 
-        if(!userId) {
-          console.error('No userId found in database response');
-          setError('User data saved but ID not found. Please contact support.');
-          setIsLoading(false);
-          setIsVerified(false);
-          return;
-        }
+          if (!userId) {
+            console.error('No userId found in database response');
+            setError('User data saved but ID not found. Please contact support.');
+            setIsLoading(false);
+            setIsVerified(false);
+            return;
+          }
 
-        console.log('User authenticated successfully with ID:', userId);
+          console.log('User authenticated successfully with ID:', userId);
 
         // Update Redux state first
-        dispatch(setUserId(userId));
-        dispatch(setMobile(phoneNumber));
-        dispatch(setUsername(fullName));
-        dispatch(setIsLoggedIn(true));
+          dispatch(setUserId(userId));
+          dispatch(setMobile(phoneNumber));
+          dispatch(setUsername(fullName));
+          dispatch(setIsLoggedIn(true));
 
         // Set localStorage items with verification
-        setLocalStorageItem('userId', String(userId));
-        setLocalStorageItem('isLoggedIn', 'true');
-        setLocalStorageItem('username', fullName);
-        setLocalStorageItem('mobile', phoneNumber);
-        setLocalStorageItem('role', 'user');
+          setLocalStorageItem('userId', String(userId));
+          setLocalStorageItem('isLoggedIn', 'true');
+          setLocalStorageItem('username', fullName);
+          setLocalStorageItem('mobile', phoneNumber);
+          setLocalStorageItem('role', 'user');
 
         // Verify localStorage was set correctly
-        const storedUserId = localStorage.getItem('userId');
-        console.log('Stored userId in localStorage:', storedUserId);
+          const storedUserId = localStorage.getItem('userId');
+          console.log('Stored userId in localStorage:', storedUserId);
 
-        if(storedUserId !== String(userId)) {
-          console.error('localStorage userId mismatch!', { expected: userId, stored: storedUserId });
-        }
+          if (storedUserId !== String(userId)) {
+            console.error('localStorage userId mismatch!', { expected: userId, stored: storedUserId });
+          }
 
-        setSuccess('Verification successful! Data saved.');
+          setSuccess('Verification successful! Data saved.');
 
         // Call the success callback with user data
-        onVerificationSuccess({
-          name: fullName,
-          email: email,
-          passout_year: passout_year,
-          stream: stream,
-          phone: phoneNumber,
-        });
+          onVerificationSuccess({
+            name: fullName,
+            email: email,
+            passout_year: passout_year,
+            stream: stream,
+            phone: phoneNumber,
+          });
 
         // Close modal with fade effect after a short delay
-        setTimeout(() => {
-          setSuccess(null);
-          handleModalClose();
-        }, 2000);
-      } catch(dbError) {
-        console.error('Error saving to database:', dbError);
-        const errorMessage = dbError instanceof Error ? dbError.message : 'Failed to save data. Please try again.';
-        setError(errorMessage);
-        setIsVerified(false);
+          setTimeout(() => {
+            setSuccess(null);
+            handleModalClose();
+          }, 2000);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to save user.');
+      } finally {
+        setIsLoading(false);
       }
-    } catch(error) {
-      console.error('Error verifying OTP:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Invalid OTP. Please try again.';
-      setError(errorMessage);
-      setIsVerified(false);
-    } finally {
+    } catch (err) {
+      console.error(err);
       setIsLoading(false);
+      setError(err instanceof Error ? err.message : 'Invalid OTP');
+      setIsVerified(false);
     }
   };
+
+  // const handleVerifyOTP = async () => {
+  //   if (!otp || otp.length !== 4) {
+  //     setError('Please enter a valid 4-digit OTP');
+  //     return;
+  //   }
+
+  //   if (isVerified) {
+  //     return;
+  //   }
+
+  //   setError(null);
+  //   setIsLoading(true);
+
+  //   try {
+  //     // SERVER-SIDE OTP VERIFICATION
+  //     // Verify OTP with server instead of relying on client-side only
+  //     const verifyResponse = await fetch('/api/verify-otp', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         mobile: phoneNumber,
+  //         otp: otp,
+  //       }),
+  //     });
+
+  //     const verifyData = await verifyResponse.json();
+
+  //     if (!verifyResponse.ok || !verifyData.success) {
+  //       throw new Error(verifyData.error || 'OTP verification failed');
+  //     }
+
+  //     console.log('OTP verified successfully on server');
+
+  //     // Get the verification token from server response
+  //     const verificationToken = verifyData.verificationToken;
+
+  //     if (!verificationToken) {
+  //       throw new Error('Verification token not received from server');
+  //     }
+
+  //     // Mark as verified to prevent re-verification
+  //     setIsVerified(true);
+
+  //     try {
+  //       // Save user data to database with verification token
+  //       const dbResult = await saveUserToDatabase({
+  //         name: fullName,
+  //         email: email,
+  //         passout_year: passout_year,
+  //         phone: phoneNumber,
+  //         stream: stream,
+  //         verificationToken: verificationToken,
+  //       });
+
+
+  //     } catch (dbError) {
+  //       console.error('Error saving to database:', dbError);
+  //       const errorMessage = dbError instanceof Error ? dbError.message : 'Failed to save data. Please try again.';
+  //       setError(errorMessage);
+  //       setIsVerified(false);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error verifying OTP:', error);
+  //     const errorMessage = error instanceof Error ? error.message : 'Invalid OTP. Please try again.';
+  //     setError(errorMessage);
+  //     setIsVerified(false);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const handleResendOTP = () => {
     setOtp('');
     setError(null);
     setIsVerified(false);
+    setOtpRequestId('');
     handleSendOTP();
   };
 
   const handleUpdateNumber = () => {
     setStep('enterPhone');
     setOtp('');
+    setOtpRequestId('');
     setError(null);
     setSuccess(null);
     setIsVerified(false);
@@ -342,6 +435,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     // Reset all states
     setStep('enterPhone');
     setOtp('');
+    setOtpRequestId('');
     setFullName('');
     setEmail('');
     setpassout_year('2026');
@@ -359,7 +453,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
   };
 
   useEffect(() => {
-    if(open) {
+    if (open) {
       console.log('Modal opened, current localStorage userId:', localStorage.getItem('userId'));
     }
   }, [open]);
@@ -641,8 +735,12 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
 // Extend Window interface for MSG91 methods
 declare global {
   interface Window {
-    sendOtp: (phone: string, success: () => void, error: (err: unknown) => void) => void
-    verifyOtp: (otp: string, success: () => void, error: (err: unknown) => void) => void
-    initSendOTP: (config: unknown) => void
+    sendOtp: (phone: string, success: (data: unknown) => void, error: (err: unknown) => void) => void;
+    initSendOTP: (config: unknown) => void;
+    reqId?: unknown;
+    requestId?: unknown;
+    otpReqId?: unknown;
+    message?: unknown;
+    _reqId?: unknown;
   }
 }

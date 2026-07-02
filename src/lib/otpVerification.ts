@@ -1,44 +1,35 @@
 /**
- * OTP Verification utilities
- * Handles verification token generation and validation
+ * OTP verification utilities
+ * Generates and validates the signed session token after MSG91 verification.
  */
 
-/**
- * Generate a verification token to bind the verified phone number
- * This token will be validated when creating the user
- */
 export function generateVerificationToken(mobile: string): string {
   const timestamp = Date.now();
-
-  // Simple token generation - in production, use a proper signing mechanism
   const payload = `${mobile}:${timestamp}`;
-  const token = Buffer.from(payload).toString('base64');
-
-  return token;
+  return Buffer.from(payload).toString('base64');
 }
 
-/**
- * Verify the verification token and extract the mobile number
- */
-export function verifyVerificationToken(token: string):
-{ mobile: string; timestamp: number } | null {
+export function verifyVerificationToken(
+  token: string,
+): { mobile: string; timestamp: number } | null {
   try {
     const payload = Buffer.from(token, 'base64').toString('utf-8');
     const [mobile, timestampStr] = payload.split(':');
-    const timestamp = parseInt(timestampStr, 10);
+    const timestamp = Number.parseInt(timestampStr, 10);
 
-    // Token should be valid for 10 minutes
+    if (!mobile || Number.isNaN(timestamp)) {
+      return null;
+    }
+
     const tokenAge = Date.now() - timestamp;
-    const maxAge = 10 * 60 * 1000; // 10 minutes
+    const maxAge = 10 * 60 * 1000;
 
-    if(tokenAge > maxAge) {
-      console.error('Verification token expired');
+    if (tokenAge > maxAge) {
       return null;
     }
 
     return { mobile, timestamp };
-  } catch(error) {
-    console.error('Invalid verification token:', error);
+  } catch {
     return null;
   }
 }

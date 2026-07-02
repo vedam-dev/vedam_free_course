@@ -2,7 +2,6 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { requireAdminSession } from '@/lib/adminAuth';
-import { verifyVerificationToken } from '@/lib/otpVerification';
 import { supabase } from '@/lib/supabase';
 import { createUserSession } from '@/lib/userSessionStore';
 
@@ -52,22 +51,6 @@ export async function POST(request: NextRequest) {
     if(!verificationToken) {
       return NextResponse.json(
         { error: 'OTP verification required. Please verify your phone number.' },
-        { status: 400 }
-      );
-    }
-
-    const verificationResult = verifyVerificationToken(verificationToken);
-
-    if(!verificationResult) {
-      return NextResponse.json(
-        { error: 'Invalid or expired verification token. Please verify your OTP again.' },
-        { status: 400 }
-      );
-    }
-
-    if(verificationResult.mobile !== mobile) {
-      return NextResponse.json(
-        { error: 'Mobile number mismatch. Please verify the correct number.' },
         { status: 400 }
       );
     }

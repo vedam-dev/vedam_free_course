@@ -368,6 +368,9 @@ yarn dev
 
 ### 7. Open [http://localhost:3000](http://localhost:3000) in your browser
 
+If OTP login shows an hCaptcha `localhost detected` warning, open the app through the dev hostname instead:
+`http://vedam.localhost:3000`
+
 ## Certificate Generation Implementation
 
 ### Frontend: certificateGenerator.ts

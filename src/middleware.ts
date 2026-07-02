@@ -4,6 +4,20 @@ import { isAdminPagePath } from '@/lib/adminRoutes';
 import { isAdminSessionValid } from '@/lib/adminSessionStore';
 
 export async function middleware(req: NextRequest) {
+  if(process.env.NODE_ENV === 'development') {
+    const host = req.headers.get('host');
+    const isBareLocalhost = host?.startsWith('localhost');
+
+    if(isBareLocalhost) {
+      const devHost = process.env.NEXT_PUBLIC_DEV_HOST?.trim() || 'vedam.localhost';
+      const redirectUrl = new URL(req.url);
+
+      redirectUrl.hostname = devHost;
+
+      return NextResponse.redirect(redirectUrl);
+    }
+  }
+
   console.log('MIDDLEWARE HIT:', req.nextUrl.pathname);
   const { pathname } = req.nextUrl;
 
@@ -86,6 +100,7 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\..*).*)',
     '/login',
     '/admin',
     '/admin/:path*',
