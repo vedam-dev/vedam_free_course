@@ -2,69 +2,67 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { generateVerificationToken } from '@/lib/otpVerification';
 
-/**
- * Server-side OTP verification using MSG91 API
- * This endpoint verifies the OTP with MSG91's servers before allowing user registration
- */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { mobile, otp } = body;
+    const { mobile, otp, reqId } = body;
 
-    if(!mobile || !otp) {
+    if(!mobile || !otp || !reqId) {
       return NextResponse.json(
-        { error: 'Mobile number and OTP are required' },
-        { status: 400 }
+        { error: 'Mobile number, OTP, and reqId are required' },
+        { status: 400 },
       );
     }
 
-    // Validate phone number format
     if(!/^\d{10}$/.test(mobile)) {
       return NextResponse.json(
         { error: 'Invalid mobile number format' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // Validate OTP format
     if(!/^\d{4,6}$/.test(otp)) {
       return NextResponse.json(
         { error: 'Invalid OTP format' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const authKey = process.env.MSG91_AUTH_KEY?.trim();
+    const widgetId = process.env.NEXT_PUBLIC_MSG91_WIDGET_ID?.trim();
 
-    if(!authKey) {
-      console.error('MSG91_AUTH_KEY not configured');
+    if(!authKey || !widgetId) {
+      console.error('MSG91 widget credentials not configured');
       return NextResponse.json(
         { error: 'OTP verification service not configured' },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
-    // Verify OTP with MSG91 API
-    // MSG91 OTP Verification API endpoint
-    const verificationUrl = 'https://control.msg91.com/api/v5/otp/verify';
+    const verificationUrl = 'https://api.msg91.com/api/v5/widget/verifyOtp';
 
     const verificationResponse = await fetch(verificationUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'authkey': authKey,
       },
       body: JSON.stringify({
-        mobile: `91${mobile}`, // Add country code
-        otp: otp,
+        widgetId,
+        otp,
+        reqId,
+        tokenAuth: authKey,
       }),
     });
 
     const verificationData = await verificationResponse.json();
 
-    // Check if verification was successful
-    if(verificationResponse.ok && verificationData.type === 'success') {
-      // Generate a verification token to bind the verified phone number
+    if(
+      verificationResponse.ok &&
+      (verificationData.type === 'success' ||
+        verificationData.success === true ||
+        verificationData.status === 'success' ||
+        verificationData['access-token'])
+    ) {
       const verificationToken = generateVerificationToken(mobile);
 
       return NextResponse.json(
@@ -74,23 +72,25 @@ export async function POST(request: NextRequest) {
           verificationToken,
           mobile,
         },
-        { status: 200 }
-      );
-    } else {
-      // OTP verification failed
-      return NextResponse.json(
-        {
-          error: verificationData.message || 'Invalid OTP',
-          success: false,
-        },
-        { status: 400 }
+        { status: 200 },
       );
     }
+    console.log({
+      status: verificationResponse.status,
+      body: verificationData,
+    });
+    return NextResponse.json(
+      {
+        error: verificationData.message || verificationData.error || 'Invalid OTP',
+        success: false,
+      },
+      { status: 400 },
+    );
   } catch(error) {
     console.error('OTP verification error:', error);
     return NextResponse.json(
       { error: 'Failed to verify OTP. Please try again.' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
