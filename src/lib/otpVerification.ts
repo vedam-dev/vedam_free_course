@@ -17,19 +17,19 @@ export function verifyVerificationToken(
     const [mobile, timestampStr] = payload.split(':');
     const timestamp = Number.parseInt(timestampStr, 10);
 
-    if (!mobile || Number.isNaN(timestamp)) {
+    if(!mobile || Number.isNaN(timestamp)) {
       return null;
     }
 
     const tokenAge = Date.now() - timestamp;
     const maxAge = 10 * 60 * 1000;
 
-    if (tokenAge > maxAge) {
+    if(tokenAge > maxAge) {
       return null;
     }
 
     return { mobile, timestamp };
-  } catch {
+  } catch{
     return null;
   }
 }

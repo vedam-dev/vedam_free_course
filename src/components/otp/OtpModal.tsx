@@ -82,14 +82,14 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
   };
 
   const extractRequestId = (source: unknown): string => {
-    if (!source || typeof source !== 'object') {
+    if(!source || typeof source !== 'object') {
       return '';
     }
 
     const payload = source as Record<string, unknown>;
     const message = payload.message;
 
-    if (typeof message === 'string') {
+    if(typeof message === 'string') {
       return message.trim();
     }
 
@@ -105,7 +105,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
     });
 
     // Check for errors
-    if (errors.fullName || errors.email || errors.phoneNumber) {
+    if(errors.fullName || errors.email || errors.phoneNumber) {
       setError('Please fix the errors before proceeding');
       return;
     }
@@ -117,13 +117,13 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
       // Using MSG91 widget method
       const formattedPhone = phoneNumber.startsWith('91') ? phoneNumber : `91${phoneNumber}`;
 
-      if (window.sendOtp) {
+      if(window.sendOtp) {
         window.sendOtp(
           formattedPhone,
           (data: unknown) => {
             const requestId = extractRequestId(data);
 
-            if (!requestId) {
+            if(!requestId) {
               console.warn('MSG91 sendOtp success payload did not include request id', data);
               setError('OTP session details were not returned. Please try again.');
               setIsLoading(false);
@@ -146,7 +146,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
         setError('OTP service not initialized. Please try again.');
         setIsLoading(false);
       }
-    } catch (error) {
+    } catch(error) {
       console.error('Error sending OTP:', error);
       setError('Failed to send OTP. Please try again.');
       setIsLoading(false);
@@ -178,14 +178,14 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
         }),
       });
 
-      if (!response.ok) {
+      if(!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error ?? 'Failed to save user data');
       }
 
       const data = await response.json();
       return data;
-    } catch (error) {
+    } catch(error) {
       console.error('Error saving user data:', error);
       throw error;
     }
@@ -197,21 +197,21 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
       localStorage.setItem(key, value);
       // Verify it was set correctly
       const stored = localStorage.getItem(key);
-      if (stored !== value) {
+      if(stored !== value) {
         console.warn(`Failed to set localStorage item: ${key}`);
       }
-    } catch (error) {
+    } catch(error) {
       console.error('Error setting localStorage:', error);
     }
   };
 
   const handleVerifyOTP = async () => {
-    if (otp.length !== 4) {
+    if(otp.length !== 4) {
       setError('Please enter a valid OTP');
       return;
     }
 
-    if (!otpRequestId) {
+    if(!otpRequestId) {
       setError('OTP session expired or missing. Please resend OTP.');
       return;
     }
@@ -234,13 +234,13 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
 
       const verifyData = await verifyResponse.json();
 
-      if (!verifyResponse.ok || !verifyData.success) {
+      if(!verifyResponse.ok || !verifyData.success) {
         throw new Error(verifyData.error || 'OTP verification failed');
       }
 
       const verificationToken = verifyData.verificationToken;
 
-      if (!verificationToken) {
+      if(!verificationToken) {
         throw new Error('Verification token not received from server');
       }
 
@@ -257,83 +257,83 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
         });
 
         // Try multiple ways to extract userId from the response
-          let userId = null;
+        let userId = null;
 
         // Check common response structures
-          if (dbResult?.id) {
-            userId = dbResult.id;
-          } else if (dbResult?._id) {
-            userId = dbResult._id;
-          } else if (dbResult?.user?.id) {
-            userId = dbResult.user.id;
-          } else if (dbResult?.user?._id) {
-            userId = dbResult.user._id;
-          } else if (dbResult?.data?.id) {
-            userId = dbResult.data.id;
-          } else if (dbResult?.data?._id) {
-            userId = dbResult.data._id;
-          } else if (dbResult?.insertedId) {
-            userId = dbResult.insertedId;
-          } else if (dbResult?.result?.insertedId) {
-            userId = dbResult.result.insertedId;
-          } else if (Array.isArray(dbResult?.user) && dbResult.user.length > 0) {
+        if(dbResult?.id) {
+          userId = dbResult.id;
+        } else if(dbResult?._id) {
+          userId = dbResult._id;
+        } else if(dbResult?.user?.id) {
+          userId = dbResult.user.id;
+        } else if(dbResult?.user?._id) {
+          userId = dbResult.user._id;
+        } else if(dbResult?.data?.id) {
+          userId = dbResult.data.id;
+        } else if(dbResult?.data?._id) {
+          userId = dbResult.data._id;
+        } else if(dbResult?.insertedId) {
+          userId = dbResult.insertedId;
+        } else if(dbResult?.result?.insertedId) {
+          userId = dbResult.result.insertedId;
+        } else if(Array.isArray(dbResult?.user) && dbResult.user.length > 0) {
           // Handle case where user is an array (like your response)
-            userId = dbResult.user[0]?.id ?? dbResult.user[0]?._id;
-          }
+          userId = dbResult.user[0]?.id ?? dbResult.user[0]?._id;
+        }
 
-          if (!userId) {
-            console.error('No userId found in database response');
-            setError('User data saved but ID not found. Please contact support.');
-            setIsLoading(false);
-            setIsVerified(false);
-            return;
-          }
+        if(!userId) {
+          console.error('No userId found in database response');
+          setError('User data saved but ID not found. Please contact support.');
+          setIsLoading(false);
+          setIsVerified(false);
+          return;
+        }
 
-          console.log('User authenticated successfully with ID:', userId);
+        console.log('User authenticated successfully with ID:', userId);
 
         // Update Redux state first
-          dispatch(setUserId(userId));
-          dispatch(setMobile(phoneNumber));
-          dispatch(setUsername(fullName));
-          dispatch(setIsLoggedIn(true));
+        dispatch(setUserId(userId));
+        dispatch(setMobile(phoneNumber));
+        dispatch(setUsername(fullName));
+        dispatch(setIsLoggedIn(true));
 
         // Set localStorage items with verification
-          setLocalStorageItem('userId', String(userId));
-          setLocalStorageItem('isLoggedIn', 'true');
-          setLocalStorageItem('username', fullName);
-          setLocalStorageItem('mobile', phoneNumber);
-          setLocalStorageItem('role', 'user');
+        setLocalStorageItem('userId', String(userId));
+        setLocalStorageItem('isLoggedIn', 'true');
+        setLocalStorageItem('username', fullName);
+        setLocalStorageItem('mobile', phoneNumber);
+        setLocalStorageItem('role', 'user');
 
         // Verify localStorage was set correctly
-          const storedUserId = localStorage.getItem('userId');
-          console.log('Stored userId in localStorage:', storedUserId);
+        const storedUserId = localStorage.getItem('userId');
+        console.log('Stored userId in localStorage:', storedUserId);
 
-          if (storedUserId !== String(userId)) {
-            console.error('localStorage userId mismatch!', { expected: userId, stored: storedUserId });
-          }
+        if(storedUserId !== String(userId)) {
+          console.error('localStorage userId mismatch!', { expected: userId, stored: storedUserId });
+        }
 
-          setSuccess('Verification successful! Data saved.');
+        setSuccess('Verification successful! Data saved.');
 
         // Call the success callback with user data
-          onVerificationSuccess({
-            name: fullName,
-            email: email,
-            passout_year: passout_year,
-            stream: stream,
-            phone: phoneNumber,
-          });
+        onVerificationSuccess({
+          name: fullName,
+          email: email,
+          passout_year: passout_year,
+          stream: stream,
+          phone: phoneNumber,
+        });
 
         // Close modal with fade effect after a short delay
-          setTimeout(() => {
-            setSuccess(null);
-            handleModalClose();
-          }, 2000);
-      } catch (err) {
+        setTimeout(() => {
+          setSuccess(null);
+          handleModalClose();
+        }, 2000);
+      } catch(err) {
         setError(err instanceof Error ? err.message : 'Failed to save user.');
       } finally {
         setIsLoading(false);
       }
-    } catch (err) {
+    } catch(err) {
       console.error(err);
       setIsLoading(false);
       setError(err instanceof Error ? err.message : 'Invalid OTP');
@@ -453,7 +453,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
   };
 
   useEffect(() => {
-    if (open) {
+    if(open) {
       console.log('Modal opened, current localStorage userId:', localStorage.getItem('userId'));
     }
   }, [open]);
@@ -735,7 +735,8 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
 // Extend Window interface for MSG91 methods
 declare global {
   interface Window {
-    sendOtp: (phone: string, success: (data: unknown) => void, error: (err: unknown) => void) => void;
+    sendOtp: (phone: string, success: (data: unknown) => void,
+    error: (err: unknown) => void) => void;
     initSendOTP: (config: unknown) => void;
     reqId?: unknown;
     requestId?: unknown;

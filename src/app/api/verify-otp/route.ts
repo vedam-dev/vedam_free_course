@@ -7,21 +7,21 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { mobile, otp, reqId } = body;
 
-    if (!mobile || !otp || !reqId) {
+    if(!mobile || !otp || !reqId) {
       return NextResponse.json(
         { error: 'Mobile number, OTP, and reqId are required' },
         { status: 400 },
       );
     }
 
-    if (!/^\d{10}$/.test(mobile)) {
+    if(!/^\d{10}$/.test(mobile)) {
       return NextResponse.json(
         { error: 'Invalid mobile number format' },
         { status: 400 },
       );
     }
 
-    if (!/^\d{4,6}$/.test(otp)) {
+    if(!/^\d{4,6}$/.test(otp)) {
       return NextResponse.json(
         { error: 'Invalid OTP format' },
         { status: 400 },
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     const authKey = process.env.MSG91_AUTH_KEY?.trim();
     const widgetId = process.env.NEXT_PUBLIC_MSG91_WIDGET_ID?.trim();
 
-    if (!authKey || !widgetId) {
+    if(!authKey || !widgetId) {
       console.error('MSG91 widget credentials not configured');
       return NextResponse.json(
         { error: 'OTP verification service not configured' },
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
 
     const verificationData = await verificationResponse.json();
 
-    if (
+    if(
       verificationResponse.ok &&
       (verificationData.type === 'success' ||
         verificationData.success === true ||
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
       },
       { status: 400 },
     );
-  } catch (error) {
+  } catch(error) {
     console.error('OTP verification error:', error);
     return NextResponse.json(
       { error: 'Failed to verify OTP. Please try again.' },
