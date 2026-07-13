@@ -10,6 +10,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -90,9 +91,43 @@ const topicTemplateMap: Record<string, number> = {
 
 const topicDisplayOrder = [
   'Introduction to Programming',
-  'Prompt Engineering',
-  'Web Development',
   'Build AI Study Planner',
+  'Web Development',
+  'Prompt Engineering',
+];
+
+const outcomeBanners = [
+  {
+    src: '/home/videoInfo/student-success-outcome-1.webp',
+    alt: 'Global outcomes at Vedam with student selections and earnings',
+    width: 4152,
+    height: 1564,
+  },
+  {
+    src: '/home/videoInfo/student-success-outcome-2.webp',
+    alt: 'Vedam students achieved seven plus paid internships in first year',
+    width: 3114,
+    height: 1173,
+  },
+];
+
+const yearOneBuildVideos = [
+  {
+    title: 'Ishaan',
+    youtubeId: 'zS9iKI12VvU',
+  },
+  {
+    title: 'Vaani Setu',
+    youtubeId: 'sxJyD_Q8_9M',
+  },
+  {
+    title: 'Agrima',
+    youtubeId: 'MU7zCxLHthM',
+  },
+  {
+    title: 'Sidhant Chatbot',
+    youtubeId: 'bzkkq6qTGwk',
+  },
 ];
 
 export default function VideoCourses() {
@@ -174,6 +209,184 @@ export default function VideoCourses() {
           px: 1,
         }}
       >
+        <Box
+          sx={{
+            mb: { xs: 5, md: 8 },
+          }}
+        >
+          <Typography
+            component="h2"
+            sx={{
+              fontFamily: 'Outfit, sans-serif',
+              fontWeight: 800,
+              fontSize: { xs: '26px', md: '42px' },
+              lineHeight: 1.12,
+              color: '#1E1E1E',
+              textAlign: 'center',
+              mb: { xs: 3, md: 4 },
+            }}
+          >
+            Real Outcomes from First Year
+          </Typography>
+          <Box
+            sx={{
+              overflow: 'hidden',
+              borderRadius: { xs: '16px', md: '28px' },
+              boxShadow: '0 18px 42px rgba(73, 30, 138, 0.12)',
+              lineHeight: 0,
+              backgroundColor: '#F8F5FF',
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                width: '300%',
+                animation: 'outcomeBannerScroll 12s ease-in-out infinite',
+                willChange: 'transform',
+                '@keyframes outcomeBannerScroll': {
+                  '0%, 38%': {
+                    transform: 'translateX(0)',
+                  },
+                  '50%, 88%': {
+                    transform: 'translateX(-33.333333%)',
+                  },
+                  '100%': {
+                    transform: 'translateX(-66.666666%)',
+                  },
+                },
+                '&:hover': {
+                  animationPlayState: 'paused',
+                },
+                '@media (prefers-reduced-motion: reduce)': {
+                  animation: 'none',
+                },
+              }}
+            >
+              {[...outcomeBanners, outcomeBanners[0]].map((banner, index) => (
+                <Box
+                  key={`${banner.src}-${index}`}
+                  aria-hidden={index === outcomeBanners.length}
+                  sx={{
+                    flex: '0 0 33.333333%',
+                    width: '33.333333%',
+                  }}
+                >
+                  <Image
+                    src={banner.src}
+                    alt={index === outcomeBanners.length ? '' : banner.alt}
+                    width={banner.width}
+                    height={banner.height}
+                    loading="eager"
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      height: 'auto',
+                    }}
+                    sizes="(max-width: 600px) calc(100vw - 32px), 1120px"
+                  />
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </Box>
+
+        <Box
+          sx={{
+            mb: { xs: 5, md: 8 },
+          }}
+        >
+          <Typography
+            component="h2"
+            sx={{
+              fontFamily: 'Outfit, sans-serif',
+              fontWeight: 800,
+              fontSize: { xs: '26px', md: '42px' },
+              lineHeight: 1.12,
+              color: '#1E1E1E',
+              textAlign: 'center',
+              mb: { xs: 3, md: 4 },
+            }}
+          >
+            What students at Vedam build in Year 1
+          </Typography>
+          <Box
+            sx={{
+              display: { xs: 'flex', md: 'grid' },
+              gridTemplateColumns: { md: 'repeat(4, minmax(0, 1fr))' },
+              gap: { xs: 2, md: 2.5 },
+              overflowX: { xs: 'auto', md: 'visible' },
+              mx: { xs: -1, md: 0 },
+              px: { xs: 1, md: 0 },
+              pb: { xs: 1, md: 0 },
+              scrollSnapType: { xs: 'x mandatory', md: 'none' },
+              WebkitOverflowScrolling: 'touch',
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+              scrollbarWidth: 'none',
+            }}
+          >
+            {yearOneBuildVideos.map((video) => (
+              <Box
+                key={video.youtubeId}
+                sx={{
+                  flex: { xs: '0 0 74%', sm: '0 0 42%', md: 'initial' },
+                  minWidth: 0,
+                  p: { xs: 1, md: 1.25 },
+                  borderRadius: '18px',
+                  background:
+                    'linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(248,245,255,0.92) 100%)',
+                  border: '1px solid rgba(120, 44, 204, 0.12)',
+                  boxShadow: '0 16px 38px rgba(73, 30, 138, 0.10)',
+                  scrollSnapAlign: 'start',
+                }}
+              >
+                <Box
+                  sx={{
+                    position: 'relative',
+                    aspectRatio: '9 / 16',
+                    overflow: 'hidden',
+                    borderRadius: '14px',
+                    bgcolor: '#111',
+                  }}
+                >
+                  <Box
+                    component="iframe"
+                    src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                    title={`${video.title} YouTube Short`}
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    sx={{
+                      position: 'absolute',
+                      inset: 0,
+                      width: '100%',
+                      height: '100%',
+                      border: 0,
+                    }}
+                  />
+                </Box>
+                <Typography
+                  component="p"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 700,
+                    fontSize: { xs: '16px', md: '18px' },
+                    lineHeight: 1.2,
+                    color: '#1E1E1E',
+                    textAlign: 'center',
+                    mt: 1.5,
+                    mb: 0.25,
+                  }}
+                >
+                  {video.title}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+
         <Typography
           component="h2"
           sx={{
