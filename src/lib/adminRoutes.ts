@@ -1,6 +1,9 @@
 export const ADMIN_PAGE_PATHS = [
   '/analytics',
   '/upload',
+  '/api/admin/completed-students',
+  '/api/admin/all-students-progress',
+  '/api/admin/topic-progress'
 ] as const;
 
 export function isAdminPagePath(pathname: string): boolean {
