@@ -115,7 +115,7 @@ export default function OtpModal({ open, onClose, onVerificationSuccess }: OtpMo
 
     try {
       // Using MSG91 widget method
-      const formattedPhone = phoneNumber.startsWith('91') ? phoneNumber : `91${phoneNumber}`;
+      const formattedPhone = `91${phoneNumber}`;
 
       if(window.sendOtp) {
         window.sendOtp(
