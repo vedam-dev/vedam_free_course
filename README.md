@@ -2,7 +2,7 @@
 
 A Next.js application for managing and delivering free educational content with UTM tracking, analytics, and automated certificate delivery.
 
-## Features
+## Feature
 
 - **Video Content Management**: Upload and manage video content using Streamable
 - **User Authentication**: OTP-based authentication system
