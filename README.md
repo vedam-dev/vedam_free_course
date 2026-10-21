@@ -124,6 +124,9 @@ Configure SMTP settings for certificate delivery:
 
 ## API Endpoints
 
+For route-level payloads, auth boundaries, video ingestion behavior, and
+troubleshooting, see [API_OPERATIONS.md](./API_OPERATIONS.md).
+
 ### UTM Analytics
 - `GET /api/analytics` - Fetch processed UTM analytics data
 - `POST /api/utm` - Capture UTM parameters from visitors
